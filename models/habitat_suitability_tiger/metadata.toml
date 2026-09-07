@@ -1,0 +1,24 @@
+name = "habitat_suitability_tiger"
+title = "Habitat Suitability: Sumatran tiger relocation example"
+category = "habitat"
+domain_tags = ["tiger", "habitat suitability", "relocation", "teaching", "BNMA"]
+aliases = ["BNMA 132"]
+format = "xdsl"
+file = "Habitat_Suitability.xdsl"
+source_url = "https://bnma.co/bn/132"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=xdsl&bnId=132"
+fetch_instructions = ""
+citation = "Thiruvady, D. (2015). Habitat Suitability. BNMA Bayesian Network Repository, record 132."
+doi = ""
+licence = "CC-BY (version unstated)"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 11
+n_arcs = 12
+retrieved = "2026-09-06"
+sha256 = "063a22b8254a4b3178f865d9bcad687a95abf2e6a7b536747b95ca4771bbcb93"
+notes = "Original GeNIe 2.0 .xdsl as served by BNMA (served as 'Habitat Suitability.xdsl'; the space in the filename replaced by an underscore, content unchanged). Chance-only teaching example."
+
+[parser_options]
+strict = true

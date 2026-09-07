@@ -1,0 +1,23 @@
+name = "hailfinder"
+title = "HAILFINDER: severe-weather forecasting benchmark"
+category = "benchmark"
+domain_tags = ["weather", "hail", "forecasting", "benchmark", "bnlearn"]
+format = "net"
+file = "hailfinder.net.gz"
+source_url = "https://www.bnlearn.com/bnrepository/discrete-large.html#hailfinder"
+download_url = "https://www.bnlearn.com/bnrepository/hailfinder/hailfinder.net.gz"
+fetch_instructions = ""
+citation = "Abramson, B., Brown, J., Edwards, W., Murphy, A. and Winkler, R. L. (1996). Hailfinder: a Bayesian system for forecasting severe weather. International Journal of Forecasting 12(1), 57-71. Distributed by Scutari, M., bnlearn Bayesian Network Repository."
+doi = "10.1016/0169-2070(95)00664-8"
+licence = "CC BY-SA 3.0"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 56
+n_arcs = 66
+retrieved = "2026-09-07"
+sha256 = "59d8b0a70b2f2d69e4ab1a427988fd4e838e1d705c35cd4d444cbffaad27cff7"
+notes = "Committed gzipped exactly as served by bnlearn; the loader decompresses on the fly. Large discrete benchmark (56 nodes, 66 arcs, 2656 parameters). Meteorological rather than ecological, and included as an environment-adjacent scaling benchmark that the source catalogue lists alongside WATER, BARLEY and MILDEW."
+
+[parser_options]
+strict = true

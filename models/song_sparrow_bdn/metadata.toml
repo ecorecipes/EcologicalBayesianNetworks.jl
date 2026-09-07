@@ -1,0 +1,25 @@
+name = "song_sparrow_bdn"
+title = "Song Sparrow riparian restoration decision network (SongSparrowBDN_v250804)"
+category = "decision"
+domain_tags = ["bird", "riparian", "restoration", "mercury", "decision network", "BNMA"]
+aliases = ["BNMA 2893"]
+format = "dne"
+file = "SongSparrowBDN_v250804.dne"
+source_url = "https://bnma.co/bn/2893"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=2893"
+fetch_instructions = ""
+citation = "Kotalik, C. J., Rowland, F. E., Marcot, B. G., Skrabis, K., Walters, D. M., Hinck, J. E., Clements, W., Richer, E. and Isanhart, J. (2026). Causal networks to inform decisions for ecological restoration. Environmental Management 76(7)."
+doi = "10.59381/ofwegrfqyo"
+licence = "CC-BY (version unstated)"
+redistribution = "verbatim"
+has_decisions = true
+has_utilities = true
+n_nodes = 12
+n_arcs = 15
+retrieved = "2026-09-06"
+sha256 = "9be7fb3ba119d0f5c8a00509fe87d19827043b6ac26d7dce5b57c679c7181666"
+notes = "Original .dne as served by the BNMA converter (BN DOI 10.59381/ofwegrfqyo); filename unchanged. Decision network with planting and soil-treatment decisions and utility nodes (8 chance, 2 decision, 2 utility nodes; 7 CONSTANT nodes excluded); load_model returns an InfluenceDiagramModel whose two table-less mechanisms stay unbound, so it cannot be optimised. Two chance nodes (RiparianPlantCost_infl_adj, Time) are Netica finding/equation nodes with evidence but no CPT, so the manifest sets allow_missing_tables = true and model_ir validates with BayesianNetworkFormats.validate(ir; allow_missing_tables = true)."
+
+[parser_options]
+strict = true
+allow_missing_tables = true

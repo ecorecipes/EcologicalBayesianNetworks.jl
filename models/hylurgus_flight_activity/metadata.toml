@@ -1,0 +1,23 @@
+name = "hylurgus_flight_activity"
+title = "Hylurgus ligniperda flight activity"
+category = "biosecurity"
+domain_tags = ["Hylurgus ligniperda", "flight activity", "forest biosecurity", "phytosanitary", "Netica", "BNMA"]
+aliases = ["BNMA 191"]
+format = "dne"
+source_url = "https://bnma.co/bn/191"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=191"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Pawson, S. M., Marcot, B. G. and Woodberry, O. G. (2017). Hylurgus Flight Activity. BNMA Bayesian Network Repository, record 191."
+doi = ""
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 10
+n_arcs = 17
+retrieved = "2026-09-07"
+sha256 = "4bdff33b9894fefc4453b03482cc193fa36b15c4e5e7d2c8d5e33d1bf67fae4e"
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. Reads strictly into 10 chance nodes and 17 arcs; the internal Netica name is hylurgus_rationalised_decimal_."
+
+[parser_options]
+strict = true

@@ -1,0 +1,267 @@
+---
+title: "A tour of the model zoo"
+author: "Simon Frost"
+format:
+  html:
+    code-fold: false
+    toc: true
+  gfm:
+    toc: true
+  pdf: default
+engine: julia
+---
+
+## Overview
+
+`EcologicalBayesianNetworks.jl` is a curated zoo of publicly downloadable ecological
+Bayesian belief networks and influence diagrams. Every model has a manifest
+(`models/<name>/metadata.toml`) recording where it came from, how to cite it, its licence
+and a checksum; models with permissive licences (CC BY, CC BY-SA, CC0, MIT) ship with
+the package verbatim, and the rest are fetched into a local cache on demand. This vignette
+walks through the catalogue, loads a benchmark network, solves a decision model, and
+computes a marginal on a small chance-only network.
+
+The models are real ones: belief networks published for habitat, conservation and
+natural-resource problems [@McCannMarcotEllis2006; @Newton2007], environmental risk
+assessments [@Moe2021; @Kaikkonen2021] and ecosystem-service models [@Landuyt2013]. They
+come from four kinds of source -- the Bayesian Network Model Archive
+[@BNMA], the bnlearn network repository [@Scutari2010], the bnRep collection
+[@Leonelli2025], and the supplementary material of individual papers -- and each brings
+its own licence, which is why the zoo enforces a redistribution policy rather than
+mirroring everything.
+
+## Setup
+
+
+```{julia}
+using EcologicalBayesianNetworks
+n_models()
+```
+
+## The catalogue
+
+`model_catalog()` returns a filtered view of the registry that prints as a table. The
+`kind` column says whether a model is a plain Bayesian network (`BN`), has decision or
+utility nodes (`ID`, an influence diagram), or is a `package`: a catalogue record for a
+Dryad, Zenodo, figshare or source-repository archive from which a network can be rebuilt
+but which is not itself a network file.
+
+```{julia}
+model_catalog()
+```
+
+Categories, in display order:
+
+```{julia}
+model_categories()
+```
+
+Filters combine: the benchmark networks, or only the influence diagrams whose files ship
+with the package.
+
+```{julia}
+available_models(category = "benchmark")
+```
+
+```{julia}
+available_models(kind = :id, redistributable = true)
+```
+
+`model_info` looks a model up by name, title or file name, ignoring case and punctuation,
+and returns its `ModelSpec`.
+
+```{julia}
+model_info("Song Sparrow BDN")
+```
+
+## Licences and redistribution
+
+The manifest `redistribution` field is the licence policy in one word:
+
+- `verbatim`: the original file is committed next to a `LICENSE.txt` with the attribution
+  (the CC BY-SA 3.0 benchmarks of bnlearn [@Scutari2010], the MIT-licensed Ballycanew
+  phosphorus tools, the CC BY records of the BNMA repository [@BNMA], the CC BY networks
+  collected in bnRep [@Leonelli2025]);
+- `fetch-only`: metadata only. No-derivatives, non-commercial and unstated licences are
+  never committed and never converted; `fetch_model` downloads them into a scratch cache
+  when a direct URL exists, and `import_model` copies a file you downloaded by hand;
+- `builtin`: built in Julia (the reference models of the SPEC);
+- `reconstruction`: a data or code archive rather than a network. Nothing is committed and
+  nothing is cached; `load_model` raises `ReconstructionOnlyError` pointing at the record.
+
+```{julia}
+model_catalog(kind = :package)
+```
+
+```{julia}
+try
+    load_model("bnrep_package")
+catch e
+    println(sprint(showerror, e))
+end
+```
+
+```{julia}
+model_catalog(redistributable = false)
+```
+
+Every verbatim model carries its licence text:
+
+```{julia}
+print(licence_text("water"))
+```
+
+## Loading a benchmark network
+
+`water` (Jensen et al. 1989, from the bnlearn repository [@Scutari2010]) is stored
+gzipped exactly as
+served; the loader decompresses it in memory, applies the manifest's parser options and
+hands the `NetworkIR` to `BayesianNetworks.BayesModel`.
+
+```{julia}
+water = load_model("water")
+```
+
+```{julia}
+using BayesianNetworks: validate
+validate(water; semantics = true)
+```
+
+`model_summary` parses a model and counts what is in it without building a `BayesModel`,
+so it also works for influence diagrams:
+
+```{julia}
+model_summary("water")
+```
+
+```{julia}
+model_summary("waterhole_fence")
+```
+
+Decision models load as `InfluenceDiagrams.InfluenceDiagramModel`s, with their chance
+kernels and tabular utilities bound and the decision nodes' parents as information sets:
+
+```{julia}
+koalas = load_model("koalas")
+```
+
+```{julia}
+using InfluenceDiagrams: optimize, policy_table
+sol = optimize(koalas)
+sol.expected_utility, policy_table(sol.strategy[:Cull]), policy_table(sol.strategy[:Relocate])
+```
+
+The `NetworkIR` behind any model is one call away:
+
+```{julia}
+[(v.id, v.kind, length(v.parents)) for v in model_ir("koalas").variables]
+```
+
+## A marginal on a small network
+
+`native_fish_v1` (Bayesian Intelligence, CC BY) links rainfall, drought, pesticide use and
+river flow to native fish abundance. With seven nodes the reference joint distribution is
+tiny, so `BayesianNetworks.marginal` answers exactly.
+
+```{julia}
+using BayesianNetworks: marginal, observe, probability
+fish = load_model("native_fish_v1")
+marginal(fish, :FishAbundance)
+```
+
+Conditioning on a drought year:
+
+```{julia}
+marginal(observe(fish, :Drought => :Yes), :FishAbundance)
+```
+
+```{julia}
+[(s, round(probability(marginal(observe(fish, :Drought => :Yes), :FishAbundance), s); digits = 3))
+ for s in (:High, :Medium, :Low)]
+```
+
+## The fetch-only workflow
+
+Fetch-only models have a `download_url` (when the host serves the file directly) and
+`fetch_instructions` for the manual route. Nothing below touches the network: the calls
+that would are shown, not run.
+
+```{julia}
+spec = model_info("tidal_saline_wetlands")
+(spec.licence, spec.redistribution, spec.download_url)
+```
+
+```{julia}
+println(spec.fetch_instructions)
+```
+
+Asking for the file before it is fetched raises a `ModelNotFetchedError` whose message
+repeats the instructions. Rendering this vignette must not disturb whatever you have
+already downloaded, so the demonstration runs inside `with_cache_dir`, which points
+`cache_dir()` at a temporary directory for the duration of the block (which is the
+directory the error message names below):
+
+```{julia}
+mktempdir() do tmp
+    with_cache_dir(tmp) do
+        try
+            model_path("tidal_saline_wetlands")
+        catch e
+            println(sprint(showerror, e))
+        end
+    end
+end
+```
+
+`with_cache_dir` is the safe way to run anything that writes to or clears the cache
+(`fetch_model`, `import_model`, `clear_cache`); setting `ECOLOGICAL_BN_CACHE` does the
+same for a whole session. Nothing above deleted a file, and nothing below does either:
+the two ways to make the model available are shown, not run.
+
+```julia
+fetch_model("tidal_saline_wetlands")            # direct download, checksum verified
+import_model("tidal_saline_wetlands", "Tidal Saline Wetlands.dne")
+clear_cache(name = "tidal_saline_wetlands")     # remove it again
+```
+
+After a fetch, `is_available("tidal_saline_wetlands")` is `true` and `model_ir` reads the
+file from the cache (`cache_dir()`). `verify_checksums(include_cache = true)` re-checks
+every committed and cached file against the manifests, and
+`verify_checksums(collect_mismatches = true)` reports every bad file rather than stopping
+at the first.
+
+```{julia}
+is_available("tidal_saline_wetlands"), length(fetchable_models())
+```
+
+## Reference models
+
+Two models are built in Julia rather than read from files: the SPEC section 45 habitat
+network (`reference_habitat_bn`, structure only, and `reference_habitat_model`, with its
+conditional probability tables) and the section 46 grazing-management influence diagram
+(`reference_grazing_id`, an `InfluenceDiagramModel`). The following vignettes work
+through both.
+
+```{julia}
+habitat = load_model("reference_habitat_bn")
+marginal(habitat, :Occupancy)
+```
+
+```{julia}
+reference_grazing_id()
+```
+
+## Summary
+
+The zoo is a registry of manifests: every model records its source, citation, DOI,
+licence, checksum and retrieval date, and the `redistribution` field decides whether the
+file is committed verbatim, fetched into a scratch cache on demand, built in Julia, or
+carried as a catalogue record only. That policy is what makes it safe to ship published
+networks alongside the code, and `licence_text` reproduces the terms next to every
+verbatim file. The next vignette, *The reference habitat network*, works one model
+end to end.
+
+## References
+
+::: {#refs}
+:::

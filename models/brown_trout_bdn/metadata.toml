@@ -1,0 +1,25 @@
+name = "brown_trout_bdn"
+title = "Brown Trout stream restoration decision network (BrownTroutBDN_v250804)"
+category = "decision"
+domain_tags = ["fish", "stream", "restoration", "biomass", "decision network", "BNMA"]
+aliases = ["BNMA 2892"]
+format = "dne"
+file = "BrownTroutBDN_v250804.dne"
+source_url = "https://bnma.co/bn/2892"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=2892"
+fetch_instructions = ""
+citation = "Kotalik, C. J., Rowland, F. E., Marcot, B. G., Skrabis, K., Walters, D. M., Hinck, J. E., Clements, W., Richer, E. and Isanhart, J. (2026). Causal networks to inform decisions for ecological restoration. Environmental Management 76(7)."
+doi = "10.59381/aueoizszbj"
+licence = "CC-BY (version unstated)"
+redistribution = "verbatim"
+has_decisions = true
+has_utilities = false
+n_nodes = 9
+n_arcs = 13
+retrieved = "2026-09-06"
+sha256 = "6b6fbf26f9e9dbde4af0b6e63a071498b90f4bb3ecefa0a4c88814f03ca95e7c"
+notes = "Original .dne as served by the BNMA converter (BN DOI 10.59381/aueoizszbj); filename unchanged. Has decision nodes but no utility node (7 chance, 2 decision nodes; 6 CONSTANT nodes excluded); load_model returns an InfluenceDiagramModel with the time mechanism unbound. The chance node time is a Netica finding/equation node with evidence but no CPT, so the manifest sets allow_missing_tables = true and model_ir validates with BayesianNetworkFormats.validate(ir; allow_missing_tables = true)."
+
+[parser_options]
+strict = true
+allow_missing_tables = true

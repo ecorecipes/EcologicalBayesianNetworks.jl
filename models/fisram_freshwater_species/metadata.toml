@@ -1,0 +1,23 @@
+name = "fisram_freshwater_species"
+title = "FISRAM: freshwater invasive and injurious species screening"
+category = "biosecurity"
+domain_tags = ["invasive species", "freshwater fish", "risk screening", "USFWS", "Netica", "BNMA"]
+aliases = ["BNMA 198"]
+format = "dne"
+source_url = "https://bnma.co/bn/198"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=198"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Marcot, B. G., Hoff, M. H., Martin, C. D., Jewell, S. D. and Givens, C. E. (2019). FISRAM Freshwater Species. BNMA Bayesian Network Repository, record 198."
+doi = ""
+licence = "CC-BY-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 20
+n_arcs = 23
+retrieved = "2026-09-07"
+sha256 = "86e009b23ebb1141d6eb8029c83eda4dbf7c3fa3a450774e130e23927b27574d"
+notes = "CC-BY-ND on the BNMA record: no derivatives, so the file is fetched into the cache only and never converted for redistribution. Reads strictly into 20 chance nodes and 23 arcs after 3 CONSTANT nodes are skipped."
+
+[parser_options]
+strict = true

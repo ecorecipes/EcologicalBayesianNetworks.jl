@@ -1,0 +1,23 @@
+name = "plexus_teb_bat_subwatershed"
+title = "Townsend's big-eared bat, subwatershed (broad) scale (Plexus fig2b)"
+category = "habitat"
+domain_tags = ["bat", "habitat", "Columbia River Basin", "GIS proxy", "Netica", "Plexus"]
+format = "dne"
+source_url = "https://www.plexuseco.com/The%20Plexus/bbns.htm"
+download_url = "https://www.plexuseco.com/The%20Plexus/fig2b.dne"
+fetch_instructions = "Download the .dne directly with fetch_model(name) (the server rejects some browser User-Agent strings but accepts the default Julia/curl one); or open https://www.plexuseco.com/The%20Plexus/bbns.htm, save the linked .dne, then import_model(name, path). Licence unstated, so the file is never committed."
+citation = "Marcot, B. G., Holthausen, R. S., Raphael, M. G., Rowland, M. M. and Wisdom, M. J. (2001). Using Bayesian belief networks to evaluate fish and wildlife population viability under land management alternatives from an environmental impact statement. Forest Ecology and Management 153(1-3), 29-42. Model files from the Plexus Ecological Bayesian network collection."
+doi = "10.1016/S0378-1127(01)00452-2"
+licence = "unstated"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 7
+n_arcs = 6
+retrieved = "2026-09-06"
+sha256 = "397a2ff892e7bfbfcc7e1538d9e0cdac96bb350eadbd89798f6025bdd030f33e"
+notes = "Broad-scale GIS-proxy habitat layer for Townsend's big-eared bat (B. G. Marcot, ICBEMP, alpha 2.1, 2000; Netica 1.37 file). Chance-only; parses in strict mode and every chance node has a CPT. Some CPT rows sum to one only within 1e-7 (accepted by the reader, rejected by BayesianNetworks.validate at atol = 1e-8), so the manifest sets renormalize = true."
+
+[parser_options]
+strict = true
+renormalize = true

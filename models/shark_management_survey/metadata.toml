@@ -1,0 +1,23 @@
+name = "shark_management_survey"
+title = "Shark management survey scenario analysis"
+category = "risk"
+domain_tags = ["shark management", "social-ecological", "survey", "scenario analysis", "Netica", "BNMA"]
+aliases = ["BNMA 207"]
+format = "dne"
+source_url = "https://bnma.co/bn/207"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=207"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Simmons, P., Mehmet, M., Curley, B., Ivory, N., Callaghan, K., Wolfenden, K. and Xie, G. (2022). Shark management survey analysis. BNMA Bayesian Network Repository, record 207."
+doi = ""
+licence = "CC-BY-NC (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 26
+n_arcs = 54
+retrieved = "2026-09-07"
+sha256 = "18df7eec72618336c59a7c9f569c63d200a56fe55311435c056452d575a35934"
+notes = "CC-BY-NC on the BNMA record: non-commercial only, so fetch-only. Reads strictly into 26 chance nodes and 54 arcs; the internal Netica name is model1B_G_A_F. A social-ecological acceptability model rather than an ecological process model."
+
+[parser_options]
+strict = true

@@ -1,0 +1,24 @@
+name = "marten_age"
+title = "Predicting age of martens from capture data"
+category = "population"
+domain_tags = ["marten", "Martes americana", "age determination", "capture data", "Netica", "BNMA"]
+aliases = ["BNMA 230"]
+format = "dne"
+file = "Predicting_Age_of_Martens_From_Capture_Data.dne"
+source_url = "https://bnma.co/bn/230"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=230"
+fetch_instructions = ""
+citation = "Marcot, B. G. (2023). Predicting Age of Martens From Capture Data. BNMA Bayesian Network Repository, record 230."
+doi = "10.59381/kgwygimakn"
+licence = "CC-BY (version unstated)"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 7
+n_arcs = 6
+retrieved = "2026-09-07"
+sha256 = "8b3e97796b0cbcb562455a6d8bfe69483be5a0e46860410fa06c1656e923e89c"
+notes = "Original .dne as served by BNMA; the served filename 'Predicting Age of Martens From Capture Data.dne' has its spaces replaced by underscores and is otherwise unchanged. Age classification of Martes americana and M. caurina from capture and biological predictors: 7 chance nodes and 6 arcs after 2 CONSTANT nodes are skipped. The file is 2.4 MB because Netica stores the case data and node commentary alongside the small network. Its internal Netica name is marten_telomere_090812a_FINE_c, shared with the related telomere network of record 156 (CC-BY-NC-ND, fetch-only here as marten_telomere)."
+
+[parser_options]
+strict = true

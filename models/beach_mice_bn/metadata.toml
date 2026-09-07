@@ -1,0 +1,22 @@
+name = "beach_mice_bn"
+title = "Beach mice presence in Florida coastal habitat (USGS)"
+category = "habitat"
+domain_tags = ["beach mouse", "coastal habitat", "Florida", "Netica", "USGS", "ScienceBase"]
+format = "neta"
+source_url = "https://www.sciencebase.gov/catalog/item/5dc22f7ae4b069579750e456"
+download_url = "https://www.sciencebase.gov/catalog/file/get/5dc22f7ae4b069579750e456?f=__disk__62%2F0d%2F15%2F620d1564761e311f1977d759e54630cdd03fd291"
+fetch_instructions = "Download the .neta from the ScienceBase record (download_url) with fetch_model(name) or by hand, open it in Netica, save it as a text .dne file and import_model(name, path_to_dne). The binary .neta format is not readable by BayesianNetworkFormats.jl."
+citation = "Cronin, J. P., Tirpak, B. E., Dale, L. L., Robenski, V. L. and Tirpak, J. M. (2021). Data for Beach Mice Bayesian Network Model. U.S. Geological Survey data release."
+doi = "10.5066/P9OWRTW8"
+licence = "CC0 1.0 (ScienceBase record); US Government work in the public domain"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 0
+n_arcs = 0
+retrieved = "2026-09-06"
+sha256 = "d626a225a2f3460e3529b980bede7122c0515633822bc630efc59e1dea62cf50"
+notes = "Metadata-only entry by choice, not by licence: CC0 permits verbatim redistribution, but the file is a binary Netica .neta blob that BayesianNetworkFormats.jl cannot read, so committing it would add unreadable bytes to the repository with nothing to check them against beyond a checksum. It is fetched on demand instead. The file 'beachmice.neta' (5655 bytes) is a binary Netica .neta file ('~->[NETA=1]->~' header) and must be converted to .dne in Netica before it can be read; n_nodes and n_arcs are unknown until then. ScienceBase requires the __disk__ file token in the URL (the plain ?f=beachmice.neta form returns 404)."
+
+[parser_options]
+strict = true

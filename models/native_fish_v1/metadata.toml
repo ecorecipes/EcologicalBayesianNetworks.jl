@@ -1,0 +1,24 @@
+name = "native_fish_v1"
+title = "Native Fish V1: native fish abundance under pesticide, drought and river flow"
+category = "population"
+domain_tags = ["fish", "river flow", "pesticide", "drought", "BNMA"]
+aliases = ["BNMA 107"]
+format = "dne"
+file = "Native_Fish_V1.dne"
+source_url = "https://bnma.co/bn/107"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=107"
+fetch_instructions = ""
+citation = "Bayesian Intelligence Pty Ltd (2015). Native Fish V1. BNMA Bayesian Network Repository, record 107. Based on the native fish example of Nicholson, A. E. and Flores, M. J. (2011), Combining state and transition models with dynamic Bayesian networks, Ecological Modelling 222(3), 555-566."
+doi = ""
+licence = "CC-BY (version unstated)"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 7
+n_arcs = 8
+retrieved = "2026-09-06"
+sha256 = "32751018d9d3d7f0f5f6872ce20b423ac254b9c90670928aa8ce9fcaa6143e39"
+notes = "Original .dne as served by BNMA (served as 'Native Fish V1.dne'; spaces in the filename replaced by underscores, content unchanged). Small chance-only network, convenient for exact marginals."
+
+[parser_options]
+strict = true

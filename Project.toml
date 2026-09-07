@@ -1,0 +1,45 @@
+name = "EcologicalBayesianNetworks"
+uuid = "c6b9e98e-d978-423e-90bc-2541a79df2a3"
+version = "0.1.0"
+authors = ["Simon Frost"]
+
+[deps]
+BayesianNetworkFormats = "590d4596-919e-4d5f-b4a5-097a6400eab8"
+BayesianNetworkInference = "195c3fd5-7fa7-45ed-aaa0-a92a9a2fe9e5"
+BayesianNetworks = "47d2e50c-3d9a-425e-96fd-023c794d3c65"
+CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
+FiniteKernels = "2ee73795-50db-4096-9573-22982ed4949b"
+InfluenceDiagrams = "cd3dbe2d-275d-4a8e-841a-d44f7f7abf07"
+Scratch = "6c6a2e73-6563-6170-7368-637461726353"
+SHA = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+
+[sources]
+BayesianNetworkFormats = {path = "../BayesianNetworkFormats.jl"}
+BayesianNetworkInference = {path = "../BayesianNetworkInference.jl"}
+BayesianNetworks = {path = "../BayesianNetworks.jl"}
+InfluenceDiagrams = {path = "../InfluenceDiagrams.jl"}
+FiniteKernels = {path = "../FiniteKernels.jl"}
+
+[compat]
+BayesianNetworkFormats = "0.1"
+BayesianNetworkInference = "0.1"
+BayesianNetworks = "0.1"
+CodecZlib = "0.7"
+Dates = "1"
+Downloads = "1"
+FiniteKernels = "0.1"
+InfluenceDiagrams = "0.1"
+SHA = "0.7, 1"
+Scratch = "1"
+Test = "1"
+TOML = "1"
+julia = "1.12"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

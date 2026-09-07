@@ -1,0 +1,203 @@
+---
+title: "The reference habitat network"
+author: "Simon Frost"
+format:
+  html:
+    code-fold: false
+    toc: true
+  gfm:
+    toc: true
+  pdf: default
+engine: julia
+---
+
+## Overview
+
+SPEC section 45 fixes a small ecological Bayesian network as the integration test of
+the whole ecosystem:
+
+```text
+Climate -> SoilMoisture -> Vegetation -> HabitatQuality -> Occupancy
+Irrigation -> SoilMoisture
+GrazingPressure -> Vegetation
+```
+
+This vignette runs it end to end: the model from the zoo, its picture, validation,
+the brute-force joint distribution against exact inference, evidence, the difference
+between observing and intervening on grazing pressure, and the same answers from the
+Netica and GeNIe files that ship with `BayesianNetworkFormats.jl`.
+
+The network is deliberately in the shape the ecological guidelines ask for
+[@Marcot2006; @ChenPollino2012]: a small number of discretised variables, each arc a
+stated mechanism, and a management lever separated from the quantity it acts on --
+which is also where the discretisation and elicitation costs discussed by
+@Uusitalo2007 and @Kuhnert2010 would fall in a real study.
+
+## Setup
+
+
+```{julia}
+using EcologicalBayesianNetworks
+using BayesianNetworks
+using BayesianNetworkInference
+m = load_model("reference_habitat_bn")
+```
+
+`load_model` returns `BayesianNetworks.reference_habitat_model()`, the structure of
+`reference_habitat_bn()` with the conditional probability tables of the
+`habitat_reference` fixtures bound. Chance variables are ellipses; every arc is a
+mechanism input.
+
+```{julia}
+to_graphviz(m)
+```
+
+```{julia}
+model_summary("reference_habitat_bn")
+```
+
+## Validation
+
+`validate` checks the syntax (one mechanism per variable, acyclic, contiguous
+positions) and, with `semantics = true`, that every mechanism resolves to a kernel
+whose domain and codomain match its parents and target and that every row sums to one.
+It returns `nothing` when everything is in order.
+
+```{julia}
+validate(m; closed = true, unique_names = true, semantics = true)
+```
+
+## Joint distribution versus exact inference
+
+With seven variables the joint distribution has only 432 entries, so the reference
+semantics of SPEC section 14, the product of all the kernels, can be enumerated
+outright. `joint_distribution` returns it as a state `I -> (x) variables`.
+
+```{julia}
+J = joint_distribution(m)
+size(J.table), sum(J.table)
+```
+
+`marginal` sums the joint; `BayesianNetworkInference.infer` answers the same query by
+variable elimination without ever forming the joint. The two agree to rounding.
+
+```{julia}
+p_occ = marginal(m, :Occupancy)
+```
+
+```{julia}
+post, diag = infer(m, :Occupancy)
+post.table ≈ p_occ.table, diag
+```
+
+The junction-tree backend gives every marginal from one calibration:
+
+```{julia}
+ms = all_marginals(m; backend = JunctionTree())
+round.(ms[:Vegetation].table; digits = 4)
+```
+
+Ancestral sampling (SPEC section 18) draws from the same distribution; the empirical
+frequency of occupancy converges to the exact value.
+
+```{julia}
+s = ancestral_sample(m, 20_000)
+round.(empirical_marginal(s, :Occupancy).table; digits = 3)
+```
+
+## Evidence
+
+Evidence conditions the joint. `posterior` reads the numbers off as a dictionary;
+`observe` records the evidence on the model so that every later query uses it.
+
+```{julia}
+posterior(m, :Occupancy; evidence = Dict(:Vegetation => :dense))
+```
+
+```{julia}
+me = observe(m, :Vegetation => :dense)
+marginal(me, :Occupancy).table ≈ infer(me, :Occupancy)[1].table
+```
+
+## Observing versus intervening
+
+SPEC section 45 asks for `P(Occupancy = present | do(GrazingPressure = low))`. A hard
+intervention rewrites the mechanism of `GrazingPressure` into the point mass at `low`
+(SPEC sections 21 and 22); observation conditions on the event instead. The two
+operations are recorded differently: the intervention appears in the syntax and the
+history, the observation in the evidence.
+
+```{julia}
+low_do = do_intervention(m, :GrazingPressure => :low)
+low_obs = observe(m, :GrazingPressure => :low)
+(intervene = marginal(low_do, :Occupancy).table[2], observe = marginal(low_obs, :Occupancy).table[2])
+```
+
+```{julia}
+history(low_do)
+```
+
+```{julia}
+to_graphviz(low_do)
+```
+
+Because `GrazingPressure` is a root, the two numbers coincide: nothing upstream can be
+learned from it. On a variable with parents the difference shows. Observing dense
+vegetation is evidence that the soil was moist; forcing dense vegetation tells us nothing
+about the soil, because the arc from `SoilMoisture` has been cut.
+
+```{julia}
+(intervene = round.(marginal(do_intervention(m, :Vegetation => :dense), :SoilMoisture).table; digits = 4),
+ observe = round.(marginal(observe(m, :Vegetation => :dense), :SoilMoisture).table; digits = 4),
+ prior = round.(marginal(m, :SoilMoisture).table; digits = 4))
+```
+
+Downstream of the rewritten variable the two agree, since `Occupancy` depends on the
+rest of the network only through `Vegetation`:
+
+```{julia}
+marginal(do_intervention(m, :Vegetation => :dense), :Occupancy).table ≈
+    marginal(observe(m, :Vegetation => :dense), :Occupancy).table
+```
+
+## The same model from Netica and GeNIe files
+
+The `habitat_reference` fixtures of `BayesianNetworkFormats.jl` hold the same network
+in Netica `.dne` and GeNIe `.xdsl` form. `read_bayesnet` parses either into a
+`BayesModel`, and the intervention query gives identical answers from all three
+sources.
+
+```{julia}
+dne = read_bayesnet(fixture_path("dne/habitat_reference.dne"))
+xdsl = read_bayesnet(fixture_path("xdsl/habitat_reference.xdsl"))
+dne ≈ m, xdsl ≈ m
+```
+
+```{julia}
+query(model) = marginal(do_intervention(model, :GrazingPressure => :low), :Occupancy).table[2]
+query(m), query(dne), query(xdsl)
+```
+
+The zoo's `model_ir` gives the `NetworkIR` of the Julia-built model, which
+`write_network` can turn back into any of the file formats.
+
+```{julia}
+ir = model_ir("reference_habitat_bn")
+[(v.id, v.parents) for v in ir.variables]
+```
+
+## Summary
+
+The SPEC section 45 reference network is small enough that exact inference can be
+checked against the brute-force joint distribution entry by entry, which is what makes
+it the integration test of the whole ecosystem. Conditioning on grazing pressure and
+intervening on it give different posteriors for the upstream climate, and identical
+posteriors downstream -- the distinction the type system enforces rather than leaves to
+the user. The same model read from the Netica and GeNIe files gives the same numbers.
+The next vignette, *The management influence diagram*, adds a decision and two utilities
+to this network.
+
+## References
+
+::: {#refs}
+:::

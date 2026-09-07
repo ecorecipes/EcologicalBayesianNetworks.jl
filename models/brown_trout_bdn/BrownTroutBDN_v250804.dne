@@ -1,0 +1,495 @@
+// ~->[DNET-1]->~
+
+// File created by MarcotB at ICBEMP using Netica 7.01 on Aug 04, 2025 at 14:50:58 UTC.
+
+bnet ms2_BN_v230727b {
+AutoCompile = TRUE;
+autoupdate = TRUE;
+whenchanged = 1754318195;
+
+visual V2 {
+	defdispform = BELIEFBARS;
+	nodelabeling = TITLE;
+	NodeMaxNumEntries = 50;
+	nodefont = font {shape= "Arial"; size= 12;};
+	linkfont = font {shape= "Arial"; size= 9;};
+	ShowLinkStrengths = 1;
+	windowposn = (16, 15, 1302, 731);
+	scrollposn = (0, 5);
+	CommentWindowPosn = (34, 42, 1306, 573);
+	resolution = 72;
+	magnification = 0.844712;
+	drawingbounds = (3591, 2531);
+	showpagebreaks = FALSE;
+	usegrid = TRUE;
+	gridspace = (6, 6);
+	NodeSet Node {BuiltIn = 1; Color = 0x00e1e1e1;};
+	NodeSet Nature {BuiltIn = 1; Color = 0x00f8eed2;};
+	NodeSet Deterministic {BuiltIn = 1; Color = 0x00d3caa6;};
+	NodeSet Finding {BuiltIn = 1; Color = 0x00c8c8c8;};
+	NodeSet Constant {BuiltIn = 1; Color = 0x00ffffff;};
+	NodeSet ConstantValue {BuiltIn = 1; Color = 0x00ffffb4;};
+	NodeSet Utility {BuiltIn = 1; Color = 0x00ffbdbd;};
+	NodeSet Decision {BuiltIn = 1; Color = 0x00dee8ff;};
+	NodeSet Documentation {BuiltIn = 1; Color = 0x00f0fafa;};
+	NodeSet Title {BuiltIn = 1; Color = 0x00ffffff;};
+	NodeSet ResponseNodes {Color = 0x00a1dab4;};
+	NodeSet Measurements {Color = 0x00ffffcc;};
+	NodeSet RestorationActions {Color = 0x00ffffff;};
+	NodeSet BioticResponse {Color = 0x0041b6c4;};
+	NodeSet Time {Color = 0x00dddddd;};
+	NodeSet Input_Findings {Color = 0x00bae4bc;};
+	NodeSet Output_results {Color = 0x00a9d3eb;};
+	PrinterSetting A {
+		margins = (1270, 1270, 1270, 1270);
+		};
+	};
+
+node InHabRest {
+	discrete = TRUE;
+	statetitles = ("Not implement", "Implement");
+	kind = DECISION;
+	parents = ();
+	functable = 
+		
+		  (@undef);
+	title = "Instream Habitat Restoration";
+	comment = "\FF\FEL\00a\00r\00g\00e\00-\00s\00c\00a\00l\00e\00 \00h\00a\00b\00i\00t\00a\00t\00 \00r\00e\00s\
+		\00t\00o\00r\00a\00t\00i\00o\00n\00 \00w\00a\00s\00 \00c\00o\00n\00d\00u\00c\00t\00e\00d\00 \00w\
+		\00i\00t\00h\00i\00n\00 \00\n\
+		\00a\00 \004\00 \00k\00m\00 \00r\00e\00a\00c\00h\00 \00o\00f\00 \00t\00h\00e\00 \00U\00A\00R\00 \
+		\00f\00r\00o\00m\00 \002\000\001\003\00-\002\000\001\004\00.\00 \00I\00n\00s\00t\00r\00e\00a\00m\
+		\00 \00\n\
+		\00h\00a\00b\00i\00t\00a\00t\00 \00r\00e\00s\00t\00o\00r\00a\00t\00i\00o\00n\00 \00i\00n\00c\00l\
+		\00u\00d\00e\00d\00 \00i\00n\00s\00t\00a\00l\00l\00a\00t\00i\00o\00n\00 \00o\00f\00 \00s\00t\00r\
+		\00u\00c\00t\00u\00r\00e\00s\00 \00\n\
+		\00s\00u\00c\00h\00 \00a\00s\00 \00l\00o\00n\00g\00-\00v\00a\00n\00e\00s\00,\00 \00b\00o\00u\00l\
+		\00d\00e\00r\00 \00c\00l\00u\00s\00t\00e\00r\00s\00,\00 \00a\00n\00d\00 \00w\00o\00o\00d\00y\00 \
+		\00d\00e\00b\00r\00i\00s\00.\00 \00\n\
+		\00T\00o\00 \00\1C N\00o\00t\00 \00I\00m\00p\00l\00e\00m\00e\00n\00t\00\1D  \00a\00n\00d\00 \00\
+		\1C I\00m\00p\00l\00e\00m\00e\00n\00t\00\1D  \00r\00e\00p\00r\00e\00s\00e\00n\00t\00 \00c\00h\00a\
+		\00n\00g\00e\00s\00 \00\n\
+		\00i\00n\00 \00h\00a\00b\00i\00t\00a\00t\00 \00m\00e\00t\00r\00i\00c\00s\00 \00b\00e\00f\00o\00r\
+		\00e\00 \00a\00n\00d\00 \00a\00f\00t\00e\00r\00 \00h\00a\00b\00i\00t\00a\00t\00 \00r\00e\00s\00t\
+		\00o\00r\00a\00t\00i\00o\00n\00,\00 \00\n\
+		\00r\00e\00s\00p\00e\00c\00t\00i\00v\00e\00l\00y\00.\00 \00 \00";
+	whenchanged = 1754318195;
+	evidence = #1;
+	belief = (0, 1);
+	visual V2 {
+		center = (516, 696);
+		height = 8;
+		};
+	};
+
+node BankStab {
+	discrete = TRUE;
+	statetitles = ("Not implement", "Implement");
+	kind = DECISION;
+	parents = (InHabRest);
+	functable = 
+		                    // InHabRest     
+		  (@undef,          // Not implement 
+		   @undef);         // Implement     ;
+	title = "Bank Stabilization";
+	comment = "\FF\FEL\00a\00r\00g\00e\00-\00s\00c\00a\00l\00e\00 \00h\00a\00b\00i\00t\00a\00t\00 \00r\00e\00s\
+		\00t\00o\00r\00a\00t\00i\00o\00n\00 \00w\00a\00s\00 \00c\00o\00n\00d\00u\00c\00t\00e\00d\00 \00w\
+		\00i\00t\00h\00i\00n\00 \00a\00 \00\n\
+		\004\00 \00k\00m\00 \00r\00e\00a\00c\00h\00 \00o\00f\00 \00t\00h\00e\00 \00U\00A\00R\00 \00f\00r\
+		\00o\00m\00 \002\000\001\003\00-\002\000\001\004\00.\00 \00B\00a\00n\00k\00 \00s\00t\00a\00b\00i\
+		\00l\00i\00z\00a\00t\00i\00o\00n\00 \00\n\
+		\00w\00a\00s\00 \00c\00o\00n\00d\00u\00c\00t\00e\00d\00 \00i\00n\00 \00c\00e\00r\00t\00a\00i\00n\
+		\00 \00s\00t\00r\00e\00a\00m\00 \00r\00e\00a\00c\00h\00e\00s\00 \00t\00o\00 \00r\00e\00d\00u\00c\
+		\00e\00 \00b\00a\00n\00k\00 \00\n\
+		\00e\00r\00o\00s\00i\00o\00n\00.\00 \00 \00T\00o\00 \00\1C N\00o\00t\00 \00I\00m\00p\00l\00e\00m\
+		\00e\00n\00t\00\1D  \00a\00n\00d\00 \00\1C I\00m\00p\00l\00e\00m\00e\00n\00t\00\1D  \00r\00e\00p\
+		\00r\00e\00s\00e\00n\00t\00 \00\n\
+		\00c\00h\00a\00n\00g\00e\00s\00 \00i\00n\00 \00h\00a\00b\00i\00t\00a\00t\00 \00m\00e\00t\00r\00i\
+		\00c\00s\00 \00b\00e\00f\00o\00r\00e\00 \00a\00n\00d\00 \00a\00f\00t\00e\00r\00 \00h\00a\00b\00i\
+		\00t\00a\00t\00 \00\n\
+		\00r\00e\00s\00t\00o\00r\00a\00t\00i\00o\00n\00,\00 \00r\00e\00s\00p\00e\00c\00t\00i\00v\00e\00l\
+		\00y\00.\00 \00 \00";
+	whenchanged = 1754318195;
+	evidence = #1;
+	belief = (0, 1);
+	visual V2 {
+		center = (840, 696);
+		height = 2;
+		};
+	};
+
+node WtdUseArea {
+	discrete = FALSE;
+	statetitles = ("0 to <1", "1 to <2", ">= 2");
+	levels = (0, 1, 2, INFINITY);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (InHabRest, BankStab);
+	probs = 
+		// 0 to <1      1 to <2      >= 2          // InHabRest     BankStab      
+		  (0.2,         0.8,         0,            // Not implement Not implement 
+		   0.15,        0.75,        0.1,          // Not implement Implement     
+		   0.15,        0.75,        0.1,          // Implement     Not implement 
+		   0.1,         0.7,         0.2);         // Implement     Implement     ;
+	title = "Weighted Usable Area m2/m";
+	comment = "Weighted usable area (WUA) is a metric used to \n\
+		characterize stream habitat suitability for aquatic \n\
+		organisms. Two-dimensional hydrodynamic modelling \n\
+		was used by Richer et al. 2019 to estimate WUA for \n\
+		adult, juvenile, fry, and spawning brown trout across \n\
+		a range of flows in the upper Arkansas River. We \n\
+		used the least-square mean (lsmean) values of WUA \n\
+		reported by Richer et al. 2019. The WUA state values \n\
+		we chose bracket the lsmean WUA values observed \n\
+		in the UAR before and after habitat restoration.  ";
+	whenchanged = 1722531945;
+	belief = (0.1, 0.7, 0.2);
+	visual V2 {
+		center = (372, 552);
+		height = 1;
+		link 2 {
+			path = ((741, 665), (495, 589));
+			};
+		};
+	};
+
+node BrnTroutForag {
+	discrete = FALSE;
+	statetitles = ("0 to <0.5", "0.5  to <1", ">=1");
+	levels = (0, 0.5, 1, 2);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (InHabRest);
+	probs = 
+		// 0 to <0.5    0.5  to <1   >=1           // InHabRest     
+		  (0.5,         0.4,         0.1,          // Not implement 
+		   0.25,        0.5,         0.25);        // Implement     ;
+	title = "Brown Trout Foraging Position n/m";
+	comment = "Foraging positions (FP) are defined as locations within \n\
+		streams that trout may use to optimize the energy spent \n\
+		swimming, maintaining position, and searching for prey \n\
+		while maximizing encountering and consuming prey \n\
+		resources. Richer et al. 2019 estimated foraging position \n\
+		using fish length, weight, focal point velocity, capture \n\
+		area velocity, foraging radius, and minimum depth. \n\
+		Foraging position is expressed as the number of fish \n\
+		per stream meter. We bracket changes in FP \n\
+		before and after restoration in the UAR.";
+	whenchanged = 1722532099;
+	belief = (0.25, 0.5, 0.25);
+	visual V2 {
+		center = (1068, 552);
+		height = 3;
+		};
+	};
+
+node AvgHabHetero {
+	discrete = FALSE;
+	statetitles = ("0 to <0.5", "0.5 to <0.75", ">= 0.75");
+	levels = (0, 0.5, 0.75, INFINITY);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (InHabRest, BankStab);
+	probs = 
+		// 0 to <0.5    0.5 to <0.75 >= 0.75       // InHabRest     BankStab      
+		  (0.3,         0.65,        0.05,         // Not implement Not implement 
+		   0.1,         0.7,         0.2,          // Not implement Implement     
+		   0.1,         0.8,         0.1,          // Implement     Not implement 
+		   0.05,        0.7,         0.25);        // Implement     Implement     ;
+	title = "Avg Habitat Heterog. (depth, velocity)";
+	comment = "Habitat heterogeneity is a common goal for stream \n\
+		restoration projects, and it has been linked to increased\n\
+		biological diversity of ecological function. Richer et al. \n\
+		2019 calculated habitat heterogeneity through \n\
+		calculations of coefficient of variation (CV) for water \n\
+		depth and velocity, before and after restoration. ";
+	whenchanged = 1722532044;
+	belief = (0.05, 0.7, 0.25);
+	visual V2 {
+		center = (708, 552);
+		height = 4;
+		};
+	};
+
+node PhyStrmHabQual {
+	discrete = TRUE;
+	statetitles = ("Low", "Medium", "High");
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (WtdUseArea, AvgHabHetero, BrnTroutForag);
+	probs = 
+		// Low          Medium       High          // WtdUseArea AvgHabHetero BrnTroutForag 
+		  (0.7,         0.3,         0,            // 0 to <1    0 to <0.5    0 to <0.5     
+		   0.65,        0.35,        0,            // 0 to <1    0 to <0.5    0.5  to <1    
+		   0.6,         0.4,         0,            // 0 to <1    0 to <0.5    >=1           
+		   0.65,        0.35,        0,            // 0 to <1    0.5 to <0.75 0 to <0.5     
+		   0.6,         0.4,         0,            // 0 to <1    0.5 to <0.75 0.5  to <1    
+		   0.55,        0.45,        0,            // 0 to <1    0.5 to <0.75 >=1           
+		   0.6,         0.35,        0.05,         // 0 to <1    >= 0.75      0 to <0.5     
+		   0.55,        0.35,        0.1,          // 0 to <1    >= 0.75      0.5  to <1    
+		   0.45,        0.4,         0.15,         // 0 to <1    >= 0.75      >=1           
+		   0.5,         0.5,         0,            // 1 to <2    0 to <0.5    0 to <0.5     
+		   0.4,         0.6,         0,            // 1 to <2    0 to <0.5    0.5  to <1    
+		   0.5,         0.5,         0,            // 1 to <2    0 to <0.5    >=1           
+		   0.4,         0.6,         0,            // 1 to <2    0.5 to <0.75 0 to <0.5     
+		   0.5,         0.5,         0,            // 1 to <2    0.5 to <0.75 0.5  to <1    
+		   0.3,         0.6,         0.1,          // 1 to <2    0.5 to <0.75 >=1           
+		   0.5,         0.5,         0,            // 1 to <2    >= 0.75      0 to <0.5     
+		   0.3,         0.6,         0.1,          // 1 to <2    >= 0.75      0.5  to <1    
+		   0,           0.8,         0.2,          // 1 to <2    >= 0.75      >=1           
+		   0.1,         0.2,         0.7,          // >= 2       0 to <0.5    0 to <0.5     
+		   0.05,        0.25,        0.7,          // >= 2       0 to <0.5    0.5  to <1    
+		   0,           0.15,        0.85,         // >= 2       0 to <0.5    >=1           
+		   0.05,        0.25,        0.7,          // >= 2       0.5 to <0.75 0 to <0.5     
+		   0,           0.2,         0.8,          // >= 2       0.5 to <0.75 0.5  to <1    
+		   0,           0.1,         0.9,          // >= 2       0.5 to <0.75 >=1           
+		   0,           0.15,        0.85,         // >= 2       >= 0.75      0 to <0.5     
+		   0,           0.1,         0.9,          // >= 2       >= 0.75      0.5  to <1    
+		   0,           0.05,        0.95);        // >= 2       >= 0.75      >=1           ;
+	EqnDirty = TRUE;
+	title = "Stream Habitat Quality for Trout";
+	comment = "An integrated stream habitat metric that combines \n\
+		variation of the three-habitat metrics: weighted usable \n\
+		area, average habitat heterogeneity of depth and \n\
+		velocity, and brown trout foraging position. These \n\
+		habitat metrics are often used as indicators of habitat \n\
+		quality for stream biota. ";
+	whenchanged = 1722532174;
+	belief = (0.3330625, 0.4703125, 0.196625);
+	visual V2 {
+		center = (708, 408);
+		height = 9;
+		};
+	};
+
+node BenMacroinv {
+	discrete = FALSE;
+	statetitles = ("2000 to <4000", "4000 to <6000", "6000 to 8000");
+	levels = (2000, 4000, 6000, 8000);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (PhyStrmHabQual);
+	probs = 
+		// 2000 to <4000 4000 to <6000 6000 to 8000  // PhyStrmHabQual 
+		  (0.3,         0.6,         0.1,          // Low            
+		   0.25,        0.5,         0.25,         // Medium         
+		   0.1,         0.3,         0.6);         // High           ;
+	title = "Benthic Macroinvert biomass mg/0.1m2";
+	comment = "The biomass of benthic macroinvertebrates is reflective \n\
+		of stream productivity and indicator of prey availability to \n\
+		trout. Kotalik et al. 2023 evaluated benthic biomass on \n\
+		the UAR through the habitat restoration reach, before \n\
+		and after restoration. \n\n\
+		State ranges are parameterized after NRDA sites AR4C\n\
+		through AR4H, for UAR.";
+	whenchanged = 1722532362;
+	belief = (0.2371594, 0.4939812, 0.2688594);
+	visual V2 {
+		center = (564, 246);
+		height = 10;
+		link 1 {
+			path = ((672, 368), (609, 298));
+			};
+		};
+	};
+
+node time {
+	discrete = TRUE;
+	states = (Year0, Year5, Year10, Year20, Year30);
+	statetitles = ("Year 0", "Year 5", "Year 10", "Year 20 ", "Year 30");
+	levels = (0, 5, 10, 20, 30);
+	kind = NATURE;
+	parents = ();
+	title = "Time";
+	comment = "Year 0 represents pre-restoration\n\
+		Year 5 represents observed responses \n\
+		Year 10, 20, 30 represent projections\n\n\
+		Year 0 represents pre-restoration conditions, bracketing \n\
+		the brown trout biomass observed after remediation \n\
+		completion, but before restoration was completed, \n\
+		from 2008-2014.\n\n\
+		Projections assume that brown trout require more time to \n\
+		respond to restoration compared to invertebrates or \n\
+		physical habitat metrics.";
+	whenchanged = 1754318195;
+	evidence = Year5;
+	value = 5;
+	belief = (0, 1, 0, 0, 0);
+	visual V2 {
+		center = (966, 294);
+		height = 11;
+		};
+	};
+
+node BrnTroutBio {
+	discrete = FALSE;
+	statetitles = ("50 to <100", "100 to <150", "150 to 300");
+	levels = (50, 100, 150, 300);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (PhyStrmHabQual, BenMacroinv, time);
+	probs = 
+		// 50 to <100   100 to <150  150 to 300    // PhyStrmHabQual BenMacroinv   time     
+		  (0.45,        0.55,        0,            // Low            2000 to <4000 Year 0   
+		   0.35,        0.65,        0,            // Low            2000 to <4000 Year 5   
+		   0.25,        0.75,        0,            // Low            2000 to <4000 Year 10  
+		   0.2,         0.8,         0,            // Low            2000 to <4000 Year 20  
+		   0.175,       0.825,       0,            // Low            2000 to <4000 Year 30  
+		   0.4,         0.6,         0,            // Low            4000 to <6000 Year 0   
+		   0.3,         0.7,         0,            // Low            4000 to <6000 Year 5   
+		   0.2,         0.8,         0,            // Low            4000 to <6000 Year 10  
+		   0.1,         0.85,        0.05,         // Low            4000 to <6000 Year 20  
+		   0.05,        0.9,         0.05,         // Low            4000 to <6000 Year 30  
+		   0.3,         0.7,         0,            // Low            6000 to 8000  Year 0   
+		   0.2,         0.8,         0,            // Low            6000 to 8000  Year 5   
+		   0.1,         0.85,        0.05,         // Low            6000 to 8000  Year 10  
+		   0.05,        0.85,        0.1,          // Low            6000 to 8000  Year 20  
+		   0.025,       0.875,       0.1,          // Low            6000 to 8000  Year 30  
+		   0.4,         0.6,         0,            // Medium         2000 to <4000 Year 0   
+		   0.3,         0.65,        0.05,         // Medium         2000 to <4000 Year 5   
+		   0.2,         0.7,         0.1,          // Medium         2000 to <4000 Year 10  
+		   0.15,        0.7,         0.15,         // Medium         2000 to <4000 Year 20  
+		   0.1,         0.75,        0.15,         // Medium         2000 to <4000 Year 30  
+		   0.3,         0.7,         0,            // Medium         4000 to <6000 Year 0   
+		   0.2,         0.7,         0.1,          // Medium         4000 to <6000 Year 5   
+		   0.1,         0.75,        0.15,         // Medium         4000 to <6000 Year 10  
+		   0.05,        0.75,        0.2,          // Medium         4000 to <6000 Year 20  
+		   0.025,       0.75,        0.225,        // Medium         4000 to <6000 Year 30  
+		   0.2,         0.8,         0,            // Medium         6000 to 8000  Year 0   
+		   0.1,         0.8,         0.1,          // Medium         6000 to 8000  Year 5   
+		   0,           0.8,         0.2,          // Medium         6000 to 8000  Year 10  
+		   0,           0.75,        0.25,         // Medium         6000 to 8000  Year 20  
+		   0,           0.725,       0.275,        // Medium         6000 to 8000  Year 30  
+		   0.3,         0.7,         0,            // High           2000 to <4000 Year 0   
+		   0.2,         0.75,        0.05,         // High           2000 to <4000 Year 5   
+		   0.1,         0.75,        0.15,         // High           2000 to <4000 Year 10  
+		   0.05,        0.75,        0.2,          // High           2000 to <4000 Year 20  
+		   0.025,       0.75,        0.225,        // High           2000 to <4000 Year 30  
+		   0.2,         0.7,         0.1,          // High           4000 to <6000 Year 0   
+		   0.1,         0.7,         0.2,          // High           4000 to <6000 Year 5   
+		   0.05,        0.7,         0.25,         // High           4000 to <6000 Year 10  
+		   0,           0.7,         0.3,          // High           4000 to <6000 Year 20  
+		   0,           0.675,       0.325,        // High           4000 to <6000 Year 30  
+		   0,           0.8,         0.2,          // High           6000 to 8000  Year 0   
+		   0,           0.7,         0.3,          // High           6000 to 8000  Year 5   
+		   0,           0.6,         0.4,          // High           6000 to 8000  Year 10  
+		   0,           0.55,        0.45,         // High           6000 to 8000  Year 20  
+		   0,           0.575,       0.425);       // High           6000 to 8000  Year 30  ;
+	title = "Brown Trout biomass kg/ha";
+	comment = "Trout biomass is a common metric to evaluate the \n\
+		health of fisheries. Biomass estimates were gathered \n\
+		from stream brown trout population surveys in the \n\
+		UAR using bank electrofishing and two-pass removal \n\
+		method. Brown trout biomass state ranges bracket biomass observed on the UAR\n\
+		before and after habitat restoration  \n\n\
+		State ranges are parameterized after NRDA sites AR4C\n\
+		through AR4H, for UAR.";
+	whenchanged = 1722532539;
+	belief = (0.2054778, 0.7051967, 0.08932548);
+	visual V2 {
+		center = (834, 102);
+		height = 7;
+		link 1 {
+			path = ((734, 368), (768, 318), (819, 154));
+			};
+		link 2 {
+			path = ((661, 195), (740, 154));
+			};
+		link 3 {
+			path = ((919, 226), (868, 154));
+			};
+		};
+	};
+
+node TITLE1 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "Brown Trout Restoration BDN\n\
+		USGS NRDAR\n\
+		v. 4 Aug 2025\n\n\
+		Modelers:\n\
+		Christopher J. Kotalik\n\
+		Freya E. Rowland\n\
+		Bruce G. Marcot";
+	whenchanged = 1754313163;
+	visual V2 {
+		center = (1290, 162);
+		font = font {shape= "Arial"; size= 14;};
+		height = 15;
+		};
+	};
+
+node NOTE1 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Restoration\n| actions";
+	whenchanged = 1732565175;
+	visual V2 {
+		center = (106, 702);
+		font = font {shape= "Arial"; size= 14;};
+		height = 5;
+		};
+	};
+
+node NOTE3 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Observable\n| measurements";
+	whenchanged = 1690471201;
+	visual V2 {
+		center = (120, 558);
+		font = font {shape= "Arial"; size= 14;};
+		height = 14;
+		};
+	};
+
+node NOTE4 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Summary\n| responses";
+	whenchanged = 1690471234;
+	visual V2 {
+		center = (102, 396);
+		font = font {shape= "Arial"; size= 14;};
+		height = 6;
+		};
+	};
+
+node NOTE5 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Biotic\n| responses";
+	whenchanged = 1690471271;
+	visual V2 {
+		center = (102, 246);
+		font = font {shape= "Arial"; size= 14;};
+		height = 13;
+		};
+	};
+
+node NOTE6 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Output\n| node";
+	whenchanged = 1722446079;
+	visual V2 {
+		center = (83, 102);
+		font = font {shape= "Arial"; size= 14;};
+		height = 12;
+		};
+	};
+NodeSet ResponseNodes {Nodes = (PhyStrmHabQual, NOTE4);};
+NodeSet Measurements {Nodes = (WtdUseArea, AvgHabHetero, BrnTroutForag, NOTE3, WtdUseArea, WtdUseArea);};
+NodeSet RestorationActions {Nodes = (InHabRest, BankStab, NOTE1);};
+NodeSet BioticResponse {Nodes = (BenMacroinv, BrnTroutBio, NOTE5, BenMacroinv, NOTE6);};
+NodeSet Time {Nodes = (time);};
+NodeSet Input_Findings {Nodes = ();};
+NodeSet Output_results {Nodes = (NOTE6, BrnTroutBio);};
+ElimOrder = (BenMacroinv, time, BrnTroutBio, PhyStrmHabQual, BrnTroutForag, WtdUseArea, AvgHabHetero, BankStab, InHabRest);
+};

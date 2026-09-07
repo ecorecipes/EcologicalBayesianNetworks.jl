@@ -1,0 +1,24 @@
+name = "bnma_water"
+title = "Water: waste-water treatment plant control (BNMA Netica copy)"
+category = "water"
+domain_tags = ["water quality", "waste water", "benchmark", "Netica", "BNMA"]
+aliases = ["BNMA 86"]
+format = "dne"
+file = "Water.dne"
+source_url = "https://bnma.co/bn/86"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=86"
+fetch_instructions = ""
+citation = "Jensen, F. V., Kjaerulff, U., Olesen, K. G. and Pedersen, J. (1989). An expert system for control of waste water treatment: a pilot project. Technical report, Judex Datasystemer A/S, Aalborg. Deposited in the BNMA Bayesian Network Repository, record 86 (uploaded December 2013)."
+doi = ""
+licence = "CC-BY-SA (version unstated)"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 32
+n_arcs = 66
+retrieved = "2026-09-07"
+sha256 = "05fb293a871d4c7387ff63c4ef3bf9ee14482a37c68491eb3b35f2916235b8a7"
+notes = "The same WATER network as the bnlearn benchmark (model 'water' in this zoo) but as the Netica .dne that BNMA serves rather than bnlearn's HUGIN .net.gz: 32 chance nodes and 66 arcs from both files. Kept as a separate record because the two are different published files with different licences, and because a network available in two formats is the cheapest cross-reader check in the zoo. Original file as served by BNMA; filename unchanged."
+
+[parser_options]
+strict = true

@@ -1,0 +1,8 @@
+This model file is redistributed verbatim from the BNMA Bayesian Network
+Repository (https://bnma.co/bnrepo/), where its record is labelled
+"License: CC-BY" (Creative Commons Attribution; version unstated on the record,
+treated here as CC BY 4.0, https://creativecommons.org/licenses/by/4.0/).
+The file is unmodified apart from its filename.
+
+Attribution:
+  Dhananjay Thiruvady. Koalas. BNMA record 126 (uploaded October 2015).

@@ -1,0 +1,269 @@
+// ~->[DNET-1]->~
+
+// File created by someone at MonashU using Netica 5.18 on Aug 10, 2015 at 16:33:46.
+
+bnet Waterhole_Fence {
+AutoCompile = TRUE;
+autoupdate = TRUE;
+whenchanged = 1337039939;
+
+visual V2 {
+	defdispform = BELIEFBARS;
+	nodelabeling = TITLE;
+	NodeMaxNumEntries = 50;
+	nodefont = font {shape= "Arial"; size= 9;};
+	linkfont = font {shape= "Arial"; size= 9;};
+	windowposn = (22, 29, 1229, 675);
+	resolution = 72;
+	drawingbounds = (1345, 769);
+	showpagebreaks = FALSE;
+	usegrid = TRUE;
+	gridspace = (6, 6);
+	NodeSet Node {BuiltIn = 1; Color = 0x00C0C0C0;};
+	NodeSet Nature {BuiltIn = 1; Color = 0x00F8EED2;};
+	NodeSet Deterministic {BuiltIn = 1; Color = 0x00D3CAA6;};
+	NodeSet Finding {BuiltIn = 1; Color = 0x00C8C8C8;};
+	NodeSet Constant {BuiltIn = 1; Color = 0x00FFFFFF;};
+	NodeSet ConstantValue {BuiltIn = 1; Color = 0x00FFFFB4;};
+	NodeSet Utility {BuiltIn = 1; Color = 0x00FFBDBD;};
+	NodeSet Decision {BuiltIn = 1; Color = 0x00DEE8FF;};
+	NodeSet Documentation {BuiltIn = 1; Color = 0x00F0FAFA;};
+	NodeSet Title {BuiltIn = 1; Color = 0x00FFFFFF;};
+	PrinterSetting A {
+		margins = (1270, 1270, 1270, 1270);
+		magnify = 1;
+		};
+	};
+
+node Rainfall {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (Intense, Low, Dry);
+	parents = ();
+	probs = 
+		// Intense      Low          Dry          
+		  (0.01369863,  0.05479452,  0.9315069);
+	numcases = 365;
+	whenchanged = 1337039896;
+	belief = (0.01369863, 0.05479453, 0.9315068);
+	visual V2 {
+		center = (438, 54);
+		font = font {shape= "Arial"; size= 16;};
+		height = 1;
+		};
+	};
+
+node StreamFlow {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (DestructiveFlood, Flood, Dry);
+	parents = (Rainfall);
+	probs = 
+		// DestructiveFlood Flood    Dry           // Rainfall 
+		  (0.8,         0.2,         0,            // Intense  
+		   0,           0.4,         0.6,          // Low      
+		   0,           0,           1);           // Dry      ;
+	whenchanged = 1337039939;
+	belief = (0.0109589, 0.02465753, 0.9643835);
+	visual V2 {
+		center = (180, 174);
+		font = font {shape= "Arial"; size= 16;};
+		height = 2;
+		};
+	};
+
+node LandscapeProductivity {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Medium, Low);
+	parents = (Rainfall);
+	probs = 
+		// High         Medium       Low           // Rainfall 
+		  (0.7,         0.2,         0.1,          // Intense  
+		   0.1,         0.5,         0.4,          // Low      
+		   0,           0.1,         0.9);         // Dry      ;
+	whenchanged = 1336979153;
+	belief = (0.01506849, 0.1232877, 0.8616438);
+	visual V2 {
+		center = (744, 126);
+		font = font {shape= "Arial"; size= 16;};
+		height = 7;
+		};
+	};
+
+node PutInFence {
+	kind = DECISION;
+	discrete = TRUE;
+	chance = DETERMIN;
+	states = (Yes, No);
+	parents = ();
+	functable = 
+		  (Yes);
+	whenchanged = 1337039939;
+	belief = (1, 0);
+	visual V2 {
+		center = (132, 294);
+		font = font {shape= "Arial"; size= 16;};
+		height = 4;
+		};
+	};
+
+node HerbivorePressure {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (High, Medium, Low);
+	parents = (LandscapeProductivity);
+	probs = 
+		// High         Medium       Low           // LandscapeProductivity 
+		  (0.1,         0.4,         0.5,          // High                  
+		   0.3,         0.3,         0.4,          // Medium                
+		   0.7,         0.25,        0.05);        // Low                   ;
+	whenchanged = 1336979351;
+	belief = (0.6416438, 0.2584247, 0.09993151);
+	visual V2 {
+		center = (780, 276);
+		font = font {shape= "Arial"; size= 16;};
+		height = 6;
+		};
+	};
+
+node Fence {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (Intact, Damaged, NonExistent);
+	parents = (PutInFence, StreamFlow, HerbivorePressure);
+	probs = 
+		// Intact       Damaged      NonExistent   // PutInFence StreamFlow       HerbivorePressure 
+		  (0.01,        0.99,        0,            // Yes        DestructiveFlood High              
+		   0.01,        0.99,        0,            // Yes        DestructiveFlood Medium            
+		   0.01,        0.99,        0,            // Yes        DestructiveFlood Low               
+		   0.4,         0.6,         0,            // Yes        Flood            High              
+		   0.5,         0.5,         0,            // Yes        Flood            Medium            
+		   0.9,         0.1,         0,            // Yes        Flood            Low               
+		   0.9,         0.1,         0,            // Yes        Dry              High              
+		   0.95,        0.05,        0,            // Yes        Dry              Medium            
+		   0.99,        0.01,        0,            // Yes        Dry              Low               
+		   0,           0,           1,            // No         DestructiveFlood High              
+		   0,           0,           1,            // No         DestructiveFlood Medium            
+		   0,           0,           1,            // No         DestructiveFlood Low               
+		   0,           0,           1,            // No         Flood            High              
+		   0,           0,           1,            // No         Flood            Medium            
+		   0,           0,           1,            // No         Flood            Low               
+		   0,           0,           1,            // No         Dry              High              
+		   0,           0,           1,            // No         Dry              Medium            
+		   0,           0,           1);           // No         Dry              Low               ;
+	whenchanged = 1336981392;
+	belief = (0.4512433, 0.04875671, 0.5);
+	visual V2 {
+		center = (402, 462);
+		font = font {shape= "Arial"; size= 16;};
+		height = 8;
+		};
+	};
+
+node PlantSurvival {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (Intact, Threatened, LocExtinct);
+	parents = (StreamFlow, Fence, HerbivorePressure);
+	probs = 
+		// Intact       Threatened   LocExtinct    // StreamFlow       Fence       HerbivorePressure 
+		  (0.9,         0.09,        0.01,         // DestructiveFlood Intact      High              
+		   0.9,         0.09,        0.01,         // DestructiveFlood Intact      Medium            
+		   0.9,         0.09,        0.01,         // DestructiveFlood Intact      Low               
+		   0.1,         0.5,         0.4,          // DestructiveFlood Damaged     High              
+		   0.1,         0.7,         0.2,          // DestructiveFlood Damaged     Medium            
+		   0.4,         0.5,         0.1,          // DestructiveFlood Damaged     Low               
+		   0.1,         0.5,         0.4,          // DestructiveFlood NonExistent High              
+		   0.1,         0.7,         0.2,          // DestructiveFlood NonExistent Medium            
+		   0.4,         0.5,         0.1,          // DestructiveFlood NonExistent Low               
+		   0.9,         0.09,        0.01,         // Flood            Intact      High              
+		   0.9,         0.09,        0.01,         // Flood            Intact      Medium            
+		   0.9,         0.09,        0.01,         // Flood            Intact      Low               
+		   0.1,         0.5,         0.4,          // Flood            Damaged     High              
+		   0.1,         0.7,         0.2,          // Flood            Damaged     Medium            
+		   0.4,         0.5,         0.1,          // Flood            Damaged     Low               
+		   0.1,         0.5,         0.4,          // Flood            NonExistent High              
+		   0.1,         0.7,         0.2,          // Flood            NonExistent Medium            
+		   0.4,         0.5,         0.1,          // Flood            NonExistent Low               
+		   0.9,         0.09,        0.01,         // Dry              Intact      High              
+		   0.9,         0.09,        0.01,         // Dry              Intact      Medium            
+		   0.9,         0.09,        0.01,         // Dry              Intact      Low               
+		   0.01,        0.4,         0.59,         // Dry              Damaged     High              
+		   0.01,        0.6,         0.39,         // Dry              Damaged     Medium            
+		   0.3,         0.6,         0.1,          // Dry              Damaged     Low               
+		   0.01,        0.4,         0.59,         // Dry              NonExistent High              
+		   0.01,        0.6,         0.39,         // Dry              NonExistent Medium            
+		   0.3,         0.6,         0.1);         // Dry              NonExistent Low               ;
+	whenchanged = 1336981294;
+	belief = (0.4296619, 0.2996982, 0.2706399);
+	visual V2 {
+		center = (798, 534);
+		font = font {shape= "Arial"; size= 16;};
+		height = 10;
+		};
+	};
+
+node V {
+	kind = UTILITY;
+	discrete = FALSE;
+	measure = RATIO;
+	chance = DETERMIN;
+	parents = (Fence);
+	functable = 
+		                 // Fence       
+		  (0,            // Intact      
+		   -50,          // Damaged     
+		   0);           // NonExistent ;
+	whenchanged = 1336981532;
+	visual V2 {
+		center = (402, 600);
+		font = font {shape= "Arial"; size= 16;};
+		height = 9;
+		};
+	};
+
+node W {
+	kind = UTILITY;
+	discrete = FALSE;
+	measure = RATIO;
+	chance = DETERMIN;
+	parents = (PlantSurvival);
+	functable = 
+		                 // PlantSurvival 
+		  (100,          // Intact        
+		   -10,          // Threatened    
+		   -100);        // LocExtinct    ;
+	whenchanged = 1336981538;
+	visual V2 {
+		center = (1056, 558);
+		font = font {shape= "Arial"; size= 16;};
+		height = 5;
+		};
+	};
+
+node U {
+	kind = UTILITY;
+	discrete = FALSE;
+	measure = RATIO;
+	chance = DETERMIN;
+	parents = (PutInFence);
+	functable = 
+		                 // PutInFence 
+		  (-100,         // Yes        
+		   0);           // No         ;
+	whenchanged = 1336981549;
+	visual V2 {
+		center = (36, 396);
+		font = font {shape= "Arial"; size= 16;};
+		height = 3;
+		};
+	};
+ElimOrder = (Rainfall, LandscapeProductivity, PlantSurvival, StreamFlow, HerbivorePressure, Fence, PutInFence);
+};

@@ -1,0 +1,23 @@
+name = "brown_bear_recreation"
+title = "Recreation Effects on Brown Bears"
+category = "habitat"
+domain_tags = ["brown bear", "recreation", "human disturbance", "Netica", "BNMA"]
+aliases = ["BNMA 145"]
+format = "dne"
+source_url = "https://bnma.co/bn/145"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=145"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Fortin, J. K., Rode, K. D., Hilderbrand, G. V., Wilder, J., Farley, S., Jorgensen, C. and Marcot, B. G. (2016). Recreation Effects on Brown Bears. BNMA Bayesian Network Repository, record 145."
+doi = ""
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 37
+n_arcs = 45
+retrieved = "2026-09-07"
+sha256 = "4d3c9d22b8a5b71f8039ebda08d85d7e271a8bdad95899d5624a55143cf1f288"
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. Reads strictly into 37 chance nodes and 45 arcs, every node with a table."
+
+[parser_options]
+strict = true

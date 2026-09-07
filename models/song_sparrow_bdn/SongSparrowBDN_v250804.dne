@@ -1,0 +1,548 @@
+// ~->[DNET-1]->~
+
+// File created by MarcotB at ICBEMP using Netica 7.01 on Aug 04, 2025 at 14:51:14 UTC.
+
+bnet BDN_birdHg_v5j {
+AutoCompile = TRUE;
+autoupdate = TRUE;
+whenchanged = 1754318250;
+
+visual V1 {
+	defdispform = BELIEFBARS;
+	nodelabeling = TITLE;
+	NodeMaxNumEntries = 50;
+	nodefont = font {shape= "Arial"; size= 9;};
+	linkfont = font {shape= "Arial"; size= 9;};
+	ShowLinkStrengths = 1;
+	windowposn = (52, 0, 1445, 889);
+	resolution = 72;
+	drawingbounds = (4274, 2342);
+	showpagebreaks = FALSE;
+	usegrid = TRUE;
+	gridspace = (6, 6);
+	NodeSet Node {BuiltIn = 1; Color = 0x00e1e1e1;};
+	NodeSet Nature {BuiltIn = 1; Color = 0x00f8eed2;};
+	NodeSet Deterministic {BuiltIn = 1; Color = 0x00d3caa6;};
+	NodeSet Finding {BuiltIn = 1; Color = 0x00c8c8c8;};
+	NodeSet Constant {BuiltIn = 1; Color = 0x00ffffff;};
+	NodeSet ConstantValue {BuiltIn = 1; Color = 0x00ffffb4;};
+	NodeSet Utility {BuiltIn = 1; Color = 0x00ffbdbd;};
+	NodeSet Decision {BuiltIn = 1; Color = 0x00dee8ff;};
+	NodeSet Documentation {BuiltIn = 1; Color = 0x00f0fafa;};
+	NodeSet Title {BuiltIn = 1; Color = 0x00ffffff;};
+	NodeSet SummaryResponses {Color = 0x00ffff80;};
+	NodeSet BioticResponses {Color = 0x00fef2cd;};
+	NodeSet ObservableMeasurements {Color = 0x0000ff40;};
+	NodeSet RestorationActivities {Color = 0x00ffffcc;};
+	NodeSet Time {Color = 0x00dfdfdf;};
+	NodeSet BioticResponse {Color = 0x0041b6c4;};
+	NodeSet Output_results {Color = 0x00bddef0;};
+	NodeSet ResponseNodes {Color = 0x00a1dab4;};
+	NodeSet Measurements {Color = 0x00ffffcc;};
+	NodeSet RestorationActions {Color = 0x00ffffff;};
+	PrinterSetting A {
+		margins = (1270, 1270, 1270, 1270);
+		};
+	};
+
+node RiparianPlantCost_infl_adj {
+	discrete = FALSE;
+	statetitles = ("0 to <2.5", "2.5 to <5", "5 to <7.5", "7.5 to 10");
+	levels = (0, 2.5, 5, 7.5, 10);
+	kind = NATURE;
+	parents = ();
+	title = "Inflation Adjustment (%)";
+	whenchanged = 1754318250;
+	evidence = #0;
+	belief = (1, 0, 0, 0);
+	visual V1 {
+		center = (576, 750);
+		height = 11;
+		};
+	};
+
+node RiparianPlantings {
+	discrete = TRUE;
+	states = (None, Willow_Plant, Herbaceous_Seed, Willow_AND_Herbaceous);
+	kind = DECISION;
+	parents = ();
+	functable = 
+		
+		  (@undef);
+	title = "Riparian Planting Treatments";
+	comment = "Costs estimated from \"Wetland and Riparian Woodland\n\
+		Restoration Costs\" Zenter et al. 2003; Ecological Restoration ";
+	whenchanged = 1754318250;
+	evidence = Willow_AND_Herbaceous;
+	belief = (0, 0, 0, 1);
+	visual V1 {
+		center = (396, 576);
+		height = 7;
+		};
+	};
+
+node RiparianPlantingsCost {
+	discrete = FALSE;
+	measure = RATIO;
+	kind = UTILITY;
+	chance = DETERMIN;
+	parents = (RiparianPlantings, RiparianPlantCost_infl_adj);
+	functable = 
+		                 // RiparianPlantings RiparianPlantCost_infl_adj 
+		  (0,            // None              0 to <2.5                  
+		   0,            // None              2.5 to <5                  
+		   0,            // None              5 to <7.5                  
+		   0,            // None              7.5 to 10                  
+		   10250,        // Willow Plant      0 to <2.5                  
+		   10500,        // Willow Plant      2.5 to <5                  
+		   10750,        // Willow Plant      5 to <7.5                  
+		   11000,        // Willow Plant      7.5 to 10                  
+		   4100,         // Herbaceous Seed   0 to <2.5                  
+		   4200,         // Herbaceous Seed   2.5 to <5                  
+		   4300,         // Herbaceous Seed   5 to <7.5                  
+		   4400,         // Herbaceous Seed   7.5 to 10                  
+		   14350,        // Willow AND Herba  0 to <2.5                  
+		   14700,        // Willow AND Herba  2.5 to <5                  
+		   15050,        // Willow AND Herba  5 to <7.5                  
+		   15400);       // Willow AND Herba  7.5 to 10                  ;
+	title = "Riparian Planting Treatment Cost (acre)";
+	whenchanged = 1722269842;
+	visual V1 {
+		center = (396, 654);
+		height = 8;
+		};
+	};
+
+node SoilTreatment {
+	discrete = TRUE;
+	states = (None, Topsoil_Amendment);
+	kind = DECISION;
+	parents = (RiparianPlantings);
+	functable = 
+		                    // RiparianPlantings 
+		  (@undef,          // None              
+		   @undef,          // Willow Plant      
+		   @undef,          // Herbaceous Seed   
+		   @undef);         // Willow AND Herba  ;
+	title = "Soil Treatment";
+	comment = "Costs estimated from \"Wetland and Riparian Woodland\n\
+		Restoration Costs\" Zenter et al. 2003; Ecological Restoration ";
+	whenchanged = 1754318250;
+	evidence = Topsoil_Amendment;
+	belief = (0, 1);
+	visual V1 {
+		center = (726, 576);
+		height = 10;
+		};
+	};
+
+node SoilTreatmentCost {
+	discrete = FALSE;
+	measure = RATIO;
+	kind = UTILITY;
+	chance = DETERMIN;
+	parents = (SoilTreatment, RiparianPlantCost_infl_adj);
+	functable = 
+		                 // SoilTreatment    RiparianPlantCost_infl_adj 
+		  (0,            // None             0 to <2.5                  
+		   0,            // None             2.5 to <5                  
+		   0,            // None             5 to <7.5                  
+		   0,            // None             7.5 to 10                  
+		   8200,         // Topsoil Amendmen 0 to <2.5                  
+		   8400,         // Topsoil Amendmen 2.5 to <5                  
+		   8600,         // Topsoil Amendmen 5 to <7.5                  
+		   8800);        // Topsoil Amendmen 7.5 to 10                  ;
+	title = "Soil Treatment Cost (acre)";
+	whenchanged = 1722269810;
+	visual V1 {
+		center = (726, 654);
+		height = 9;
+		link 2 {
+			path = ((655, 700), (713, 664));
+			};
+		};
+	};
+
+node Time {
+	discrete = TRUE;
+	statetitles = ("Year 1", "Year 5", "Year 10", "Year 15", "Year 20", "Year 30");
+	levels = (1, 5, 10, 15, 20, 30);
+	kind = NATURE;
+	parents = ();
+	comment = "Year1 represents 1-year post restoration \nYear5 represents 5-year post restoration, \nso on... \
+		";
+	whenchanged = 1754318250;
+	evidence = #1;
+	value = 5;
+	belief = (0, 1, 0, 0, 0, 0);
+	visual V1 {
+		center = (1002, 294);
+		height = 6;
+		};
+	};
+
+node RiparianHabitatQuality {
+	discrete = TRUE;
+	states = (Low, Medium, High);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (RiparianPlantings, SoilTreatment, Time);
+	probs = 
+		// Low          Medium       High          // RiparianPlantings SoilTreatment    Time    
+		  (1,           0,           0,            // None              None             Year 1  
+		   0.97,        0.03,        0,            // None              None             Year 5  
+		   0.95,        0.05,        0,            // None              None             Year 10 
+		   0.9,         0.1,         0,            // None              None             Year 15 
+		   0.9,         0.1,         0,            // None              None             Year 20 
+		   0.9,         0.1,         0,            // None              None             Year 30 
+		   0.95,        0.05,        0,            // None              Topsoil Amendmen Year 1  
+		   0.9,         0.1,         0,            // None              Topsoil Amendmen Year 5  
+		   0.85,        0.15,        0,            // None              Topsoil Amendmen Year 10 
+		   0.75,        0.25,        0,            // None              Topsoil Amendmen Year 15 
+		   0.75,        0.25,        0,            // None              Topsoil Amendmen Year 20 
+		   0.75,        0.25,        0,            // None              Topsoil Amendmen Year 30 
+		   0.95,        0.05,        0,            // Willow Plant      None             Year 1  
+		   0.7,         0.2,         0.1,          // Willow Plant      None             Year 5  
+		   0.2,         0.45,        0.35,         // Willow Plant      None             Year 10 
+		   0.1,         0.3,         0.6,          // Willow Plant      None             Year 15 
+		   0.05,        0.1,         0.85,         // Willow Plant      None             Year 20 
+		   0,           0.1,         0.9,          // Willow Plant      None             Year 30 
+		   0.9,         0.1,         0,            // Willow Plant      Topsoil Amendmen Year 1  
+		   0.55,        0.25,        0.2,          // Willow Plant      Topsoil Amendmen Year 5  
+		   0.1,         0.4,         0.5,          // Willow Plant      Topsoil Amendmen Year 10 
+		   0,           0.2,         0.8,          // Willow Plant      Topsoil Amendmen Year 15 
+		   0,           0.1,         0.9,          // Willow Plant      Topsoil Amendmen Year 20 
+		   0,           0.05,        0.95,         // Willow Plant      Topsoil Amendmen Year 30 
+		   1,           0,           0,            // Herbaceous Seed   None             Year 1  
+		   0.8,         0.2,         0,            // Herbaceous Seed   None             Year 5  
+		   0.6,         0.3,         0.1,          // Herbaceous Seed   None             Year 10 
+		   0.4,         0.4,         0.2,          // Herbaceous Seed   None             Year 15 
+		   0.2,         0.5,         0.3,          // Herbaceous Seed   None             Year 20 
+		   0,           0.6,         0.4,          // Herbaceous Seed   None             Year 30 
+		   0.95,        0.05,        0,            // Herbaceous Seed   Topsoil Amendmen Year 1  
+		   0.65,        0.25,        0.1,          // Herbaceous Seed   Topsoil Amendmen Year 5  
+		   0.45,        0.3,         0.25,         // Herbaceous Seed   Topsoil Amendmen Year 10 
+		   0.25,        0.4,         0.35,         // Herbaceous Seed   Topsoil Amendmen Year 15 
+		   0.1,         0.35,        0.55,         // Herbaceous Seed   Topsoil Amendmen Year 20 
+		   0.05,        0.3,         0.65,         // Herbaceous Seed   Topsoil Amendmen Year 30 
+		   0.95,        0.05,        0,            // Willow AND Herba  None             Year 1  
+		   0.65,        0.25,        0.1,          // Willow AND Herba  None             Year 5  
+		   0.1,         0.5,         0.4,          // Willow AND Herba  None             Year 10 
+		   0.05,        0.25,        0.7,          // Willow AND Herba  None             Year 15 
+		   0,           0.1,         0.9,          // Willow AND Herba  None             Year 20 
+		   0,           0.05,        0.95,         // Willow AND Herba  None             Year 30 
+		   0.9,         0.1,         0,            // Willow AND Herba  Topsoil Amendmen Year 1  
+		   0.45,        0.3,         0.25,         // Willow AND Herba  Topsoil Amendmen Year 5  
+		   0.05,        0.35,        0.6,          // Willow AND Herba  Topsoil Amendmen Year 10 
+		   0,           0.1,         0.9,          // Willow AND Herba  Topsoil Amendmen Year 15 
+		   0,           0.05,        0.95,         // Willow AND Herba  Topsoil Amendmen Year 20 
+		   0,           0,           1);           // Willow AND Herba  Topsoil Amendmen Year 30 ;
+	title = "Riparian Habitat Quality ";
+	comment = "The habitat quality metric was defined by expected \n\
+		improvements in vegetation density, the type of\n\
+		vegetation established (willow vs. herbaceous,\n\
+		native vs. non-native), and a literature review of the\n\
+		relationship between riparian plants and Song Sparrow \n\
+		density and nesting success (Gardali et al. 1999, \n\
+		Shanahan et al. 2011, Rockwell and Stephens 2018,\n\
+		Gonzalez-Sargas et al. 2024)";
+	whenchanged = 1754313056;
+	belief = (0.45, 0.3, 0.25);
+	visual V1 {
+		center = (396, 450);
+		height = 12;
+		link 2 {
+			path = ((659, 550), (477, 480));
+			};
+		link 3 {
+			path = ((922, 342), (834, 396), (477, 441));
+			};
+		};
+	};
+
+node TreeSwallowEgg {
+	discrete = FALSE;
+	statetitles = ("0 to <0.3", "0.3 to <1.8", ">= 1.8");
+	levels = (0, 0.3, 1.8, INFINITY);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (Time);
+	probs = 
+		// 0 to <0.3    0.3 to <1.8  >= 1.8        // Time    
+		  (0.5,         0.3,         0.2,          // Year 1  
+		   0.6,         0.25,        0.15,         // Year 5  
+		   0.7,         0.2,         0.1,          // Year 10 
+		   0.8,         0.15,        0.05,         // Year 15 
+		   0.9,         0.1,         0,            // Year 20 
+		   0.95,        0.05,        0);           // Year 30 ;
+	title = "Bird Egg-Equivalent Hg (ug/g)";
+	comment = "Changes in Swallow egg Hg concentrations (mg/kg) \n\
+		bracket projected reductions associated with remedial \n\
+		actions taken place on-site prior to restoration;\n\
+		Tree Swallow Egg Hg concentrations reference Ackerman \n\
+		et al. 2024 for moderate injury (EC5) (.30 ug/g fresh wet weight),\n\
+		severe (EC20) (1.8 ug/g) for combined survival and reprod";
+	whenchanged = 1722461808;
+	belief = (0.6, 0.25, 0.15);
+	visual V1 {
+		center = (780, 480);
+		height = 1;
+		};
+	};
+
+node RecoverSongSparrowDensity {
+	discrete = FALSE;
+	statetitles = ("0 to <5", "5 to <10", "10 to <15", ">= 15");
+	levels = (0, 5, 10, 15, INFINITY);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (RiparianHabitatQuality, TreeSwallowEgg);
+	probs = 
+		// 0 to <5      5 to <10     10 to <15    >= 15         // RiparianHabitatQuality TreeSwallowEgg 
+		  (0.2,         0.45,        0.25,        0.1,          // Low                    0 to <0.3      
+		   0.4,         0.35,        0.2,         0.05,         // Low                    0.3 to <1.8    
+		   0.6,         0.25,        0.15,        0,            // Low                    >= 1.8         
+		   0.1,         0.2,         0.4,         0.3,          // Medium                 0 to <0.3      
+		   0.2,         0.35,        0.3,         0.15,         // Medium                 0.3 to <1.8    
+		   0.4,         0.4,         0.2,         0,            // Medium                 >= 1.8         
+		   0,           0.05,        0.4,         0.55,         // High                   0 to <0.3      
+		   0,           0.4,         0.35,        0.25,         // High                   0.3 to <1.8    
+		   0.1,         0.6,         0.3,         0);           // High                   >= 1.8         ;
+	EqnDirty = TRUE;
+	title = "Recovering Song Sparrow Density (n/acre)";
+	comment = "Recovering Song Sparrow density (birds/acre) based off\n\
+		combined probabilities of Song Sparrow Egg Hg\n\
+		and riparin habitat quality. Values based on published \n\
+		studies (Campos et al. 2020 and Dybala et al. 2018) in\n\
+		similar systems.";
+	whenchanged = 1754312905;
+	belief = (0.19425, 0.313, 0.29675, 0.196);
+	visual V1 {
+		center = (420, 324);
+		height = 4;
+		link 2 {
+			path = ((686, 440), (534, 375));
+			};
+		};
+	};
+
+node PreRestSongSparrowDens {
+	discrete = FALSE;
+	statetitles = ("0 to <5", "5 to <10", "10 to <15", ">= 15");
+	levels = (0, 5, 10, 15, INFINITY);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = ();
+	probs = 
+		// 0 to <5      5 to <10     10 to <15    >= 15        
+		  (0.3,         0.5,         0.2,         0);
+	title = "Pre-Restoration Song Sparrow Density (n/acre)";
+	comment = "Values and distribution of Song Sparrow adults per acre\n\
+		from hypothetical site; Song Sparrow densities are based on reported \n\
+		pre and post restoration density from montaine riparian \n\
+		meadows in California (Campos et al. 2020) and the Central \n\
+		Valley, CA (Dybala et al. 2018). We chose to model adults\n\
+		because nest success is highly variable and around 19%,\n\
+		so adults represent true contribution to population.";
+	whenchanged = 1754312895;
+	belief = (0.3, 0.5, 0.2, 0);
+	visual V1 {
+		center = (720, 324);
+		height = 3;
+		};
+	};
+
+node SongSparrowsGained {
+	discrete = FALSE;
+	statetitles = ("0 to <1", "1 to <5", "5 to <10", ">= 10");
+	levels = (0, 1, 5, 10, INFINITY);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (RecoverSongSparrowDensity, PreRestSongSparrowDens);
+	probs = 
+		// 0 to <1      1 to <5      5 to <10     >= 10         // RecoverSongSparrowDensity PreRestSongSparrowDens 
+		  (0.9,         0.1,         0,           0,            // 0 to <5                   0 to <5                
+		   1,           0,           0,           0,            // 0 to <5                   5 to <10               
+		   1,           0,           0,           0,            // 0 to <5                   10 to <15              
+		   1,           0,           0,           0,            // 0 to <5                   >= 15                  
+		   0.3,         0.6,         0.1,         0,            // 5 to <10                  0 to <5                
+		   0.5,         0.5,         0,           0,            // 5 to <10                  5 to <10               
+		   0.9,         0.1,         0,           0,            // 5 to <10                  10 to <15              
+		   0.9,         0.1,         0,           0,            // 5 to <10                  >= 15                  
+		   0.05,        0.1,         0.5,         0.35,         // 10 to <15                 0 to <5                
+		   0.2,         0.5,         0.3,         0,            // 10 to <15                 5 to <10               
+		   0.5,         0.4,         0.1,         0,            // 10 to <15                 10 to <15              
+		   0.6,         0.3,         0.1,         0,            // 10 to <15                 >= 15                  
+		   0,           0.1,         0.3,         0.6,          // >= 15                     0 to <5                
+		   0,           0.1,         0.6,         0.3,          // >= 15                     5 to <10               
+		   0.05,        0.4,         0.35,        0.2,          // >= 15                     10 to <15              
+		   0.15,        0.6,         0.15,        0.1);         // >= 15                     >= 15                  ;
+	title = "Song Sparrow Density Gained (per acre)";
+	comment = "Population density of Song Sparrow gained per acre\n\
+		based on recovering Song Sparrow population density \n\
+		relative to pre-restoration Song Sparrow population \n\
+		densities. ";
+	whenchanged = 1754312876;
+	belief = (0.4169437, 0.2848675, 0.19451, 0.1036787);
+	visual V1 {
+		center = (540, 198);
+		height = 5;
+		link 1 {
+			path = ((468, 274), (493, 249));
+			};
+		link 2 {
+			path = ((648, 274), (611, 249));
+			};
+		};
+	};
+
+node DiscountedBirdYearGained {
+	discrete = FALSE;
+	statetitles = ("0 to <1", "1 to <5", "5 to <10", ">= 10");
+	levels = (0, 1, 5, 10, INFINITY);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (SongSparrowsGained, Time);
+	probs = 
+		// 0 to <1      1 to <5      5 to <10     >= 10         // SongSparrowsGained Time    
+		  (1,           0,           0,           0,            // 0 to <1            Year 1  
+		   1,           0,           0,           0,            // 0 to <1            Year 5  
+		   1,           0,           0,           0,            // 0 to <1            Year 10 
+		   1,           0,           0,           0,            // 0 to <1            Year 15 
+		   1,           0,           0,           0,            // 0 to <1            Year 20 
+		   1,           0,           0,           0,            // 0 to <1            Year 30 
+		   0.011,       0.989,       0,           0,            // 1 to <5            Year 1  
+		   0.039,       0.961,       0,           0,            // 1 to <5            Year 5  
+		   0.078,       0.922,       0,           0,            // 1 to <5            Year 10 
+		   0.128,       0.872,       0,           0,            // 1 to <5            Year 15 
+		   0.232,       0.768,       0,           0,            // 1 to <5            Year 20 
+		   0.342,       0.658,       0,           0,            // 1 to <5            Year 30 
+		   0,           0.032,       0.968,       0,            // 5 to <10           Year 1  
+		   0,           0.166,       0.834,       0,            // 5 to <10           Year 5  
+		   0,           0.346,       0.654,       0,            // 5 to <10           Year 10 
+		   0,           0.558,       0.442,       0,            // 5 to <10           Year 15 
+		   0,           0.799,       0.201,       0,            // 5 to <10           Year 20 
+		   0,           1,           0,           0,            // 5 to <10           Year 30 
+		   0,           0,           0.06,        0.94,         // >= 10              Year 1  
+		   0,           0,           0.265,       0.735,        // >= 10              Year 5  
+		   0,           0,           0.51,        0.49,         // >= 10              Year 10 
+		   0,           0,           0.658,       0.342,        // >= 10              Year 15 
+		   0,           0,           0.796,       0.204,        // >= 10              Year 20 
+		   0,           0.338,       0.617,       0.045);       // >= 10              Year 30 ;
+	numcases = 1000;
+	equation = "DiscountedBirdYearGained (Time, SongSparrowsGained) = \n\
+		SongSparrowsGained * (1/(1 + 0.03)^(Time))";
+	title = "Discounted Bird Years Gained";
+	whenchanged = 1732542001;
+	belief = (0.4280536, 0.3060463, 0.1896962, 0.07620388);
+	visual V1 {
+		center = (546, 72);
+		height = 2;
+		link 2 {
+			path = ((922, 255), (644, 119));
+			};
+		};
+	};
+
+node TITLE2 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "Modelers:\nChristopher J. Kotalik\nFreya E. Rowland\nBruce G. Marcot\nv. 4 August 2025";
+	whenchanged = 1754313177;
+	visual V1 {
+		center = (1218, 168);
+		font = font {shape= "Arial"; size= 12;};
+		height = 19;
+		};
+	};
+
+node TITLE3 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "Evaluating Habitat\nRestoration Alternatives\nfor Song Sparrow";
+	whenchanged = 1721756569;
+	visual V1 {
+		center = (1230, 66);
+		font = font {shape= "Arial"; size= 14;};
+		height = 18;
+		};
+	};
+
+node NOTE6 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Output\n| node";
+	whenchanged = 1722446079;
+	visual V1 {
+		center = (90, 66);
+		font = font {shape= "Arial"; size= 14;};
+		height = 16;
+		};
+	};
+
+node NOTE5 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Biotic\n| responses";
+	whenchanged = 1690471271;
+	visual V1 {
+		center = (108, 198);
+		font = font {shape= "Arial"; size= 14;};
+		height = 15;
+		};
+	};
+
+node NOTE4 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Summary\n| responses";
+	whenchanged = 1690471234;
+	visual V1 {
+		center = (102, 444);
+		font = font {shape= "Arial"; size= 14;};
+		height = 14;
+		};
+	};
+
+node NOTE3 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Restoration\n| actions";
+	whenchanged = 1732545640;
+	visual V1 {
+		center = (99, 582);
+		font = font {shape= "Arial"; size= 14;};
+		height = 13;
+		};
+	};
+
+node NOTE1 {
+	discrete = FALSE;
+	kind = CONSTANT;
+	parents = ();
+	title = "| Inflation \n| node\n";
+	whenchanged = 1732541989;
+	visual V1 {
+		center = (84, 744);
+		font = font {shape= "Arial"; size= 14;};
+		height = 17;
+		};
+	};
+NodeSet SummaryResponses {Nodes = (RiparianHabitatQuality, NOTE4);};
+NodeSet BioticResponses {Nodes = (TreeSwallowEgg, RecoverSongSparrowDensity, PreRestSongSparrowDens, SongSparrowsGained, DiscountedBirdYearGained);};
+NodeSet ObservableMeasurements {Nodes = ();};
+NodeSet RestorationActivities {Nodes = (RiparianPlantings, SoilTreatment, RiparianPlantingsCost, RiparianPlantCost_infl_adj, SoilTreatmentCost, NOTE1);};
+NodeSet Time {Nodes = (Time);};
+NodeSet BioticResponse {Nodes = (NOTE6, NOTE5, SongSparrowsGained, RecoverSongSparrowDensity, PreRestSongSparrowDens, TreeSwallowEgg);};
+NodeSet Output_results {Nodes = (NOTE6, DiscountedBirdYearGained);};
+NodeSet ResponseNodes {Nodes = (NOTE4, RiparianHabitatQuality);};
+NodeSet Measurements {Nodes = (NOTE3);};
+NodeSet RestorationActions {Nodes = (NOTE1, RiparianPlantingsCost, RiparianPlantCost_infl_adj, SoilTreatmentCost);};
+ElimOrder = (RiparianPlantCost_infl_adj, PreRestSongSparrowDens, DiscountedBirdYearGained, SongSparrowsGained, TreeSwallowEgg, RecoverSongSparrowDensity, Time, RiparianHabitatQuality, SoilTreatment, RiparianPlantings);
+};

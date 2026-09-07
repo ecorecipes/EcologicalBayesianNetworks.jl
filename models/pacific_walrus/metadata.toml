@@ -1,0 +1,24 @@
+name = "pacific_walrus"
+title = "Pacific Walrus: projected twenty-first-century status"
+category = "population"
+domain_tags = ["Pacific walrus", "sea ice", "climate change", "Arctic", "Netica", "BNMA"]
+aliases = ["BNMA 147"]
+format = "dne"
+source_url = "https://bnma.co/bn/147"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=147"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Jay, C. V., Marcot, B. G. and Douglas, D. C. (2016). Pacific Walrus. BNMA Bayesian Network Repository, record 147."
+doi = ""
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 77
+n_arcs = 96
+retrieved = "2026-09-07"
+sha256 = "330e1b6d399ad54563c1689c07c17101513c31494aa28f9c393577c2e1d37f4b"
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. The largest network in the zoo: 77 chance nodes and 96 arcs after 10 CONSTANT nodes are skipped; 5 chance nodes are Netica finding nodes without a CPT, so the manifest sets allow_missing_tables = true."
+
+[parser_options]
+strict = true
+allow_missing_tables = true

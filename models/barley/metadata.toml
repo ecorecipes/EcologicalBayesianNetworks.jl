@@ -1,0 +1,24 @@
+name = "barley"
+title = "BARLEY: malting barley yield without pesticides"
+category = "benchmark"
+domain_tags = ["agriculture", "crop", "benchmark", "bnlearn"]
+format = "net"
+file = "barley.net.gz"
+source_url = "https://www.bnlearn.com/bnrepository/discrete-medium.html#barley"
+download_url = "https://www.bnlearn.com/bnrepository/barley/barley.net.gz"
+fetch_instructions = ""
+citation = "Kristensen, K. and Rasmussen, I. A. (2002). The use of a Bayesian network in the design of a decision support system for growing malting barley without use of pesticides. Computers and Electronics in Agriculture 33(3), 197-217. Distributed by Scutari, M., bnlearn Bayesian Network Repository."
+doi = "10.1016/S0168-1699(02)00007-8"
+licence = "CC BY-SA 3.0"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 48
+n_arcs = 84
+retrieved = "2026-09-06"
+sha256 = "60a738b0fa45d6145bdeed259e4640e08cb897675db19a5ae48962ecf61ed9a8"
+notes = "Committed gzipped exactly as served by bnlearn. Some CPT rows sum to one only within 1e-7, accepted by the reader (atol = 1e-6) but not by BayesianNetworks.validate (atol = 1e-8), so the manifest sets renormalize = true. Medium discrete benchmark (48 nodes, 84 arcs, 114005 parameters, largest in-degree 4); building the BayesModel is slow-ish, so the loading test is gated by ECOLOGICAL_BN_SLOW=true."
+
+[parser_options]
+strict = true
+renormalize = true

@@ -1,0 +1,24 @@
+name = "mildew"
+title = "MILDEW: management of mildew in winter wheat"
+category = "benchmark"
+domain_tags = ["agriculture", "plant disease", "benchmark", "bnlearn"]
+format = "net"
+file = "mildew.net.gz"
+source_url = "https://www.bnlearn.com/bnrepository/discrete-medium.html#mildew"
+download_url = "https://www.bnlearn.com/bnrepository/mildew/mildew.net.gz"
+fetch_instructions = ""
+citation = "Jensen, A. L. and Jensen, F. V. (1996). MIDAS: an influence diagram for management of mildew in winter wheat. Proceedings of the 12th Conference on Uncertainty in Artificial Intelligence, 349-356. Distributed by Scutari, M., bnlearn Bayesian Network Repository."
+doi = ""
+licence = "CC BY-SA 3.0"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 35
+n_arcs = 46
+retrieved = "2026-09-06"
+sha256 = "740e0286f09da3b9e450d0bdce07202fb4281560e80c1d683f960ca555ef6b24"
+notes = "Committed gzipped exactly as served by bnlearn. Some CPT rows sum to one only within 1e-8, accepted by the reader (atol = 1e-6) but not by BayesianNetworks.validate (atol = 1e-8), so the manifest sets renormalize = true. Medium discrete benchmark (35 nodes, 46 arcs, 540150 parameters, largest in-degree 3) with large state spaces; the loading test is gated by ECOLOGICAL_BN_SLOW=true."
+
+[parser_options]
+strict = true
+renormalize = true

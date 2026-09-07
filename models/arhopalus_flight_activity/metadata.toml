@@ -1,0 +1,23 @@
+name = "arhopalus_flight_activity"
+title = "Arhopalus ferus flight activity"
+category = "biosecurity"
+domain_tags = ["Arhopalus ferus", "flight activity", "forest biosecurity", "phytosanitary", "Netica", "BNMA"]
+aliases = ["BNMA 193"]
+format = "dne"
+source_url = "https://bnma.co/bn/193"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=193"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Pawson, S. M., Marcot, B. G. and Woodberry, O. G. (2017). Arhopalus Flight Activity. BNMA Bayesian Network Repository, record 193."
+doi = ""
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 7
+n_arcs = 11
+retrieved = "2026-09-07"
+sha256 = "02ed605d44d21654a2768fad82fadbf4f25162aa1be8426c11fbe8340d7e751d"
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. Reads strictly into 7 chance nodes and 11 arcs; the internal Netica name is arhopalus_rationalised_decimal."
+
+[parser_options]
+strict = true

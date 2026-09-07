@@ -1,0 +1,22 @@
+name = "gulf_sturgeon_bn"
+title = "Age-0 Gulf Sturgeon winter habitat availability, Apalachicola Bay (USGS)"
+category = "habitat"
+domain_tags = ["sturgeon", "estuary", "habitat availability", "adaptive management", "Netica", "USGS", "ScienceBase"]
+format = "neta"
+source_url = "https://www.sciencebase.gov/catalog/item/5ab94893e4b081f61ab9ca2a"
+download_url = "https://www.sciencebase.gov/catalog/file/get/5ab94893e4b081f61ab9ca2a?f=__disk__cd%2F9d%2F61%2Fcd9d61db1bb6188ac1381263cbeecb8eb52acdc6"
+fetch_instructions = "Download the .neta from the ScienceBase record (download_url) with fetch_model(name) or by hand, open it in Netica, save it as a text .dne file and import_model(name, path_to_dne). The binary .neta format is not readable by BayesianNetworkFormats.jl."
+citation = "Cronin, J. P., Dale, L. L., Brink, V. L., Tirpak, B. E. and Tirpak, J. M. (2021). Data for Gulf Sturgeon Bayesian Network Model. U.S. Geological Survey data release. See also Dale, L. L. et al. (2021), Transactions of the American Fisheries Society, doi:10.1002/tafs.10288."
+doi = "10.5066/P9KNSKMT"
+licence = "CC0 1.0 (ScienceBase record); US Government work in the public domain"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 0
+n_arcs = 0
+retrieved = "2026-09-06"
+sha256 = "8b0120e81cd7347be1647e244c1ab9145b40eb8e1546b647992ee9a6bc352c2f"
+notes = "Metadata-only entry by choice, not by licence: CC0 permits verbatim redistribution, but the file is a binary Netica .neta blob that BayesianNetworkFormats.jl cannot read, so committing it would add unreadable bytes to the repository with nothing to check them against beyond a checksum. It is fetched on demand instead. The .neta file (7435 bytes) is binary Netica ('~->[NETA=1]->~' header) and must be converted to .dne in Netica before it can be read; n_nodes and n_arcs are unknown until then. ScienceBase requires the __disk__ file token in the URL."
+
+[parser_options]
+strict = true

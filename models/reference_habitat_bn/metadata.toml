@@ -1,0 +1,23 @@
+name = "reference_habitat_bn"
+title = "Reference habitat network (SPEC section 45)"
+category = "reference"
+domain_tags = ["reference", "habitat", "occupancy", "grazing", "irrigation"]
+format = "julia"
+constructor = "reference_habitat_model"
+source_url = "https://github.com/ecorecipes/BayesianNetworks.jl"
+download_url = ""
+fetch_instructions = ""
+citation = "ecorecipes SPEC section 45; BayesianNetworks.jl reference_habitat_bn / reference_habitat_model, and the habitat_reference fixtures of BayesianNetworkFormats.jl."
+doi = ""
+licence = "MIT"
+redistribution = "builtin"
+has_decisions = false
+has_utilities = false
+n_nodes = 7
+n_arcs = 6
+retrieved = "2026-09-06"
+sha256 = ""
+notes = "Built in Julia, no file. load_model returns BayesianNetworks.reference_habitat_model() (structure plus CPTs); reference_habitat_bn() gives the structure only; model_ir reads the equivalent fixture dne/habitat_reference.dne from BayesianNetworkFormats.jl."
+
+[parser_options]
+strict = true

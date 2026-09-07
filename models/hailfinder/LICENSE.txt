@@ -1,0 +1,14 @@
+This network file is redistributed verbatim from the bnlearn Bayesian Network
+Repository (https://www.bnlearn.com/bnrepository/), maintained by Marco Scutari,
+under the Creative Commons Attribution-Share Alike 3.0 Unported licence
+(CC BY-SA 3.0, https://creativecommons.org/licenses/by-sa/3.0/).
+
+Attribution: Marco Scutari, bnlearn Bayesian Network Repository.
+Scutari, M. (2010). Learning Bayesian Networks with the bnlearn R Package.
+Journal of Statistical Software, 35(3), 1-22. https://doi.org/10.18637/jss.v035.i03
+Abramson, B., Brown, J., Edwards, W., Murphy, A. and Winkler, R. L. (1996).
+Hailfinder: a Bayesian system for forecasting severe weather.
+International Journal of Forecasting, 12(1), 57-71.
+
+The file is unmodified. Derivative works must be distributed under the same
+licence.

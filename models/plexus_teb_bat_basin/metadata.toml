@@ -1,0 +1,22 @@
+name = "plexus_teb_bat_basin"
+title = "Townsend's big-eared bat, basin scale population outcome (Plexus fig2c)"
+category = "population"
+domain_tags = ["bat", "population outcome", "Columbia River Basin", "basin scale", "Netica", "Plexus"]
+format = "dne"
+source_url = "https://www.plexuseco.com/The%20Plexus/bbns.htm"
+download_url = "https://www.plexuseco.com/The%20Plexus/fig2c.dne"
+fetch_instructions = "Download the .dne directly with fetch_model(name) (the server rejects some browser User-Agent strings but accepts the default Julia/curl one); or open https://www.plexuseco.com/The%20Plexus/bbns.htm, save the linked .dne, then import_model(name, path). Licence unstated, so the file is never committed."
+citation = "Marcot, B. G., Holthausen, R. S., Raphael, M. G., Rowland, M. M. and Wisdom, M. J. (2001). Using Bayesian belief networks to evaluate fish and wildlife population viability under land management alternatives from an environmental impact statement. Forest Ecology and Management 153(1-3), 29-42. Model files from the Plexus Ecological Bayesian network collection."
+doi = "10.1016/S0378-1127(01)00452-2"
+licence = "unstated"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 8
+n_arcs = 7
+retrieved = "2026-09-06"
+sha256 = "1357e1948fd5c40b26d3c2b6b70a374f89100c7c9acf45ab362ed421c03cbf9b"
+notes = "Basin-scale population-outcome layer for Townsend's big-eared bat (B. G. Marcot, ICBEMP, alpha 3.0, 2000). Chance-only."
+
+[parser_options]
+strict = true

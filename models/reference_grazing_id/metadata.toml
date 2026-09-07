@@ -1,0 +1,23 @@
+name = "reference_grazing_id"
+title = "Reference grazing-management influence diagram (SPEC section 46)"
+category = "reference"
+domain_tags = ["reference", "influence diagram", "grazing", "management", "utility"]
+format = "julia"
+constructor = "reference_grazing_id"
+source_url = "https://github.com/ecorecipes/BayesianNetworkFormats.jl"
+download_url = ""
+fetch_instructions = ""
+citation = "ecorecipes SPEC section 46; fixture dne/grazing_reference_id.dne of BayesianNetworkFormats.jl."
+doi = ""
+licence = "MIT"
+redistribution = "builtin"
+has_decisions = true
+has_utilities = true
+n_nodes = 12
+n_arcs = 13
+retrieved = "2026-09-06"
+sha256 = ""
+notes = "Built in Julia, no file. reference_grazing_id() returns InfluenceDiagrams.reference_grazing_model(), the InfluenceDiagramModel matching the grazing_reference_id fixtures of BayesianNetworkFormats.jl; load_model returns it and model_ir its NetworkIR."
+
+[parser_options]
+strict = true

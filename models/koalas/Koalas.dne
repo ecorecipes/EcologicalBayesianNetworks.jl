@@ -1,0 +1,227 @@
+// ~->[DNET-1]->~
+
+// File created by an unlicensed user using Netica 5.12 on Oct 30, 2015 at 03:52:49.
+
+bnet Koalas {
+autoupdate = TRUE;
+whenchanged = 1446137569;
+
+visual V1 {
+	defdispform = BELIEFBARS;
+	nodelabeling = TITLE;
+	NodeMaxNumEntries = 50;
+	nodefont = font {shape= "Arial"; size= 9;};
+	linkfont = font {shape= "Arial"; size= 9;};
+	windowposn = (100, 100, 1213, 556);
+	resolution = 72;
+	magnification = 1.41421;
+	drawingbounds = (1902, 904);
+	showpagebreaks = FALSE;
+	usegrid = TRUE;
+	gridspace = (6, 6);
+	NodeSet Node {BuiltIn = 1; Color = 0x00E1E1E1;};
+	NodeSet Nature {BuiltIn = 1; Color = 0x00F8EED2;};
+	NodeSet Deterministic {BuiltIn = 1; Color = 0x00D3CAA6;};
+	NodeSet Finding {BuiltIn = 1; Color = 0x00C8C8C8;};
+	NodeSet Constant {BuiltIn = 1; Color = 0x00FFFFFF;};
+	NodeSet ConstantValue {BuiltIn = 1; Color = 0x00FFFFB4;};
+	NodeSet Utility {BuiltIn = 1; Color = 0x00FFBDBD;};
+	NodeSet Decision {BuiltIn = 1; Color = 0x00DEE8FF;};
+	NodeSet Documentation {BuiltIn = 1; Color = 0x00F0FAFA;};
+	NodeSet Title {BuiltIn = 1; Color = 0x00FFFFFF;};
+	PrinterSetting A {
+		margins = (1270, 1270, 1270, 1270);
+		};
+	};
+
+node Cull {
+	kind = DECISION;
+	discrete = TRUE;
+	chance = DETERMIN;
+	states = (Yes, No, Maybe);
+	parents = ();
+	functable = 
+		  (No);
+	whenchanged = 1442344613;
+	evidence = Yes;
+	visual V1 {
+		center = (132, 72);
+		height = 2;
+		};
+	};
+
+node Relocate {
+	kind = DECISION;
+	discrete = TRUE;
+	chance = DETERMIN;
+	states = (Yes, No, Maybe);
+	parents = (Cull);
+	functable = 
+		                    // Cull  
+		  (No,              // Yes   
+		   No,              // No    
+		   No);             // Maybe ;
+	whenchanged = 1441939148;
+	visual V1 {
+		center = (324, 174);
+		height = 6;
+		};
+	};
+
+node KoalaPopulation {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (Low, Medium, High);
+	parents = (Cull, Relocate);
+	probs = 
+		// Low          Medium       High          // Cull  Relocate 
+		  (0.9,         0.08,        0.02,         // Yes   Yes      
+		   0.5,         0.45,        0.05,         // Yes   No       
+		   0.85,        0.1,         0.05,         // Yes   Maybe    
+		   0.5,         0.45,        0.05,         // No    Yes      
+		   0.1,         0.5,         0.4,          // No    No       
+		   0.1,         0.6,         0.3,          // No    Maybe    
+		   0.7,         0.25,        0.05,         // Maybe Yes      
+		   0.5,         0.45,        0.05,         // Maybe No       
+		   0.6,         0.35,        0.05);        // Maybe Maybe    ;
+	numcases = 1;
+	whenchanged = 1441934882;
+	visual V1 {
+		center = (504, 72);
+		height = 1;
+		};
+	};
+
+node U {
+	kind = UTILITY;
+	discrete = FALSE;
+	measure = RATIO;
+	chance = DETERMIN;
+	parents = (Cull);
+	functable = 
+		                 // Cull  
+		  (-100,         // Yes   
+		   0,            // No    
+		   -50);         // Maybe ;
+	whenchanged = 1441933395;
+	visual V1 {
+		center = (90, 192);
+		height = 3;
+		};
+	};
+
+node NveSocialImplications {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (None, Minor, Severe);
+	parents = (Cull, Relocate);
+	probs = 
+		// None         Minor        Severe        // Cull  Relocate 
+		  (0,           0.1,         0.9,          // Yes   Yes      
+		   0,           0.01,        0.99,         // Yes   No       
+		   0,           0.05,        0.95,         // Yes   Maybe    
+		   0.9,         0.1,         0,            // No    Yes      
+		   0.95,        0.05,        0,            // No    No       
+		   0.99,        0.01,        0,            // No    Maybe    
+		   0.1,         0.5,         0.4,          // Maybe Yes      
+		   0.1,         0.4,         0.5,          // Maybe No       
+		   0.25,        0.3,         0.45);        // Maybe Maybe    ;
+	whenchanged = 1441936538;
+	visual V1 {
+		center = (204, 270);
+		height = 4;
+		};
+	};
+
+node V {
+	kind = UTILITY;
+	discrete = FALSE;
+	measure = RATIO;
+	chance = DETERMIN;
+	parents = (Relocate);
+	functable = 
+		                 // Relocate 
+		  (-10,          // Yes      
+		   0,            // No       
+		   -5);          // Maybe    ;
+	whenchanged = 1441933425;
+	visual V1 {
+		center = (378, 282);
+		height = 5;
+		};
+	};
+
+node TreeSpecies {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (Low, High);
+	parents = (KoalaPopulation);
+	probs = 
+		// Low          High          // KoalaPopulation 
+		  (0.05,        0.95,         // Low             
+		   0.6,         0.4,          // Medium          
+		   0.9,         0.1);         // High            ;
+	numcases = 1;
+	whenchanged = 1441851206;
+	visual V1 {
+		center = (564, 216);
+		height = 7;
+		};
+	};
+
+node Tourists {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (Low, High);
+	parents = (KoalaPopulation);
+	probs = 
+		// Low          High          // KoalaPopulation 
+		  (0.9,         0.1,          // Low             
+		   0.3,         0.7,          // Medium          
+		   0.1,         0.9);         // High            ;
+	numcases = 1;
+	whenchanged = 1441851241;
+	visual V1 {
+		center = (768, 216);
+		height = 8;
+		};
+	};
+
+node W {
+	kind = UTILITY;
+	discrete = FALSE;
+	measure = RATIO;
+	chance = DETERMIN;
+	parents = (TreeSpecies);
+	functable = 
+		                 // TreeSpecies 
+		  (-100,         // Low         
+		   100);         // High        ;
+	whenchanged = 1442346679;
+	visual V1 {
+		center = (546, 312);
+		height = 9;
+		};
+	};
+
+node X {
+	kind = UTILITY;
+	discrete = FALSE;
+	measure = RATIO;
+	chance = DETERMIN;
+	parents = (Tourists);
+	functable = 
+		                 // Tourists 
+		  (-10,          // Low      
+		   10);          // High     ;
+	whenchanged = 1442346692;
+	visual V1 {
+		center = (780, 312);
+		height = 10;
+		};
+	};
+};

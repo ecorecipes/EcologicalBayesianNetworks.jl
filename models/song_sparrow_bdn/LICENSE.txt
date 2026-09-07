@@ -1,0 +1,11 @@
+This model file is redistributed verbatim from the BNMA Bayesian Network
+Repository (https://bnma.co/bnrepo/), where its record is labelled
+"License: CC-BY" (Creative Commons Attribution; version unstated on the record,
+treated here as CC BY 4.0, https://creativecommons.org/licenses/by/4.0/).
+The file is unmodified apart from its filename.
+
+Attribution:
+  Kotalik, C.J., Rowland, F.E., Marcot, B.G., Skrabis, K., Walters, D.M., Hinck, J.E.,
+  Clements, W., Richer, E. and Isanhart, J. (2026). Causal networks to inform decisions
+  for ecological restoration. Environmental Management 76(7).
+  SongSparrowBDN_v250804, BNMA record 2893, BN DOI 10.59381/ofwegrfqyo.

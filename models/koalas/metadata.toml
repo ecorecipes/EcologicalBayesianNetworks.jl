@@ -1,0 +1,24 @@
+name = "koalas"
+title = "Koalas: Fraser Island koala population, tourism and culling/relocation decisions"
+category = "decision"
+domain_tags = ["koala", "population", "tourism", "culling", "relocation", "decision network", "BNMA"]
+aliases = ["BNMA 126"]
+format = "dne"
+file = "Koalas.dne"
+source_url = "https://bnma.co/bn/126"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=126"
+fetch_instructions = ""
+citation = "Thiruvady, D. (2015). Koalas. BNMA Bayesian Network Repository, record 126."
+doi = ""
+licence = "CC-BY (version unstated)"
+redistribution = "verbatim"
+has_decisions = true
+has_utilities = true
+n_nodes = 10
+n_arcs = 11
+retrieved = "2026-09-06"
+sha256 = "450c50cfdad1bc2bfc2c95d178ef4b6364247cf05a9ad537dd0e3370bfe7baee"
+notes = "Original .dne as served by BNMA; filename unchanged. 4 chance, 2 decision and 4 utility nodes; load_model returns an InfluenceDiagramModel."
+
+[parser_options]
+strict = true

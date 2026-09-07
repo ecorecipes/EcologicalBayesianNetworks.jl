@@ -1,0 +1,23 @@
+name = "animals"
+title = "Animals: animal-characteristics teaching network (Norsys)"
+category = "benchmark"
+domain_tags = ["teaching", "classification", "animals", "Norsys", "BNMA"]
+aliases = ["BNMA 157"]
+format = "dne"
+source_url = "https://bnma.co/bn/157"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=157"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Norsys Software Corp. (1998). Animal Characteristics. BNMA Bayesian Network Repository, record 157 (uploaded April 2016)."
+doi = ""
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 7
+n_arcs = 6
+retrieved = "2026-09-06"
+sha256 = "353d78634ab14ba5d8790fe237fa2b83d2f771343207b7a654424b485b0ed80e"
+notes = "Copyright 1998 Norsys Software Corp; CC BY-NC-ND on BNMA, so fetch-only. Toy classification network (7 chance nodes; 2 CONSTANT nodes are skipped by the reader). Not an ecological decision model."
+
+[parser_options]
+strict = true

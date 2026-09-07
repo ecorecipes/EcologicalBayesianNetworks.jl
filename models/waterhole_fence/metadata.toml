@@ -1,0 +1,25 @@
+name = "waterhole_fence"
+title = "Waterhole Fence: fencing and plant survival decision network"
+category = "decision"
+domain_tags = ["waterhole", "fencing", "plant survival", "expected value", "decision network", "BNMA"]
+aliases = ["BNMA 114"]
+format = "dne"
+file = "Waterhole_Fence.dne"
+source_url = "https://bnma.co/bn/114"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=114"
+fetch_instructions = ""
+citation = "Bayesian Intelligence Pty Ltd (2015). Waterhole Fence. BNMA Bayesian Network Repository, record 114."
+doi = ""
+licence = "CC-BY (version unstated)"
+redistribution = "verbatim"
+has_decisions = true
+has_utilities = true
+n_nodes = 10
+n_arcs = 12
+retrieved = "2026-09-06"
+sha256 = "53b7acf688bf29667a637c7b03d3fa05423895742d7b26cbb96a564aee2b5a68"
+notes = "Original .dne as served by BNMA (served as 'Waterhole Fence.dne'; the space in the filename was replaced by an underscore, content unchanged). Teaching example of an expected-value decision network: 6 chance, 1 decision and 3 utility nodes; load_model returns an InfluenceDiagramModel. The Rainfall prior sums to one only within 5e-8, which the reader accepts (atol = 1e-6) but BayesianNetworks.validate does not (atol = 1e-8), so the manifest sets renormalize = true."
+
+[parser_options]
+strict = true
+renormalize = true

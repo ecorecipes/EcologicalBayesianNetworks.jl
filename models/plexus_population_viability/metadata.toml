@@ -1,0 +1,23 @@
+name = "plexus_population_viability"
+title = "Generalised wildlife population-viability network (Plexus fig1)"
+category = "population"
+domain_tags = ["population viability", "wildlife", "land management", "Netica", "Plexus"]
+format = "dne"
+source_url = "https://www.plexuseco.com/The%20Plexus/bbns.htm"
+download_url = "https://www.plexuseco.com/The%20Plexus/fig1.dne"
+fetch_instructions = "Download the .dne directly with fetch_model(name) (the server rejects some browser User-Agent strings but accepts the default Julia/curl one); or open https://www.plexuseco.com/The%20Plexus/bbns.htm, save the linked .dne, then import_model(name, path). Licence unstated, so the file is never committed."
+citation = "Marcot, B. G., Holthausen, R. S., Raphael, M. G., Rowland, M. M. and Wisdom, M. J. (2001). Using Bayesian belief networks to evaluate fish and wildlife population viability under land management alternatives from an environmental impact statement. Forest Ecology and Management 153(1-3), 29-42. Model files from the Plexus Ecological Bayesian network collection."
+doi = "10.1016/S0378-1127(01)00452-2"
+licence = "unstated"
+redistribution = "fetch-only"
+has_decisions = true
+has_utilities = true
+n_nodes = 11
+n_arcs = 13
+retrieved = "2026-09-06"
+sha256 = "b9f77d61c495188a4117423213c5406c306f7a726d7d1aa915bde27a278d5c8b"
+notes = "Generalised BBN for evaluating wildlife population viability (B. G. Marcot, ICBEMP, alpha 1.0, 2000; Netica 5.00 export of 2011). 9 nature, 1 decision and 1 utility node; 7 CONSTANT nodes are skipped by the reader. Loading needs InfluenceDiagrams.jl. The nine chance nodes are Netica finding/equation nodes with evidence but no CPT, so the manifest sets allow_missing_tables = true and model_ir validates with BayesianNetworkFormats.validate(ir; allow_missing_tables = true)."
+
+[parser_options]
+strict = true
+allow_missing_tables = true

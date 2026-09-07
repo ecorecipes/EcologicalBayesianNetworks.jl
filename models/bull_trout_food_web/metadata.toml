@@ -1,0 +1,24 @@
+name = "bull_trout_food_web"
+title = "Bull Trout Food Web"
+category = "population"
+domain_tags = ["bull trout", "food web", "salmonid", "reintroduction", "Netica", "BNMA"]
+aliases = ["BNMA 149"]
+format = "dne"
+source_url = "https://bnma.co/bn/149"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=149"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Marcot, B. G., Allen, C. S., Morey, S., Shively, D. and White, R. (2016). Bull Trout Food Web. BNMA Bayesian Network Repository, record 149."
+doi = ""
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 10
+n_arcs = 15
+retrieved = "2026-09-07"
+sha256 = "909710cd1b3e9ffa9973c2292741fa817e36b2f0e27fdae3a142df48fe62a25f"
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. Reads strictly into 10 chance nodes and 15 arcs (1 CONSTANT node skipped); 2 chance nodes are Netica finding nodes with evidence but no CPT, so the manifest sets allow_missing_tables = true and load_model leaves those mechanisms unbound."
+
+[parser_options]
+strict = true
+allow_missing_tables = true

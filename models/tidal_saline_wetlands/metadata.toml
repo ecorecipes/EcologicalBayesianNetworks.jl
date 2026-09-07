@@ -1,0 +1,25 @@
+name = "tidal_saline_wetlands"
+title = "Tidal Saline Wetlands: Pacific coast wetland resilience under sea-level rise"
+category = "risk"
+domain_tags = ["tidal wetlands", "sea-level rise", "climate change", "resilience", "Netica", "BNMA"]
+aliases = ["BNMA 209"]
+format = "dne"
+source_url = "https://bnma.co/bn/209"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=209"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Marcot, B. G., Thorne, K. M., Carr, J. A. and Guntenspergen, G. R. (2022). Tidal Saline Wetlands Bayesian network model. BNMA Bayesian Network Repository, record 209."
+doi = "10.59381/efgk0939"
+licence = "CC-BY-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 18
+n_arcs = 16
+retrieved = "2026-09-06"
+sha256 = "90777b6e5e64538854f6740ecf3a47e75ee81674e67b5f07f99b5cb262b8975c"
+notes = "CC BY-ND: no derivatives, so the file is fetched into the cache only and never converted for redistribution. 18 chance nodes (3 CONSTANT nodes excluded). Two chance nodes (t, Denom) are Netica finding/equation nodes with evidence but no CPT, so the manifest sets allow_missing_tables = true and model_ir validates with BayesianNetworkFormats.validate(ir; allow_missing_tables = true); load_model leaves their mechanisms unbound. Several CPT rows sum to one only within 1e-7 (accepted by the reader, rejected by BayesianNetworks.validate at atol = 1e-8), so the manifest also sets renormalize = true."
+
+[parser_options]
+strict = true
+allow_missing_tables = true
+renormalize = true

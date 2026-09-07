@@ -1,0 +1,23 @@
+name = "microctonus_ng_risk"
+title = "BCA Microctonus non-target risk analysis, New Zealand native grassland"
+category = "biosecurity"
+domain_tags = ["biological control", "non-target risk", "Microctonus", "native grassland", "New Zealand", "GeNIe", "BNMA"]
+aliases = ["BNMA 204"]
+format = "xdsl"
+source_url = "https://bnma.co/bn/204"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=xdsl&bnId=204"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'GeNIe 2.0 XML format (.xdsl)', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Meurisse, N., Marcot, B. G., Woodberry, O., Barratt, B. I. P. and Todd, J. H. (2022). Risk analysis frameworks used in biological control and introduction of a novel Bayesian network tool. Risk Analysis 42(6), 1255-1276."
+doi = "10.1111/risa.13812"
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 45
+n_arcs = 51
+retrieved = "2026-09-06"
+sha256 = "baee0552984d5710df8ce597e9730688b706d957b783b901d5dea5b89eb435a0"
+notes = "BAIPA-style ecological risk assessment of a biocontrol agent. GeNIe 2.0 file with submodels; reads in strict mode (45 chance nodes)."
+
+[parser_options]
+strict = true

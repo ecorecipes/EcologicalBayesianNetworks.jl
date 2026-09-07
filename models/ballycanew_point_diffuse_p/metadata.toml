@@ -1,0 +1,23 @@
+name = "ballycanew_point_diffuse_p"
+title = "Ballycanew point-and-diffuse phosphorus tool (Model B)"
+category = "water"
+domain_tags = ["water quality", "phosphorus", "agricultural catchment", "Ireland", "GeNIe equations"]
+format = "xdsl"
+file = "Ptool_pointanddiffuse_v4.xdsl"
+source_url = "https://github.com/CamillaNegri/Ballycanew_Ptool"
+download_url = "https://raw.githubusercontent.com/CamillaNegri/Ballycanew_Ptool/main/data/Ptool_pointanddiffuse_v4.xdsl"
+fetch_instructions = ""
+citation = "Negri, C., Mellander, P.-E., Schurch, N., Wade, A. J., Gagkas, Z., Wardell-Johnson, D. H., Adams, K. and Glendell, M. (2024). Bayesian network modelling of phosphorus pollution in agricultural catchments with high-resolution data. Environmental Modelling and Software 178, 106073."
+doi = "10.1016/j.envsoft.2024.106073"
+licence = "MIT"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 12
+n_arcs = 8
+retrieved = "2026-09-06"
+sha256 = "86b051946e2ac64e30ecc7a6053506d5c1d07a358af2f1629394d55af7ff2b57"
+notes = "Partial support only: 26 of the 38 nodes are GeNIe <equation> (continuous) nodes; with strict = false they are skipped with their descendants (ir.extras[:skipped]), leaving 12 discrete nodes (n_nodes and n_arcs count the loadable subgraph). Kept as a parser stress test rather than a usable model."
+
+[parser_options]
+strict = false

@@ -1,0 +1,23 @@
+name = "ballycanew_diffuse_p"
+title = "Ballycanew diffuse phosphorus tool (Model A)"
+category = "water"
+domain_tags = ["water quality", "phosphorus", "agricultural catchment", "Ireland", "GeNIe equations"]
+format = "xdsl"
+file = "DiffusePtool_v4.xdsl"
+source_url = "https://github.com/CamillaNegri/Ballycanew_Ptool"
+download_url = "https://raw.githubusercontent.com/CamillaNegri/Ballycanew_Ptool/main/data/DiffusePtool_v4.xdsl"
+fetch_instructions = ""
+citation = "Negri, C., Mellander, P.-E., Schurch, N., Wade, A. J., Gagkas, Z., Wardell-Johnson, D. H., Adams, K. and Glendell, M. (2024). Bayesian network modelling of phosphorus pollution in agricultural catchments with high-resolution data. Environmental Modelling and Software 178, 106073."
+doi = "10.1016/j.envsoft.2024.106073"
+licence = "MIT"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 4
+n_arcs = 2
+retrieved = "2026-09-06"
+sha256 = "40e5aef01a5fb0ea107152d8058866ae7a9448a091454c36bf02758a126997ec"
+notes = "Partial support only: 19 of the 23 nodes are GeNIe <equation> (continuous) nodes, which the xdsl reader cannot represent; with strict = false they are skipped together with their descendants and listed in ir.extras[:skipped], leaving the 4 discrete nodes (n_nodes and n_arcs count the loadable subgraph). Kept as a parser stress test rather than a usable model."
+
+[parser_options]
+strict = false

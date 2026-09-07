@@ -1,0 +1,24 @@
+name = "water"
+title = "WATER: waste-water treatment plant control"
+category = "benchmark"
+domain_tags = ["water quality", "waste water", "benchmark", "bnlearn"]
+format = "net"
+file = "water.net.gz"
+source_url = "https://www.bnlearn.com/bnrepository/discrete-medium.html#water"
+download_url = "https://www.bnlearn.com/bnrepository/water/water.net.gz"
+fetch_instructions = ""
+citation = "Jensen, F. V., Kjaerulff, U., Olesen, K. G. and Pedersen, J. (1989). An expert system for control of waste water treatment: a pilot project. Technical report, Judex Datasystemer A/S, Aalborg. Distributed by Scutari, M., bnlearn Bayesian Network Repository."
+doi = ""
+licence = "CC BY-SA 3.0"
+redistribution = "verbatim"
+has_decisions = false
+has_utilities = false
+n_nodes = 32
+n_arcs = 66
+retrieved = "2026-09-06"
+sha256 = "a301f1f8b0b775da656adfcb35a4f57eef6f72185118f26942c0c8111b93a478"
+notes = "Committed gzipped exactly as served by bnlearn; the loader decompresses on the fly. Several CPT rows sum to one only within 1e-7, which the reader accepts (atol = 1e-6) but BayesianNetworks.validate does not (MarkovCategories.is_normalized uses atol = 1e-8), so the manifest sets renormalize = true. Medium discrete benchmark (32 nodes, 66 arcs, 10083 parameters); the largest in-degree is 5."
+
+[parser_options]
+strict = true
+renormalize = true

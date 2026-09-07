@@ -1,0 +1,424 @@
+# The grazing-management influence diagram
+Simon Frost
+
+- [Overview](#overview)
+- [Setup](#setup)
+- [Analysis 1: expected utility of each fixed
+  action](#analysis-1-expected-utility-of-each-fixed-action)
+- [Analysis 2: the optimal conditional
+  policy](#analysis-2-the-optimal-conditional-policy)
+- [Analysis 3: dropping the vegetation
+  survey](#analysis-3-dropping-the-vegetation-survey)
+- [Analysis 4: the value of observing the current
+  vegetation](#analysis-4-the-value-of-observing-the-current-vegetation)
+  - [Why no rescaling of the benefit alone can fix
+    that](#why-no-rescaling-of-the-benefit-alone-can-fix-that)
+  - [A third valuation, where the information is
+    decisive](#a-third-valuation-where-the-information-is-decisive)
+- [Analysis 5: direct intervention versus deciding under uncertain
+  implementation](#analysis-5-direct-intervention-versus-deciding-under-uncertain-implementation)
+- [Summary](#summary)
+- [References](#references)
+
+## Overview
+
+SPEC section 46 extends the reference habitat network with a
+grazing-management decision, an uncertain implementation and two
+utilities:
+
+``` text
+ Climate -> ClimateForecast                Climate -> SoilMoisture
+ CurrentVegetation ---------------------> Vegetation -> HabitatQuality -> Occupancy -> Biodiversity
+ GrazingManagement (decision) -> GrazingPressure -> Vegetation
+ information: ClimateForecast, CurrentVegetation -> GrazingManagement
+ utilities:   ConservationBenefit(Biodiversity), ManagementCost(GrazingManagement)
+```
+
+The decision acts on the vegetation only through `GrazingPressure`,
+whose kernel encodes imperfect implementation (SPEC section 42):
+excluding grazing yields low pressure with probability 0.95, maintaining
+it with probability 0.15. This vignette runs the five analyses required
+by SPEC section 46 on the zoo’s reference model,
+`reference_grazing_id()`, which is
+`InfluenceDiagrams.reference_grazing_model()`.
+
+## Setup
+
+``` julia
+using EcologicalBayesianNetworks
+using InfluenceDiagrams
+g = reference_grazing_id()
+```
+
+    InfluenceDiagramModel(10 variables, 1 decision, 2 utilities, 9 kernels, 2 bound)
+
+The same model comes back from `load_model`, and from the Netica fixture
+of `BayesianNetworkFormats.jl` through `read_influence_diagram`:
+
+``` julia
+load_model("reference_grazing_id") ≈ g,
+read_influence_diagram(fixture_path("dne/grazing_reference_id.dne")) ≈ g
+```
+
+    (true, true)
+
+``` julia
+to_graphviz(g; states = false)
+```
+
+![](03_management_influence_diagram_files/figure-commonmark/cell-4-output-1.svg)
+
+Decisions are boxes and utilities diamonds; dashed arcs are information
+arcs, which are not causal (SPEC section 34).
+
+``` julia
+information_names(syntax(g), :GrazingManagement), utility_names(syntax(g))
+```
+
+    ([:ClimateForecast, :CurrentVegetation], [:ConservationBenefit, :ManagementCost])
+
+``` julia
+model_summary("reference_grazing_id")
+```
+
+    ModelSummary reference_grazing_id (Reference grazing-management influence diagram (SPEC section 46))
+      format / licence     julia / MIT (builtin)
+      nodes                12 (9 chance, 1 decision, 2 utility)
+      arcs                 13
+      largest state space  3
+      largest in-degree    3
+      load_model           InfluenceDiagramModel
+
+## Analysis 1: expected utility of each fixed action
+
+`expected_utility(g, :D => :a)` fixes the decision (a constant policy)
+and evaluates the additive utility, conservation benefit minus
+management cost, by brute force over the joint law.
+
+``` julia
+actions = (:exclude, :reduce, :maintain)
+fixed = [a => expected_utility(g, :GrazingManagement => a) for a in actions]
+```
+
+    3-element Vector{Pair{Symbol, Float64}}:
+      :exclude => 2.422243462499958
+       :reduce => 24.84182619999995
+     :maintain => 36.524146862500004
+
+The benefit is 100 times the probability of high biodiversity; the cost
+is 40, 15 or 0.
+
+``` julia
+[a => 100 * marginal(instantiate(fix_decision(g, :GrazingManagement => a)), :Biodiversity).table[2]
+ for a in actions]
+```
+
+    3-element Vector{Pair{Symbol, Float64}}:
+      :exclude => 42.422243462499985
+       :reduce => 39.8418262
+     :maintain => 36.5241468625
+
+## Analysis 2: the optimal conditional policy
+
+`optimize` runs decision variable elimination by default and returns the
+maximal expected utility with an optimal strategy.
+
+``` julia
+sol = optimize(g)
+sol.expected_utility
+```
+
+    36.524146862500004
+
+The policy table is indexed by the information set in order: rows are
+the climate forecast (dry, normal, wet), columns the current vegetation
+(sparse, moderate, dense). With the reference numbers the management
+cost (40 for exclusion) dominates a conservation benefit of at most 100,
+so the optimal policy maintains grazing whatever the information, and
+the maximal expected utility equals the best fixed action:
+
+``` julia
+policy_table(sol.strategy[:GrazingManagement])
+```
+
+    3×3 Matrix{Symbol}:
+     :maintain  :maintain  :maintain
+     :maintain  :maintain  :maintain
+     :maintain  :maintain  :maintain
+
+The optimum is confirmed by exhaustive search over all $3^9$
+deterministic strategies:
+
+``` julia
+optimize(g, ExhaustivePolicySearch()).expected_utility, maximum(last.(fixed))
+```
+
+    (36.52414686249998, 36.524146862500004)
+
+A decision problem is only interesting when the information can change
+the decision. Valuing high biodiversity ten times more (a reserve, say)
+is a one-line change of the utility bound to the `ConservationBenefit`
+node; the syntax, the kernels and the information structure are
+untouched. The optimal policy now reacts to both the forecast and the
+survey:
+
+``` julia
+h = bind_utility(g, :ConservationBenefit => [0.0, 1000.0])
+solh = optimize(h)
+solh.expected_utility, policy_table(solh.strategy[:GrazingManagement])
+```
+
+    (384.64721647500005, [:reduce :exclude :exclude; :exclude :exclude :reduce; :exclude :exclude :reduce])
+
+``` julia
+[a => expected_utility(h, :GrazingManagement => a) for a in actions]
+```
+
+    3-element Vector{Pair{Symbol, Float64}}:
+      :exclude => 384.22243462499995
+       :reduce => 383.41826199999963
+     :maintain => 365.2414686250003
+
+Reacting is not the same as being worth reacting to, and it is worth
+saying plainly how little is at stake here. The conditional policy earns
+about 0.4 more than the best fixed action on an objective of about 385,
+roughly a tenth of a percent:
+
+``` julia
+best_fixed = maximum(expected_utility(h, :GrazingManagement => a) for a in actions)
+(optimum = solh.expected_utility, best_fixed = best_fixed,
+ gain = solh.expected_utility - best_fixed,
+ gain_percent = 100 * (solh.expected_utility - best_fixed) / solh.expected_utility)
+```
+
+    (optimum = 384.64721647500005, best_fixed = 384.22243462499995, gain = 0.4247818500001017, gain_percent = 0.11043414115742345)
+
+The remaining analyses use this valuation, and the reader should carry
+that number through them: everything Analysis 4 measures is of that
+size.
+
+## Analysis 3: dropping the vegetation survey
+
+`without_information` removes an information arc and drops the policies
+whose signature changed. Without the survey the policy can only react to
+the forecast:
+
+``` julia
+nosurvey = without_information(h, :GrazingManagement, :CurrentVegetation)
+sol3 = optimize(nosurvey)
+information_names(syntax(nosurvey), :GrazingManagement), sol3.expected_utility,
+policy_table(sol3.strategy[:GrazingManagement])
+```
+
+    ([:ClimateForecast], 384.22243462500006, [:exclude, :exclude, :exclude])
+
+## Analysis 4: the value of observing the current vegetation
+
+The value of the survey is the difference between the two optima (SPEC
+section 35) – the expected value of information of Howard
+([1966](#ref-Howard1966)), and the quantity Runge et al.
+([2011](#ref-Runge2011)) argue should be computed before an
+adaptive-management programme commissions any monitoring:
+
+``` julia
+expected_value_of_information(nosurvey, :CurrentVegetation, :GrazingManagement)
+```
+
+    0.424781849999988
+
+The forecast is worth less than the survey, and perfect information
+about everything upstream of the decision bounds what any monitoring
+programme could be worth:
+
+``` julia
+(forecast = expected_value_of_information(without_information(h, :GrazingManagement, :ClimateForecast),
+                                          :ClimateForecast, :GrazingManagement),
+ soil_moisture = expected_value_of_information(h, :SoilMoisture, :GrazingManagement),
+ perfect = expected_value_of_perfect_information(h, :GrazingManagement))
+```
+
+    (forecast = 0.10183635000004188, soil_moisture = 0.680054900000016, perfect = 0.680054900000016)
+
+These are the honest numbers and they are almost nothing: about 0.4 for
+the survey, 0.1 for the forecast and 0.7 for perfect information,
+against an objective near 385. A monitoring programme costing more than
+a rounding error on this objective would not pay for itself. The
+rescaled valuation makes the policy react to the information; it does
+not make the information worth having.
+
+### Why no rescaling of the benefit alone can fix that
+
+The reason is structural, not a matter of choosing a bigger number. The
+additive utility is
+`B * P(Biodiversity = high | action) + cost(action)`, so the optimal
+action in information state `i` is whichever maximises
+`B * P_a(high | i) + cost(a)`. Information is worth something only when
+that argmax changes with `i`, which needs the *difference* between
+actions, not their level, to depend on the information. Here it barely
+does:
+
+``` julia
+fcs, vegs = (:dry, :normal, :wet), (:sparse, :moderate, :dense)
+p_high(a, f, v) = probability(marginal(observe(instantiate(fix_decision(g, :GrazingManagement => a)),
+                                               [:ClimateForecast => f, :CurrentVegetation => v]),
+                                       :Biodiversity), :high)
+gaps = [round(p_high(:exclude, f, v) - p_high(:maintain, f, v); digits = 4)
+        for f in fcs, v in vegs]
+```
+
+    3×3 Matrix{Float64}:
+     0.056   0.0632  0.0585
+     0.0594  0.0626  0.0548
+     0.0613  0.0608  0.0496
+
+Excluding grazing raises the chance of high biodiversity by between
+about 0.050 and 0.063 whatever the forecast and whatever the survey
+says: a spread of a quarter around a mean of about 0.059. Multiplying
+the benefit by `B` multiplies both the spread and the objective, so the
+ratio between them is fixed. Sweeping `B` from 100 to 1600 never lifts
+the value of perfect information above about 1 on an objective that
+grows past 600.
+
+### A third valuation, where the information is decisive
+
+What *can* be tuned is the cost vector, because information is worth
+most when two actions are nearly tied. On average, excluding grazing
+beats reducing it by about 25.8 in benefit at `B = 1000`; pricing
+exclusion at 51 against reduction at 25 makes the two almost exactly
+break even, so which of them wins is decided state by state rather than
+on average:
+
+``` julia
+k = bind_utility(g, [:ConservationBenefit => [0.0, 1000.0],
+                     :ManagementCost => [-51.0, -25.0, 0.0]])
+fixed_k = [a => expected_utility(k, :GrazingManagement => a) for a in actions]
+```
+
+    3-element Vector{Pair{Symbol, Float64}}:
+      :exclude => 373.22243462499966
+       :reduce => 373.4182619999997
+     :maintain => 365.2414686250003
+
+``` julia
+solk = optimize(k)
+solk.expected_utility, policy_table(solk.strategy[:GrazingManagement])
+```
+
+    (373.9873744375, [:reduce :exclude :reduce; :reduce :exclude :reduce; :exclude :exclude :reduce])
+
+The policy now genuinely splits: exclusion on a moderate vegetation
+survey and on a wet forecast with sparse vegetation, reduction
+elsewhere. The value of information rises, and - more to the point - so
+does its share of what the decision is worth at all. Comparing the value
+of information with the whole objective was always the wrong
+denominator: most of that objective is earned no matter what the manager
+does. The quantity a monitoring budget competes against is the spread
+between the best and the worst action.
+
+``` julia
+best_k, worst_k = maximum(last.(fixed_k)), minimum(last.(fixed_k))
+(gain = solk.expected_utility - best_k,
+ survey = expected_value_of_information(without_information(k, :GrazingManagement, :CurrentVegetation),
+                                        :CurrentVegetation, :GrazingManagement),
+ forecast = expected_value_of_information(without_information(k, :GrazingManagement, :ClimateForecast),
+                                          :ClimateForecast, :GrazingManagement),
+ perfect = expected_value_of_perfect_information(k, :GrazingManagement),
+ decision_range = best_k - worst_k)
+```
+
+    (gain = 0.5691124375003369, survey = 0.5400709624999536, forecast = 0.0607149374999949, perfect = 1.0309598124999866, decision_range = 8.176793374999363)
+
+Perfect information is worth about 1.0 where the decision itself is
+worth about 8.2, so around an eighth of the value at stake - a
+monitoring programme that costs less than that is worth commissioning.
+Against the full objective of about 374 the same number is 0.3%, which
+is why the denominator has to be stated whenever a value of information
+is quoted. The remaining analyses stay with `h`, the plain tenfold
+valuation, so that they compare with Analyses 2 and 3.
+
+## Analysis 5: direct intervention versus deciding under uncertain implementation
+
+A hard intervention `do(GrazingPressure = low)` replaces the mechanism
+of the grazing pressure by a point mass: the pressure is low whatever
+the decision, and the decision only carries its cost. A management
+decision followed by uncertain implementation is the diagram as read:
+choosing `exclude` makes low pressure likely but not certain, and the
+cost is paid regardless.
+
+``` julia
+direct = do_intervention(h, :GrazingPressure => :low)
+intervened_variables(direct), history(direct)[1].kind
+```
+
+    ([:GrazingPressure], :hard)
+
+Under the intervention the management decision no longer affects the
+ecology, so the optimal policy is the cheapest action, `maintain`:
+
+``` julia
+sol_direct = optimize(direct)
+sol_direct.expected_utility, unique(policy_table(sol_direct.strategy[:GrazingManagement]))
+```
+
+    (427.908745, [:maintain])
+
+The conservation benefit of guaranteed low pressure compared with
+excluding grazing (the closest a manager can get to
+`do(GrazingPressure = low)`) and with maintaining it measures what
+perfect implementation would be worth:
+
+``` julia
+benefit(m, a) = 1000 * marginal(instantiate(fix_decision(m, :GrazingManagement => a)), :Biodiversity).table[2]
+(do_low = benefit(direct, :maintain), exclude = benefit(h, :exclude), maintain = benefit(h, :maintain))
+```
+
+    (do_low = 427.90874499999984, exclude = 424.2224346249999, maintain = 365.241468625)
+
+`do_intervention` on the action variable itself is different again: it
+removes the decision and installs a constant mechanism, the physical
+override of SPEC section 41, distinct from `fix_decision`, which keeps
+the decision and its information set and only changes the strategy.
+
+``` julia
+override = do_intervention(h, :GrazingManagement => :exclude)
+nparts(syntax(override), :Decision),
+expected_utility(instantiate(override)) ≈ expected_utility(h, :GrazingManagement => :exclude)
+```
+
+    (0, true)
+
+## Summary
+
+Adding a decision, an information set and two utilities to the reference
+habitat network turns it into an influence diagram that the same
+machinery solves, and the five SPEC section 46 analyses run without
+leaving the zoo. The honest finding is that with the reference numbers
+the optimal policy is constant and the value of the vegetation survey is
+a rounding error on the objective: information is worth nothing when it
+cannot change the decision, which is exactly what a value-of-information
+analysis is for ([Runge et al. 2011](#ref-Runge2011)). The next vignette
+builds the implementation chain of SPEC section 42 explicitly, as an
+open network glued onto the habitat network.
+
+## References
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-Howard1966" class="csl-entry">
+
+Howard, Ronald A. 1966. “Information Value Theory.” *IEEE Transactions
+on Systems Science and Cybernetics* 2 (1): 22–26.
+<https://doi.org/10.1109/TSSC.1966.300074>.
+
+</div>
+
+<div id="ref-Runge2011" class="csl-entry">
+
+Runge, Michael C., Sarah J. Converse, and James E. Lyons. 2011. “Which
+Uncertainty? Using Expert Elicitation and Expected Value of Information
+to Design an Adaptive Program.” *Biological Conservation* 144 (4):
+1214–23. <https://doi.org/10.1016/j.biocon.2010.12.020>.
+
+</div>
+
+</div>

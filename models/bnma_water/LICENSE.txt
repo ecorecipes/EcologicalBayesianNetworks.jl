@@ -1,0 +1,13 @@
+This model file is redistributed verbatim from the BNMA Bayesian Network
+Repository (https://bnma.co/bnrepo/), where its record is labelled
+"License: CC-BY-SA" (Creative Commons Attribution-ShareAlike; version unstated
+on the record, treated here as CC BY-SA 4.0,
+https://creativecommons.org/licenses/by-sa/4.0/). The file is unmodified.
+Derivative works must be distributed under the same licence.
+
+Attribution:
+  F. V. Jensen, U. Kjaerulff, K. G. Olesen and J. Pedersen. Water.
+  BNMA record 86 (uploaded December 2013).
+  Jensen, F. V., Kjaerulff, U., Olesen, K. G. and Pedersen, J. (1989).
+  An expert system for control of waste water treatment: a pilot project.
+  Technical report, Judex Datasystemer A/S, Aalborg.

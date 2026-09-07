@@ -1,0 +1,23 @@
+name = "hylastes_flight_activity"
+title = "Hylastes ater flight activity"
+category = "biosecurity"
+domain_tags = ["Hylastes ater", "flight activity", "forest biosecurity", "phytosanitary", "Netica", "BNMA"]
+aliases = ["BNMA 192"]
+format = "dne"
+source_url = "https://bnma.co/bn/192"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=192"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Pawson, S. M., Marcot, B. G. and Woodberry, O. G. (2017). Hylastes Flight Activity. BNMA Bayesian Network Repository, record 192."
+doi = ""
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 7
+n_arcs = 11
+retrieved = "2026-09-07"
+sha256 = "e8269321fd328664e9a14c531275d667045fdfe00cb3c8a8b7850c09d7f76535"
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. Reads strictly into 7 chance nodes and 11 arcs; the internal Netica name is hylastes_rationalised_decimal_."
+
+[parser_options]
+strict = true

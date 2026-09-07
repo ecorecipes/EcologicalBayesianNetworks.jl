@@ -1,0 +1,24 @@
+name = "polar_bear_stressor_i"
+title = "Polar Bear Stressor Model, Phase I"
+category = "population"
+domain_tags = ["polar bear", "stressors", "Arctic", "climate change", "Netica", "BNMA"]
+aliases = ["BNMA 146"]
+format = "dne"
+source_url = "https://bnma.co/bn/146"
+download_url = "https://bnma.co/bnrepo/?slice=download&format=dne&bnId=146"
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path); or call fetch_model(name), which uses the same GET endpoint the Save button uses. The licence forbids redistribution of the file, so it is never committed."
+citation = "Amstrup, S. C., Marcot, B. G. and Douglas, D. C. (2016). Polar Bear Stressor Model, Phase I. BNMA Bayesian Network Repository, record 146."
+doi = ""
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 38
+n_arcs = 44
+retrieved = "2026-09-07"
+sha256 = "7e9916ea32d23538c76416057d68a667826fef055a186e4c2a4ba77b502576ee"
+known_parse_issue = ""
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. The file uses an empty entry in a parenthesised list (`inputs = (, G);`), which the Netica reader supports."
+
+[parser_options]
+strict = true

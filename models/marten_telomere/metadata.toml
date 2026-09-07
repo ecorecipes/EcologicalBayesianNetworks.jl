@@ -1,0 +1,23 @@
+name = "marten_telomere"
+title = "Marten Telomere Genetics for Age Determination"
+category = "population"
+domain_tags = ["marten", "telomere", "age determination", "genetics", "Netica", "BNMA"]
+aliases = ["BNMA 156"]
+format = "dne"
+source_url = "https://bnma.co/bn/156"
+download_url = ""
+fetch_instructions = "Open the BNMA export page (source_url with body=convert), choose 'Netica .dne format', press Save, and then import_model(name, path). The download_url is empty because the repository's GET endpoint returned a cURL error body instead of the file for this record on 2026-09-07 while it served every other record; the Save button on the export page is the working route. The licence forbids redistribution of the file, so it is never committed."
+citation = "Pauli, J. N., Whiteman, J. P., Marcot, B. G., McClean, T. M. and Ben-David, M. (2016). Marten Telomere Genetics for Age Determination. BNMA Bayesian Network Repository, record 156."
+doi = ""
+licence = "CC-BY-NC-ND (version unstated)"
+redistribution = "fetch-only"
+has_decisions = false
+has_utilities = false
+n_nodes = 0
+n_arcs = 0
+retrieved = "2026-09-07"
+sha256 = ""
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. No sha256 and no node counts: the direct GET endpoint returned a 41-byte cURL error body rather than the model on 2026-09-07, so no test download could be checksummed. Record 230 (marten_age) is a related Marcot marten age network that does download."
+
+[parser_options]
+strict = true
