@@ -2375,6 +2375,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#why-no-rescaling-of-the-benefit-alone-can-fix-that" id="toc-why-no-rescaling-of-the-benefit-alone-can-fix-that" class="nav-link" data-scroll-target="#why-no-rescaling-of-the-benefit-alone-can-fix-that">Why no rescaling of the benefit alone can fix that</a></li>
   <li><a href="#a-third-valuation-where-the-information-is-decisive" id="toc-a-third-valuation-where-the-information-is-decisive" class="nav-link" data-scroll-target="#a-third-valuation-where-the-information-is-decisive">A third valuation, where the information is decisive</a></li>
+  <li><a href="#price-the-imperfect-signal-not-the-perfect-information-bound" id="toc-price-the-imperfect-signal-not-the-perfect-information-bound" class="nav-link" data-scroll-target="#price-the-imperfect-signal-not-the-perfect-information-bound">Price the imperfect signal, not the perfect-information bound</a></li>
   </ul></li>
   <li><a href="#analysis-5-direct-intervention-versus-deciding-under-uncertain-implementation" id="toc-analysis-5-direct-intervention-versus-deciding-under-uncertain-implementation" class="nav-link" data-scroll-target="#analysis-5-direct-intervention-versus-deciding-under-uncertain-implementation">Analysis 5: direct intervention versus deciding under uncertain implementation</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
@@ -2636,40 +2637,58 @@ window.Quarto = {
 <pre><code>(gain = 0.5691124375003369, survey = 0.5400709624999536, forecast = 0.0607149374999949, perfect = 1.0309598124999866, decision_range = 8.176793374999363)</code></pre>
 </div>
 </div>
-<p>Perfect information is worth about 1.0 where the decision itself is worth about 8.2, so around an eighth of the value at stake - a monitoring programme that costs less than that is worth commissioning. Against the full objective of about 374 the same number is 0.3%, which is why the denominator has to be stated whenever a value of information is quoted. The remaining analyses stay with <code>h</code>, the plain tenfold valuation, so that they compare with Analyses 2 and 3.</p>
+<p>Perfect information is worth about 1.0 where the decision itself is worth about 8.2, so around an eighth of the value at stake. This is an upper bound on a monitoring programme’s benefit, not a commissioning recommendation: a real signal may be much less valuable. Against the full objective of about 374 the same number is 0.3%, which is why the denominator and the actual signal both have to be stated.</p>
+</section>
+<section id="price-the-imperfect-signal-not-the-perfect-information-bound" class="level3">
+<h3 class="anchored" data-anchor-id="price-the-imperfect-signal-not-the-perfect-information-bound">Price the imperfect signal, not the perfect-information bound</h3>
+<p>Use the uninformed umbrella model to keep the comparison transparent. A forecast has a noisy observation mechanism; perfect weather knowledge is a different signal. Both gains below are measured against the same no-information baseline:</p>
+<div id="42" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>uninformed <span class="op">=</span> <span class="fu">without_information</span>(<span class="fu">umbrella_model</span>(), <span class="op">:</span>Umbrella, <span class="op">:</span>Forecast)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>forecast_value <span class="op">=</span> <span class="fu">expected_value_of_information</span>(uninformed, <span class="op">:</span>Forecast, <span class="op">:</span>Umbrella)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>perfect_value <span class="op">=</span> <span class="fu">expected_value_of_perfect_information</span>(uninformed, <span class="op">:</span>Umbrella)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>forecast_cost <span class="op">=</span> <span class="fl">10.0</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>(forecast_value <span class="op">=</span> forecast_value, perfect_value <span class="op">=</span> perfect_value,</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a> cost <span class="op">=</span> forecast_cost, net_value <span class="op">=</span> forecast_value <span class="op">-</span> forecast_cost,</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a> commission <span class="op">=</span> forecast_value <span class="op">&gt;</span> forecast_cost)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>(forecast_value = 7.000000000000014, perfect_value = 21.0, cost = 10.0, net_value = -2.999999999999986, commission = false)</code></pre>
+</div>
+</div>
+<p>The forecast is worth 7, perfect information 21, and this forecast costs 10. It should not be commissioned even though its cost is below EVPI. In a substantive application the signal’s accuracy, timing and cost must be specified before its expected information value can be compared with cost.</p>
+<p>The remaining analyses stay with <code>h</code>, the plain tenfold valuation, so that they compare with Analyses 2 and 3.</p>
 </section>
 </section>
 <section id="analysis-5-direct-intervention-versus-deciding-under-uncertain-implementation" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-5-direct-intervention-versus-deciding-under-uncertain-implementation">Analysis 5: direct intervention versus deciding under uncertain implementation</h2>
 <p>A hard intervention <code>do(GrazingPressure = low)</code> replaces the mechanism of the grazing pressure by a point mass: the pressure is low whatever the decision, and the decision only carries its cost. A management decision followed by uncertain implementation is the diagram as read: choosing <code>exclude</code> makes low pressure likely but not certain, and the cost is paid regardless.</p>
-<div id="42" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>direct <span class="op">=</span> <span class="fu">do_intervention</span>(h, <span class="op">:</span>GrazingPressure <span class="op">=&gt;</span> <span class="op">:</span>low)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">intervened_variables</span>(direct), <span class="fu">history</span>(direct)[<span class="fl">1</span>].kind</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="44" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>direct <span class="op">=</span> <span class="fu">do_intervention</span>(h, <span class="op">:</span>GrazingPressure <span class="op">=&gt;</span> <span class="op">:</span>low)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">intervened_variables</span>(direct), <span class="fu">history</span>(direct)[<span class="fl">1</span>].kind</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>([:GrazingPressure], :hard)</code></pre>
 </div>
 </div>
 <p>Under the intervention the management decision no longer affects the ecology, so the optimal policy is the cheapest action, <code>maintain</code>:</p>
-<div id="44" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>sol_direct <span class="op">=</span> <span class="fu">optimize</span>(direct)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>sol_direct.expected_utility, <span class="fu">unique</span>(<span class="fu">policy_table</span>(sol_direct.strategy[<span class="op">:</span>GrazingManagement]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="46" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>sol_direct <span class="op">=</span> <span class="fu">optimize</span>(direct)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>sol_direct.expected_utility, <span class="fu">unique</span>(<span class="fu">policy_table</span>(sol_direct.strategy[<span class="op">:</span>GrazingManagement]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>(427.908745, [:maintain])</code></pre>
 </div>
 </div>
 <p>The conservation benefit of guaranteed low pressure compared with excluding grazing (the closest a manager can get to <code>do(GrazingPressure = low)</code>) and with maintaining it measures what perfect implementation would be worth:</p>
-<div id="46" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">benefit</span>(m, a) <span class="op">=</span> <span class="fl">1000</span> <span class="op">*</span> <span class="fu">marginal</span>(<span class="fu">instantiate</span>(<span class="fu">fix_decision</span>(m, <span class="op">:</span>GrazingManagement <span class="op">=&gt;</span> a)), <span class="op">:</span>Biodiversity).table[<span class="fl">2</span>]</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>(do_low <span class="op">=</span> <span class="fu">benefit</span>(direct, <span class="op">:</span>maintain), exclude <span class="op">=</span> <span class="fu">benefit</span>(h, <span class="op">:</span>exclude), maintain <span class="op">=</span> <span class="fu">benefit</span>(h, <span class="op">:</span>maintain))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="48" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">benefit</span>(m, a) <span class="op">=</span> <span class="fl">1000</span> <span class="op">*</span> <span class="fu">marginal</span>(<span class="fu">instantiate</span>(<span class="fu">fix_decision</span>(m, <span class="op">:</span>GrazingManagement <span class="op">=&gt;</span> a)), <span class="op">:</span>Biodiversity).table[<span class="fl">2</span>]</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>(do_low <span class="op">=</span> <span class="fu">benefit</span>(direct, <span class="op">:</span>maintain), exclude <span class="op">=</span> <span class="fu">benefit</span>(h, <span class="op">:</span>exclude), maintain <span class="op">=</span> <span class="fu">benefit</span>(h, <span class="op">:</span>maintain))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>(do_low = 427.90874499999984, exclude = 424.2224346249999, maintain = 365.241468625)</code></pre>
 </div>
 </div>
 <p><code>do_intervention</code> on the action variable itself is different again: it removes the decision and installs a constant mechanism, the physical override of SPEC section 41, distinct from <code>fix_decision</code>, which keeps the decision and its information set and only changes the strategy.</p>
-<div id="48" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>override <span class="op">=</span> <span class="fu">do_intervention</span>(h, <span class="op">:</span>GrazingManagement <span class="op">=&gt;</span> <span class="op">:</span>exclude)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nparts</span>(<span class="fu">syntax</span>(override), <span class="op">:</span>Decision),</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">expected_utility</span>(<span class="fu">instantiate</span>(override)) <span class="op">≈</span> <span class="fu">expected_utility</span>(h, <span class="op">:</span>GrazingManagement <span class="op">=&gt;</span> <span class="op">:</span>exclude)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="50" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>override <span class="op">=</span> <span class="fu">do_intervention</span>(h, <span class="op">:</span>GrazingManagement <span class="op">=&gt;</span> <span class="op">:</span>exclude)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nparts</span>(<span class="fu">syntax</span>(override), <span class="op">:</span>Decision),</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">expected_utility</span>(<span class="fu">instantiate</span>(override)) <span class="op">≈</span> <span class="fu">expected_utility</span>(h, <span class="op">:</span>GrazingManagement <span class="op">=&gt;</span> <span class="op">:</span>exclude)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>(0, true)</code></pre>
 </div>

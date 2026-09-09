@@ -18,7 +18,8 @@ n_arcs = 53
 retrieved = "2026-09-07"
 sha256 = "415eeb4361865c30f6d6823e0a4dbd74bc73fa6a32743fa3239fe7796177cd8a"
 known_parse_issue = ""
-notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. The file uses empty entries in `statetitles`, which the Netica reader supports; three Netica CONSTANT title labels are skipped, as always."
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. The file uses empty entries in `statetitles`, which the Netica reader supports; three Netica CONSTANT title labels are skipped, as always. Finding/equation nodes IceArea, IceChng, IceShelf, PryAcc, HumFood, TerrRef, ParDis, Ship, Pred, Per, Scenario, GCMset and ScenNum have no CPTs. Partial loading is allowed and these mechanisms remain unbound; no probability tables are invented."
 
 [parser_options]
 strict = true
+allow_missing_tables = true

@@ -50,6 +50,10 @@ end
 
 const DEFAULT_CACHE = cache_dir()
 const DEFAULT_CACHE_BEFORE = _tree_snapshot(DEFAULT_CACHE)
+const SCRATCH_CACHE = withenv(E.CACHE_ENV_VAR => nothing) do
+    return cache_dir()
+end
+const SCRATCH_CACHE_BEFORE = _tree_snapshot(SCRATCH_CACHE)
 
 mktempdir() do cache_root
     with_cache_dir(cache_root) do
@@ -71,4 +75,5 @@ end
 @testset "the default cache is untouched" begin
     @test cache_dir() == DEFAULT_CACHE
     @test _tree_snapshot(DEFAULT_CACHE) == DEFAULT_CACHE_BEFORE
+    @test _tree_snapshot(SCRATCH_CACHE) == SCRATCH_CACHE_BEFORE
 end

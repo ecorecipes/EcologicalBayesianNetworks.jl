@@ -8,7 +8,7 @@
 
 <meta name="author" content="Simon Frost">
 
-<title>Scenario analysis on the WATER benchmark</title>
+<title>Held-out ecological prediction: Palmer penguins</title>
 <style>
 
 code{white-space: pre-wrap;}
@@ -2227,20 +2227,20 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#every-marginal-from-one-calibration" id="toc-every-marginal-from-one-calibration" class="nav-link" data-scroll-target="#every-marginal-from-one-calibration">Every marginal from one calibration</a></li>
-  <li><a href="#scenarios-observing-versus-intervening-upstream" id="toc-scenarios-observing-versus-intervening-upstream" class="nav-link" data-scroll-target="#scenarios-observing-versus-intervening-upstream">Scenarios: observing versus intervening upstream</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#a-prediction-exercise-with-real-observations" id="toc-a-prediction-exercise-with-real-observations" class="nav-link active" data-scroll-target="#a-prediction-exercise-with-real-observations">A prediction exercise with real observations</a></li>
+  <li><a href="#provenance-and-a-fixed-split" id="toc-provenance-and-a-fixed-split" class="nav-link" data-scroll-target="#provenance-and-a-fixed-split">Provenance and a fixed split</a></li>
+  <li><a href="#learn-the-representation-using-training-data-only" id="toc-learn-the-representation-using-training-data-only" class="nav-link" data-scroll-target="#learn-the-representation-using-training-data-only">Learn the representation using training data only</a></li>
+  <li><a href="#score-untouched-observations-against-a-prior-baseline" id="toc-score-untouched-observations-against-a-prior-baseline" class="nav-link" data-scroll-target="#score-untouched-observations-against-a-prior-baseline">Score untouched observations against a prior baseline</a></li>
+  <li><a href="#what-this-result-does-and-does-not-establish" id="toc-what-this-result-does-and-does-not-establish" class="nav-link" data-scroll-target="#what-this-result-does-and-does-not-establish">What this result does and does not establish</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="06_scenario_analysis_on_benchmark_water.md"><i class="bi bi-file-code"></i>Github (GFM)</a></li><li><a href="06_scenario_analysis_on_benchmark_water.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="08_held_out_penguin_validation.md"><i class="bi bi-file-code"></i>Github (GFM)</a></li><li><a href="08_held_out_penguin_validation.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Scenario analysis on the WATER benchmark</h1>
+<h1 class="title">Held-out ecological prediction: Palmer penguins</h1>
 </div>
 
 
@@ -2263,157 +2263,134 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>WATER (Jensen et al. 1989) models the control of a waste-water treatment plant: eight water-quality quantities (biological oxygen demand, Kjeldahl nitrogen and nitrate in the different tanks) at four time points fifteen minutes apart, 32 nodes, 66 arcs and about ten thousand parameters. It is far too large for the brute-force joint distribution, which makes it the right model for <code>BayesianNetworkInference.jl</code>. This vignette computes every marginal by junction-tree calibration, cross-checks one against variable elimination, and runs scenarios that set an upstream quantity either by observation or by intervention. Scenario analysis of this kind – an upstream quantity set to a value and the consequences read off downstream – is the standard use of Bayesian networks in environmental risk assessment <span class="citation" data-cites="Moe2021 Kaikkonen2021">(<a href="#ref-Moe2021" role="doc-biblioref">Moe et al. 2021</a>; <a href="#ref-Kaikkonen2021" role="doc-biblioref">Kaikkonen et al. 2021</a>)</span>.</p>
+<section id="a-prediction-exercise-with-real-observations" class="level2">
+<h2 class="anchored" data-anchor-id="a-prediction-exercise-with-real-observations">A prediction exercise with real observations</h2>
+<p>The earlier scoring examples used simulated cases to demonstrate machinery. Here the observations are real measurements of adult penguins collected around Palmer Station in 2007-2009 <span class="citation" data-cites="Gorman2014">(<a href="#ref-Gorman2014" role="doc-biblioref">Gorman et al. 2014</a>)</span>. We fit a small finite Bayesian network on 2007-2008 and predict species in the untouched 2009 observations.</p>
+<p>The model is a deliberately simple classifier built for this vignette, not a published model from the zoo. The question is predictive discrimination within this sampling setting, not a causal effect or a conservation recommendation.</p>
 </section>
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<section id="provenance-and-a-fixed-split" class="level2">
+<h2 class="anchored" data-anchor-id="provenance-and-a-fixed-split">Provenance and a fixed split</h2>
+<p>The CC0 <code>palmerpenguins</code> table <span class="citation" data-cites="Horst2020">(<a href="#ref-Horst2020" role="doc-biblioref">Horst et al. 2020</a>)</span> is included verbatim beside this source in <code>data/penguins.csv</code>, with its source commit, SHA-256 and attribution in <code>data/LICENSE.md</code>. No model download or user’s model cache is involved.</p>
 <div id="2" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">EcologicalBayesianNetworks</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">BayesianNetworks</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">BayesianNetworkInference</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>water <span class="op">=</span> <span class="fu">load_model</span>(<span class="st">&quot;water&quot;</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">model_summary</span>(<span class="st">&quot;water&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">BayesianNetworks</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">BayesianNetworkInference</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> [<span class="fu">NamedTuple</span>(row) for row <span class="kw">in</span> CSV.<span class="fu">File</span>(<span class="fu">joinpath</span>(<span class="pp">@__DIR__</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;penguins.csv&quot;</span>);</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                           missingstring <span class="op">=</span> <span class="st">&quot;NA&quot;</span>)]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>complete <span class="op">=</span> <span class="fu">filter</span>(rows) <span class="cf">do</span> r</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    !<span class="fu">any</span>(ismissing, (r.species, r.bill_length_mm, r.flipper_length_mm, r.sex, r.year))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>training <span class="op">=</span> <span class="fu">filter</span>(r <span class="op">-&gt;</span> r.year <span class="op">&lt;</span> <span class="fl">2009</span>, complete)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>held_out <span class="op">=</span> <span class="fu">filter</span>(r <span class="op">-&gt;</span> r.year <span class="op">==</span> <span class="fl">2009</span>, complete)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>(available <span class="op">=</span> <span class="fu">length</span>(rows), complete_cases <span class="op">=</span> <span class="fu">length</span>(complete),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a> excluded <span class="op">=</span> <span class="fu">length</span>(rows) <span class="op">-</span> <span class="fu">length</span>(complete), training <span class="op">=</span> <span class="fu">length</span>(training),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a> held_out <span class="op">=</span> <span class="fu">length</span>(held_out), training_years <span class="op">=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(r.year <span class="cf">for</span> r <span class="kw">in</span> training)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>ModelSummary water (WATER: waste-water treatment plant control)
-  format / licence     net / CC BY-SA 3.0 (verbatim)
-  nodes                32 (32 chance, 0 decision, 0 utility)
-  arcs                 66
-  largest state space  4
-  largest in-degree    5
-  load_model           BayesModel</code></pre>
+<pre><code>(available = 344, complete_cases = 333, excluded = 11, training = 216, held_out = 117, training_years = [2007, 2008])</code></pre>
 </div>
 </div>
-<p>The file is the gzipped HUGIN <code>.net</code> from the bnlearn repository <span class="citation" data-cites="Scutari2010">(<a href="#ref-Scutari2010" role="doc-biblioref">Scutari 2010</a>)</span>, decompressed in memory; some rows sum to one only within 1e-7, so the manifest sets <code>renormalize = true</code> and the model validates.</p>
+<p>Rows missing a required predictor are excluded, with the count reported above. That is a complete-case analysis, not an assumption that missingness is harmless. All 2009 rows are kept together. No discretization cut point or CPT is learned from them.</p>
+</section>
+<section id="learn-the-representation-using-training-data-only" class="level2">
+<h2 class="anchored" data-anchor-id="learn-the-representation-using-training-data-only">Learn the representation using training data only</h2>
+<p>Bill and flipper lengths are discretized at training-set tertiles. Three bins and Laplace smoothing with pseudocount one are fixed choices for this demonstration; we do not tune them against the held-out scores.</p>
 <div id="4" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">validate</span>(water; closed <span class="op">=</span> <span class="cn">true</span>, unique_names <span class="op">=</span> <span class="cn">true</span>, semantics <span class="op">=</span> <span class="cn">true</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The eight quantities at 12:00 are the roots; each feeds its own value and one or two neighbours at 12:15, and so on.</p>
-<div id="6" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>bn <span class="op">=</span> <span class="fu">syntax</span>(water)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>[<span class="fu">variable_name</span>(bn, r) <span class="op">=&gt;</span> <span class="fu">variable_name</span>.(<span class="fu">Ref</span>(bn), <span class="fu">children</span>(bn, r)) for r <span class="kw">in</span> <span class="fu">roots</span>(bn)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> [<span class="op">:</span>small, <span class="op">:</span>medium, <span class="op">:</span>large]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>species <span class="op">=</span> [<span class="op">:</span>Adelie, <span class="op">:</span>Chinstrap, <span class="op">:</span>Gentoo]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sexes <span class="op">=</span> [<span class="op">:</span>female, <span class="op">:</span>male]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>bill_cuts <span class="op">=</span> <span class="fu">quantile</span>([r.bill_length_mm for r <span class="kw">in</span> training], [<span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span>])</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>flipper_cuts <span class="op">=</span> <span class="fu">quantile</span>([r.flipper_length_mm for r <span class="kw">in</span> training], [<span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span>])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">bin</span>(x, cuts) <span class="op">=</span> bins[x <span class="op">&lt;=</span> cuts[<span class="fl">1</span>] ? <span class="fl">1</span> <span class="op">:</span> x <span class="op">&lt;=</span> cuts[<span class="fl">2</span>] ? <span class="fl">2</span> <span class="op">:</span> <span class="fl">3</span>]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">as_case</span>(r) <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>Species <span class="op">=&gt;</span> <span class="fu">Symbol</span>(r.species),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                  <span class="op">:</span>BillLength <span class="op">=&gt;</span> <span class="fu">bin</span>(r.bill_length_mm, bill_cuts),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                  <span class="op">:</span>FlipperLength <span class="op">=&gt;</span> <span class="fu">bin</span>(r.flipper_length_mm, flipper_cuts),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                  <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">Symbol</span>(r.sex))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>train_cases <span class="op">=</span> <span class="fu">as_case</span>.(training)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>test_cases <span class="op">=</span> <span class="fu">as_case</span>.(held_out)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>(bill_cuts <span class="op">=</span> bill_cuts, flipper_cuts <span class="op">=</span> flipper_cuts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>8-element Vector{Pair{Symbol, Vector{Symbol}}}:
-  :C_NI_12_00 =&gt; [:C_NI_12_15, :CBODD_12_15]
-  :CKNI_12_00 =&gt; [:CKNI_12_15, :CBODD_12_15, :CKND_12_15]
- :CBODD_12_00 =&gt; [:CBODD_12_15, :CNOD_12_15, :CBODN_12_15]
-  :CKND_12_00 =&gt; [:CKND_12_15, :CKNN_12_15]
-  :CNOD_12_00 =&gt; [:CBODD_12_15, :CNOD_12_15, :CNON_12_15]
- :CBODN_12_00 =&gt; [:CBODD_12_15, :CBODN_12_15, :CNON_12_15]
-  :CKNN_12_00 =&gt; [:CKND_12_15, :CKNN_12_15, :CNON_12_15]
-  :CNON_12_00 =&gt; [:CNOD_12_15, :CBODN_12_15, :CNON_12_15]</code></pre>
+<pre><code>(bill_cuts = [40.9, 46.43333333333333], flipper_cuts = [191.0, 209.0])</code></pre>
 </div>
+</div>
+<p>The classifier assumes the three predictors are conditionally independent given species. This naive-Bayes assumption is an approximation: the measurements are biologically related. It is not a claim about causal direction.</p>
+<div id="6" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>bn <span class="op">=</span> <span class="fu">bayesnet</span>(<span class="op">:</span>Species <span class="op">=&gt;</span> species, <span class="op">:</span>BillLength <span class="op">=&gt;</span> bins, <span class="op">:</span>FlipperLength <span class="op">=&gt;</span> bins,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>              <span class="op">:</span>Sex <span class="op">=&gt;</span> sexes;</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              mechanisms <span class="op">=</span> [<span class="op">:</span>BillLength <span class="op">=&gt;</span> <span class="op">:</span>Species, <span class="op">:</span>FlipperLength <span class="op">=&gt;</span> <span class="op">:</span>Species,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                            <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="op">:</span>Species])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">fit_classifier</span>(cases)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    prior_counts <span class="op">=</span> [<span class="fl">1.0</span> <span class="op">+</span> <span class="fu">count</span>(c <span class="op">-&gt;</span> c[<span class="op">:</span>Species] <span class="op">==</span> s, cases) for s <span class="kw">in</span> species]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    fitted <span class="op">=</span> <span class="fu">bind_cpt</span>(<span class="fu">BayesModel</span>(bn), <span class="op">:</span>Species <span class="op">=&gt;</span> prior_counts <span class="op">./</span> <span class="fu">sum</span>(prior_counts))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (variable, levels) <span class="kw">in</span> ((<span class="op">:</span>BillLength, bins), (<span class="op">:</span>FlipperLength, bins), (<span class="op">:</span>Sex, sexes))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        counts <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(species), <span class="fu">length</span>(levels))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> c <span class="kw">in</span> cases</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> <span class="fu">findfirst</span>(<span class="op">==</span>(c[<span class="op">:</span>Species]), species)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            j <span class="op">=</span> <span class="fu">findfirst</span>(<span class="op">==</span>(c[variable]), levels)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            counts[i, j] <span class="op">+=</span> <span class="fl">1</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        fitted <span class="op">=</span> <span class="fu">bind_cpt</span>(fitted, variable <span class="op">=&gt;</span> counts <span class="op">./</span> <span class="fu">sum</span>(counts; dims <span class="op">=</span> <span class="fl">2</span>))</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fitted</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit_classifier</span>(train_cases)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="fu">validate</span>(model; closed <span class="op">=</span> <span class="cn">true</span>, unique_names <span class="op">=</span> <span class="cn">true</span>, semantics <span class="op">=</span> <span class="cn">true</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="every-marginal-from-one-calibration" class="level2">
-<h2 class="anchored" data-anchor-id="every-marginal-from-one-calibration">Every marginal from one calibration</h2>
-<p><code>all_marginals</code> with the <code>JunctionTree</code> backend builds a clique tree of the moralised graph, calibrates it once by Shafer-Shenoy message passing <span class="citation" data-cites="ShaferShenoy1990">(<a href="#ref-ShaferShenoy1990" role="doc-biblioref">Shafer and Shenoy 1990</a>)</span> and reads every single-variable posterior off its clique. The first call pays Julia’s compilation; the timing below is of a second call. Every timing in this vignette is an order of magnitude, not a benchmark: it is whatever the machine that last rendered these pages managed, and it will differ on yours.</p>
+<section id="score-untouched-observations-against-a-prior-baseline" class="level2">
+<h2 class="anchored" data-anchor-id="score-untouched-observations-against-a-prior-baseline">Score untouched observations against a prior baseline</h2>
+<p><code>predict</code> withholds the target even though each case includes its observed label. The baseline ignores predictors and uses only the species prior learned from the same training cases. Lower Brier score, higher log score and higher accuracy are better.</p>
 <div id="8" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all_marginals</span>(water; backend <span class="op">=</span> <span class="fu">JunctionTree</span>())</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>t_jt <span class="op">=</span> <span class="pp">@elapsed</span> ms <span class="op">=</span> <span class="fu">all_marginals</span>(water; backend <span class="op">=</span> <span class="fu">JunctionTree</span>())</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(ms), <span class="fu">round</span>(t_jt; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>prediction <span class="op">=</span> <span class="fu">predict</span>(model, test_cases, <span class="op">:</span>Species;</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                     evidence_vars <span class="op">=</span> [<span class="op">:</span>BillLength, <span class="op">:</span>FlipperLength, <span class="op">:</span>Sex])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>prior_prediction <span class="op">=</span> <span class="fu">baseline</span>(model, test_cases, <span class="op">:</span>Species)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> [(method <span class="op">=</span> label, n <span class="op">=</span> <span class="fu">length</span>(p), brier <span class="op">=</span> <span class="fu">brier_score</span>(p),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            log_score <span class="op">=</span> <span class="fu">log_score</span>(p), accuracy <span class="op">=</span> <span class="fu">accuracy</span>(p))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           for (label, p) <span class="kw">in</span> ((<span class="st">&quot;naive Bayes&quot;</span>, prediction), (<span class="st">&quot;training prior&quot;</span>, prior_prediction))]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>(32, 0.126)</code></pre>
+<pre><code>2-element Vector{@NamedTuple{method::String, n::Int64, brier::Float64, log_score::Float64, accuracy::Float64}}:
+ (method = &quot;naive Bayes&quot;, n = 117, brier = 0.1768949277634653, log_score = -0.3298607488958938, accuracy = 0.8632478632478633)
+ (method = &quot;training prior&quot;, n = 117, brier = 0.6378120256896763, log_score = -1.0530985668347588, accuracy = 0.4444444444444444)</code></pre>
 </div>
 </div>
 <div id="10" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ms[<span class="op">:</span>CKNI_12_45]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusion_matrix</span>(prediction)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>Factor{Float64} over (:CKNI_12_45,) with size (3,)</code></pre>
+<pre><code>ConfusionMatrix over 3 states (accuracy 0.8632)
+  observed \ predicted     Adelie  Chinstrap     Gentoo
+       Adelie         43          8          1
+    Chinstrap          2         20          2
+       Gentoo          0          3         38</code></pre>
 </div>
 </div>
-<p>Variable elimination answers one query at a time and is the oracle the junction tree is tested against; its diagnostics report the elimination order’s largest factor and the treewidth of the moral graph.</p>
+<p>Aggregate accuracy can conceal differences between species, which is why the confusion matrix accompanies the proper scores. The same queries through a junction tree agree numerically with variable elimination:</p>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p, diag <span class="op">=</span> <span class="fu">infer</span>(water, <span class="op">:</span>CKNI_12_45; backend <span class="op">=</span> <span class="fu">VariableElimination</span>())</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>p.table <span class="op">≈</span> ms[<span class="op">:</span>CKNI_12_45].table, diag.treewidth, diag.max_factor_size</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>via_tree <span class="op">=</span> <span class="fu">predict</span>(model, test_cases, <span class="op">:</span>Species;</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                   evidence_vars <span class="op">=</span> [<span class="op">:</span>BillLength, <span class="op">:</span>FlipperLength, <span class="op">:</span>Sex],</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                   backend <span class="op">=</span> <span class="fu">JunctionTree</span>())</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>(brier_difference <span class="op">=</span> <span class="fu">brier_score</span>(prediction) <span class="op">-</span> <span class="fu">brier_score</span>(via_tree),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a> log_score_difference <span class="op">=</span> <span class="fu">log_score</span>(prediction) <span class="op">-</span> <span class="fu">log_score</span>(via_tree))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>(true, 10, 1769472)</code></pre>
+<pre><code>(brier_difference = -1.6653345369377348e-16, log_score_difference = 1.1102230246251565e-16)</code></pre>
 </div>
 </div>
-<div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>t_ve <span class="op">=</span> <span class="pp">@elapsed</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="fu">variable_names</span>(bn)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">infer</span>(water, x; backend <span class="op">=</span> <span class="fu">VariableElimination</span>())</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(t_ve; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>1.494</code></pre>
-</div>
-</div>
+<p>Backend agreement establishes computational consistency on these cases, not predictive validity. The held-out labels provide the separate predictive evidence.</p>
 </section>
-<section id="scenarios-observing-versus-intervening-upstream" class="level2">
-<h2 class="anchored" data-anchor-id="scenarios-observing-versus-intervening-upstream">Scenarios: observing versus intervening upstream</h2>
-<p>A scenario sets the Kjeldahl nitrogen entering the plant at 12:15, <code>CKNI_12_15</code>, to each of its three levels and asks what the same quantity and the biological oxygen demand look like at 12:45. Setting it by <em>observation</em> conditions the whole network, including the 12:00 quantities upstream of it; setting it by <em>intervention</em> cuts the arc from 12:00 and leaves the upstream quantities at their priors, so the two scenarios differ wherever a 12:00 quantity has another path to 12:45.</p>
-<div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>scenario <span class="op">=</span> <span class="op">:</span>CKNI_12_15</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>targets <span class="op">=</span> [<span class="op">:</span>CKNI_12_45, <span class="op">:</span>CBODD_12_45]</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="fu">lpad</span>(<span class="st">&quot;scenario&quot;</span>, <span class="fl">12</span>), <span class="st">&quot;  &quot;</span>, <span class="fu">lpad</span>(<span class="st">&quot;mode&quot;</span>, <span class="fl">9</span>), <span class="st">&quot;  &quot;</span>, <span class="fu">join</span>(<span class="fu">lpad</span>.(<span class="fu">string</span>.(targets), <span class="fl">30</span>), <span class="st">&quot;  &quot;</span>))</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="fu">states</span>(bn, scenario)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    obs <span class="op">=</span> <span class="fu">all_marginals</span>(water; evidence <span class="op">=</span> <span class="fu">Dict</span>(scenario <span class="op">=&gt;</span> s), backend <span class="op">=</span> <span class="fu">JunctionTree</span>())</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    int <span class="op">=</span> <span class="fu">all_marginals</span>(<span class="fu">do_intervention</span>(water, scenario <span class="op">=&gt;</span> s); backend <span class="op">=</span> <span class="fu">JunctionTree</span>())</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (mode, res) <span class="kw">in</span> ((<span class="st">&quot;observe&quot;</span>, obs), (<span class="st">&quot;intervene&quot;</span>, int))</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        row <span class="op">=</span> [<span class="fu">string</span>(<span class="fu">round</span>.(res[t].table; digits <span class="op">=</span> <span class="fl">3</span>)) for t <span class="kw">in</span> targets]</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">println</span>(<span class="fu">lpad</span>(<span class="fu">string</span>(s), <span class="fl">12</span>), <span class="st">&quot;  &quot;</span>, <span class="fu">lpad</span>(mode, <span class="fl">9</span>), <span class="st">&quot;  &quot;</span>, <span class="fu">join</span>(<span class="fu">lpad</span>.(row, <span class="fl">30</span>), <span class="st">&quot;  &quot;</span>))</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    scenario       mode                      CKNI_12_45                     CBODD_12_45
-     20_MG_L    observe           [0.328, 0.538, 0.134]    [0.064, 0.881, 0.055, 0.001]
-     20_MG_L  intervene           [0.328, 0.538, 0.134]    [0.053, 0.863, 0.083, 0.001]
-     30_MG_L    observe           [0.224, 0.552, 0.224]    [0.023, 0.831, 0.141, 0.006]
-     30_MG_L  intervene           [0.224, 0.552, 0.224]     [0.023, 0.83, 0.141, 0.006]
-     40_MG_L    observe           [0.134, 0.538, 0.328]    [0.006, 0.741, 0.234, 0.019]
-     40_MG_L  intervene           [0.134, 0.538, 0.328]    [0.013, 0.761, 0.211, 0.015]</code></pre>
-</div>
-</div>
-<p>Upstream of the scenario variable the difference is stark: observation updates the 12:00 nitrogen, intervention leaves it alone.</p>
-<div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(prior <span class="op">=</span> <span class="fu">round</span>.(ms[<span class="op">:</span>CKNI_12_00].table; digits <span class="op">=</span> <span class="fl">3</span>),</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a> observe <span class="op">=</span> <span class="fu">round</span>.(<span class="fu">all_marginals</span>(water; evidence <span class="op">=</span> <span class="fu">Dict</span>(scenario <span class="op">=&gt;</span> <span class="fu">Symbol</span>(<span class="st">&quot;40_MG_L&quot;</span>)))[<span class="op">:</span>CKNI_12_00].table; digits <span class="op">=</span> <span class="fl">3</span>),</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a> intervene <span class="op">=</span> <span class="fu">round</span>.(<span class="fu">all_marginals</span>(<span class="fu">do_intervention</span>(water, scenario <span class="op">=&gt;</span> <span class="fu">Symbol</span>(<span class="st">&quot;40_MG_L&quot;</span>)))[<span class="op">:</span>CKNI_12_00].table; digits <span class="op">=</span> <span class="fl">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>(prior = [0.333, 0.333, 0.333], observe = [0.056, 0.278, 0.667], intervene = [0.333, 0.333, 0.333])</code></pre>
-</div>
-</div>
-<p>Each scenario is one junction-tree calibration, which on this network is a fraction of a second, so a sweep over every state of every 12:15 quantity - 29 interventional models in all - runs in seconds rather than minutes. The point is the order of magnitude: a 32-variable network with treewidth in the single digits is small enough that scenario analysis needs no special machinery.</p>
-<div id="20" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>slice <span class="op">=</span> [x for x <span class="kw">in</span> <span class="fu">variable_names</span>(bn) if <span class="fu">endswith</span>(<span class="fu">string</span>(x), <span class="st">&quot;_12_15&quot;</span>)]</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="fu">sum</span>(<span class="fu">length</span>(<span class="fu">states</span>(bn, x)) <span class="cf">for</span> x <span class="kw">in</span> slice)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="pp">@elapsed</span> <span class="cf">for</span> x <span class="kw">in</span> slice, s <span class="kw">in</span> <span class="fu">states</span>(bn, x)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all_marginals</span>(<span class="fu">do_intervention</span>(water, x <span class="op">=&gt;</span> s); backend <span class="op">=</span> <span class="fu">JunctionTree</span>())</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>n, <span class="fu">round</span>(t; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>(29, 3.195)</code></pre>
-</div>
-</div>
-<p>The intervened model is an ordinary model whose history records what was rewritten, so a scenario can be drawn, saved or composed like any other:</p>
-<div id="22" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">history</span>(<span class="fu">do_intervention</span>(water, scenario <span class="op">=&gt;</span> <span class="fu">Symbol</span>(<span class="st">&quot;40_MG_L&quot;</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>1-element Vector{ModelEvent}:
- ModelEvent(:hard, :CKNI_12_15, MechanismRecord(:CKNI_12_15_mechanism, NamedRef(&quot;CKNI_12_15_mechanism&quot;), [:CKNI_12_00]), MechanismRecord(Symbol(&quot;do[CKNI_12_15=40_MG_L]&quot;), PointMassRef(Symbol(&quot;40_MG_L&quot;)), Symbol[]), &quot;&quot;, Dates.DateTime(&quot;2026-09-08T07:36:34.349&quot;))</code></pre>
-</div>
-</div>
-</section>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>WATER is large enough that the brute-force joint is out of reach and small enough that one junction-tree calibration produces every marginal in a fraction of a second, which is the case the exact backends of <code>BayesianNetworkInference.jl</code> are built for. Setting an upstream quantity by observation and by intervention can give different answers both upstream and downstream when upstream causes have paths that bypass the manipulated quantity. The intervened model records what was rewritten in its history, so a scenario is an ordinary model that can be saved or composed. The last vignette, <em>A roadmap for dynamic models</em>, turns to networks with feedback across time.</p>
+<section id="what-this-result-does-and-does-not-establish" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-result-does-and-does-not-establish">What this result does and does not establish</h2>
+<p>This is a temporal holdout with training-only preprocessing and an explicit baseline, rather than a fit scored on its own training observations. It remains one small dataset from one region. We have not established performance on new islands, different sampling protocols or future environmental conditions; the simplified table also does not let us audit repeated-individual dependence. The complete-case restriction, coarse bins and conditional-independence assumption are substantive limitations.</p>
+<p>No uncertainty interval or population-level superiority claim follows from a single holdout score. A scientific deployment would need a prespecified target population, appropriate grouping, missing-data treatment, calibration assessment and external validation. The practical lesson is to refit every learned preprocessing step inside the training split and keep the evaluation question separate from whether inference returns the right number for the fitted model.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-Kaikkonen2021" class="csl-entry" role="listitem">
-Kaikkonen, Laura, Tuuli Parviainen, Mika Rahikainen, Laura Uusitalo, and Annukka Lehikoinen. 2021. <span>“Bayesian Networks in Environmental Risk Assessment: A Review.”</span> <em>Integrated Environmental Assessment and Management</em> 17 (1): 62–78. <a href="https://doi.org/10.1002/ieam.4332">https://doi.org/10.1002/ieam.4332</a>.
+<div id="ref-Gorman2014" class="csl-entry" role="listitem">
+Gorman, Kristen B., Tony D. Williams, and William R. Fraser. 2014. <span>“Ecological Sexual Dimorphism and Environmental Variability Within a Community of <span>Antarctic</span> Penguins (Genus <span>Pygoscelis</span>).”</span> <em>PLOS ONE</em> 9 (3): e90081. <a href="https://doi.org/10.1371/journal.pone.0090081">https://doi.org/10.1371/journal.pone.0090081</a>.
 </div>
-<div id="ref-Moe2021" class="csl-entry" role="listitem">
-Moe, S. Jannicke, John F. Carriger, and Miriam Glendell. 2021. <span>“Increased Use of <span>B</span>ayesian Network Models Has Improved Environmental Risk Assessments.”</span> <em>Integrated Environmental Assessment and Management</em> 17 (1): 53–61. <a href="https://doi.org/10.1002/ieam.4369">https://doi.org/10.1002/ieam.4369</a>.
-</div>
-<div id="ref-Scutari2010" class="csl-entry" role="listitem">
-Scutari, Marco. 2010. <span>“Learning <span>B</span>ayesian Networks with the <span class="nocase">bnlearn</span> <span>R</span> Package.”</span> <em>Journal of Statistical Software</em> 35 (3): 1–22. <a href="https://doi.org/10.18637/jss.v035.i03">https://doi.org/10.18637/jss.v035.i03</a>.
-</div>
-<div id="ref-ShaferShenoy1990" class="csl-entry" role="listitem">
-Shafer, Glenn R., and Prakash P. Shenoy. 1990. <span>“Probability Propagation.”</span> <em>Annals of Mathematics and Artificial Intelligence</em> 2: 327–51. <a href="https://doi.org/10.1007/BF01531015">https://doi.org/10.1007/BF01531015</a>.
+<div id="ref-Horst2020" class="csl-entry" role="listitem">
+Horst, Allison Marie, Alison Presmanes Hill, and Kristen B. Gorman. 2020. <em>Palmerpenguins: Palmer Archipelago (Antarctica) Penguin Data</em>. <a href="https://doi.org/10.5281/zenodo.3960218">https://doi.org/10.5281/zenodo.3960218</a>.
 </div>
 </div>
 </section>

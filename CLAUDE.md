@@ -28,13 +28,17 @@ Sibling packages are expected at `../<Name>.jl` (see `[sources]` in Project.toml
 - `src/loading.jl`: `model_ir` (gunzips `.gz` in memory, applies `[parser_options]`), `load_model`,
   `model_summary`. `src/reference/`: Julia-built reference models (`reference_habitat_model` from
   BayesianNetworks, `reference_grazing_id` = `InfluenceDiagrams.reference_grazing_model`).
-- Netica finding/equation nodes (Song Sparrow, Brown Trout) have no CPT: the manifest sets
+- Netica finding/equation nodes (Song Sparrow, Brown Trout and the two Polar Bear Stressor records)
+  can have no CPT: the manifest sets
   `allow_missing_tables = true`, the model loads with those mechanisms unbound
   (`missing_kernels`) and `optimize` / `validate(; semantics = true)` raise `MissingKernelError`.
   Do not invent kernels for them in tests or vignettes.
 - `vignettes/`: 01 zoo tour, 02 reference habitat BN (SPEC 45), 03 management ID (SPEC 46
   analyses 1-5), 04 intervention vs implementation (SPEC 42), 05 Song Sparrow / Waterhole Fence /
   Koalas, 06 scenarios on `water`, 07 dynamic models and roadmap.
+- Vignette 08 fits a small classifier on 2007-2008 Palmer penguin observations and evaluates
+  untouched 2009 cases. Its verbatim CC0 CSV has a pinned commit/hash and licence notice beside
+  the source. CSV and Statistics are vignette-only dependencies, not runtime package dependencies.
 - `scripts/`: `fetch_all.jl`, `verify_checksums.jl`, `add_model.jl`, `update_readme_table.jl`,
   `sync_vignettes.jl`, `run_network_tests.jl` (the suite with `ECOLOGICAL_BN_FETCH` and
   `ECOLOGICAL_BN_SLOW` both set; the offline run covers neither branch).

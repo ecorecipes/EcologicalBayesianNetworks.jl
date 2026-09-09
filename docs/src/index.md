@@ -14,11 +14,16 @@ g = reference_grazing_id()           # the SPEC section 46 reference influence d
 fetch_model("tidal_saline_wetlands") # fetch-only models go to a scratch cache
 ```
 
-Models with decision or utility nodes load as influence diagrams, ready for
+Models with decision or utility nodes load as influence diagrams, supporting
 `expected_utility`, `optimize` (decision variable elimination or exhaustive search) and
 `expected_value_of_information`; chance-only models load as Bayesian networks for
 `marginal`, `observe`, `do_intervention` and the inference backends of
 BayesianNetworkInference.jl.
+
+Some published finding/equation nodes have no CPT. The Song Sparrow, Brown Trout
+and Polar Bear Stressor manifests record partial loading explicitly; those
+mechanisms remain unbound and numerical inference or optimization still requires
+their missing semantics. No tables are invented.
 
 Each model lives in `models/<name>/metadata.toml` with its source, citation, licence
 and SHA-256. Files are committed verbatim only under CC BY, CC BY-SA, CC0 or MIT
@@ -31,6 +36,14 @@ The fetch cache is not the user's to lose: `cache_dir()` follows an enclosing
 `with_cache_dir(f, dir)` block, then `ENV["ECOLOGICAL_BN_CACHE"]`, then the package's
 Scratch.jl space, so a test suite or a rendered document can be pointed somewhere
 temporary before it fetches, imports or clears anything.
+
+## Prediction on held-out observations
+
+The Palmer penguin tutorial adds a real-data temporal holdout alongside the
+simulated scoring examples: bins and CPTs are learned from 2007-2008, and 117
+complete 2009 cases are scored against a training-prior baseline. The supplied
+CC0 table has a pinned source revision, checksum and attribution. This is a small
+predictive exercise, not a causal or population-level management guarantee.
 
 ## References
 

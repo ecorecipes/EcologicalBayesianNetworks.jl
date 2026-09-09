@@ -7,7 +7,8 @@ diagrams: a registry built from `models/*/metadata.toml`, a licence-aware cache
 BayesianNetworkFormats.jl `NetworkIR` ([`model_ir`](@ref)) and into
 BayesianNetworks.jl `BayesModel`s and InfluenceDiagrams.jl `InfluenceDiagramModel`s
 ([`load_model`](@ref)), and the Julia-built reference models
-([`reference_habitat_bn`](@ref), [`reference_grazing_id`](@ref)).
+([`reference_habitat_bn`](https://ecorecipes.github.io/BayesianNetworks.jl/api/#BayesianNetworks.reference_habitat_bn),
+[`reference_grazing_id`](@ref)).
 
 The zoo exists so that the compositional machinery can be exercised on published
 ecological networks rather than on toys. Bayesian belief networks have been a standard

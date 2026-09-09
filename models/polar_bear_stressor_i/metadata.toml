@@ -18,7 +18,8 @@ n_arcs = 44
 retrieved = "2026-09-07"
 sha256 = "7e9916ea32d23538c76416057d68a667826fef055a186e4c2a4ba77b502576ee"
 known_parse_issue = ""
-notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. The file uses an empty entry in a parenthesised list (`inputs = (, G);`), which the Netica reader supports."
+notes = "CC-BY-NC-ND on the BNMA record, so fetch-only. The file uses an empty entry in a parenthesised list (`inputs = (, G);`), which the Netica reader supports. Finding/equation node Q has no CPT. Partial loading is allowed and that mechanism remains unbound; no probability table is invented."
 
 [parser_options]
 strict = true
+allow_missing_tables = true

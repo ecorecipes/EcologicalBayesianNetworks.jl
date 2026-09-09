@@ -15,6 +15,8 @@ Simon Frost
     that](#why-no-rescaling-of-the-benefit-alone-can-fix-that)
   - [A third valuation, where the information is
     decisive](#a-third-valuation-where-the-information-is-decisive)
+  - [Price the imperfect signal, not the perfect-information
+    bound](#price-the-imperfect-signal-not-the-perfect-information-bound)
 - [Analysis 5: direct intervention versus deciding under uncertain
   implementation](#analysis-5-direct-intervention-versus-deciding-under-uncertain-implementation)
 - [Summary](#summary)
@@ -329,12 +331,39 @@ best_k, worst_k = maximum(last.(fixed_k)), minimum(last.(fixed_k))
     (gain = 0.5691124375003369, survey = 0.5400709624999536, forecast = 0.0607149374999949, perfect = 1.0309598124999866, decision_range = 8.176793374999363)
 
 Perfect information is worth about 1.0 where the decision itself is
-worth about 8.2, so around an eighth of the value at stake - a
-monitoring programme that costs less than that is worth commissioning.
-Against the full objective of about 374 the same number is 0.3%, which
-is why the denominator has to be stated whenever a value of information
-is quoted. The remaining analyses stay with `h`, the plain tenfold
-valuation, so that they compare with Analyses 2 and 3.
+worth about 8.2, so around an eighth of the value at stake. This is an
+upper bound on a monitoring programme’s benefit, not a commissioning
+recommendation: a real signal may be much less valuable. Against the
+full objective of about 374 the same number is 0.3%, which is why the
+denominator and the actual signal both have to be stated.
+
+### Price the imperfect signal, not the perfect-information bound
+
+Use the uninformed umbrella model to keep the comparison transparent. A
+forecast has a noisy observation mechanism; perfect weather knowledge is
+a different signal. Both gains below are measured against the same
+no-information baseline:
+
+``` julia
+uninformed = without_information(umbrella_model(), :Umbrella, :Forecast)
+forecast_value = expected_value_of_information(uninformed, :Forecast, :Umbrella)
+perfect_value = expected_value_of_perfect_information(uninformed, :Umbrella)
+forecast_cost = 10.0
+(forecast_value = forecast_value, perfect_value = perfect_value,
+ cost = forecast_cost, net_value = forecast_value - forecast_cost,
+ commission = forecast_value > forecast_cost)
+```
+
+    (forecast_value = 7.000000000000014, perfect_value = 21.0, cost = 10.0, net_value = -2.999999999999986, commission = false)
+
+The forecast is worth 7, perfect information 21, and this forecast costs
+10. It should not be commissioned even though its cost is below EVPI. In
+a substantive application the signal’s accuracy, timing and cost must be
+specified before its expected information value can be compared with
+cost.
+
+The remaining analyses stay with `h`, the plain tenfold valuation, so
+that they compare with Analyses 2 and 3.
 
 ## Analysis 5: direct intervention versus deciding under uncertain implementation
 

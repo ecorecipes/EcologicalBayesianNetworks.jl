@@ -88,7 +88,7 @@ t_jt = @elapsed ms = all_marginals(water; backend = JunctionTree())
 length(ms), round(t_jt; digits = 3)
 ```
 
-    (32, 0.115)
+    (32, 0.116)
 
 ``` julia
 ms[:CKNI_12_45]
@@ -114,7 +114,7 @@ end
 round(t_ve; digits = 3)
 ```
 
-    1.421
+    1.471
 
 ## Scenarios: observing versus intervening upstream
 
@@ -176,7 +176,7 @@ end
 n, round(t; digits = 3)
 ```
 
-    (29, 3.085)
+    (29, 3.169)
 
 The intervened model is an ordinary model whose history records what was
 rewritten, so a scenario can be drawn, saved or composed like any other:
@@ -186,7 +186,7 @@ history(do_intervention(water, scenario => Symbol("40_MG_L")))
 ```
 
     1-element Vector{ModelEvent}:
-     ModelEvent(:hard, :CKNI_12_15, MechanismRecord(:CKNI_12_15_mechanism, NamedRef("CKNI_12_15_mechanism"), [:CKNI_12_00]), MechanismRecord(Symbol("do[CKNI_12_15=40_MG_L]"), PointMassRef(Symbol("40_MG_L")), Symbol[]), "", Dates.DateTime("2026-09-07T15:19:19.302"))
+     ModelEvent(:hard, :CKNI_12_15, MechanismRecord(:CKNI_12_15_mechanism, NamedRef("CKNI_12_15_mechanism"), [:CKNI_12_00]), MechanismRecord(Symbol("do[CKNI_12_15=40_MG_L]"), PointMassRef(Symbol("40_MG_L")), Symbol[]), "", Dates.DateTime("2026-09-08T07:37:21.927"))
 
 ## Summary
 
@@ -194,11 +194,12 @@ WATER is large enough that the brute-force joint is out of reach and
 small enough that one junction-tree calibration produces every marginal
 in a fraction of a second, which is the case the exact backends of
 `BayesianNetworkInference.jl` are built for. Setting an upstream
-quantity by observation and by intervention gives different answers
-upstream and the same answers downstream, and the intervened model
-records what was rewritten in its history, so a scenario is an ordinary
-model that can be saved or composed. The last vignette, *A roadmap for
-dynamic models*, turns to networks with feedback across time.
+quantity by observation and by intervention can give different answers
+both upstream and downstream when upstream causes have paths that bypass
+the manipulated quantity. The intervened model records what was
+rewritten in its history, so a scenario is an ordinary model that can be
+saved or composed. The last vignette, *A roadmap for dynamic models*,
+turns to networks with feedback across time.
 
 ## References
 

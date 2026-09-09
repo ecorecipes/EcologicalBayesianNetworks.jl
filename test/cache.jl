@@ -143,7 +143,7 @@
                     @test isdir(envdir)          # created on demand
                 end
                 withenv(E.CACHE_ENV_VAR => nothing) do
-                    @test cache_dir() == DEFAULT_CACHE
+                    @test cache_dir() == SCRATCH_CACHE
                 end
             finally
                 E._CACHE_OVERRIDE[] = saved

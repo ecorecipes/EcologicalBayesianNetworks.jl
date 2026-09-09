@@ -9,43 +9,45 @@
             "tidal_saline_wetlands", "beach_mice_bn")
     @test issubset(deep, fetchable_models())
     for name in fetchable_models()
-        spec = model_info(name)
-        clear_cache(; name=name)
-        path = fetch_model(name; verbose=false)
-        @test isfile(path)
-        @test path == E.cached_path(spec)
-        @test sha256_file(path) == spec.sha256
-        @test is_available(name)
-        @test fetch_model(name; verbose=false) == path      # cached, no download
-        @test fetch_model(name; force=true, verbose=false) == path
-        if spec.format == "neta"
-            @test_throws NotAModelFileError model_ir(name)
-        elseif !isempty(spec.known_parse_issue)
-            # The manifest says the current reader cannot parse this file; if that ever
-            # stops being true the manifest must lose its known_parse_issue.
-            @test_throws ParseError model_ir(name)
-        else
-            ir = model_ir(name)
-            @test length(ir.variables) == spec.n_nodes
-            @test sum(length(v.parents) for v in ir.variables) == spec.n_arcs
-            if name in deep && !is_influence_diagram(spec)
-                m = load_model(name)
-                @test validate(m) === nothing
-                if model_summary(name).n_missing_tables == 0
-                    @test validate(m; semantics=true) === nothing
-                else
-                    @test !isempty(missing_kernels(m))
+        @testset "$name" begin
+            spec = model_info(name)
+            clear_cache(; name=name)
+            path = fetch_model(name; verbose=false)
+            @test isfile(path)
+            @test path == E.cached_path(spec)
+            @test sha256_file(path) == spec.sha256
+            @test is_available(name)
+            @test fetch_model(name; verbose=false) == path      # cached, no download
+            @test fetch_model(name; force=true, verbose=false) == path
+            if spec.format == "neta"
+                @test_throws NotAModelFileError model_ir(name)
+            elseif !isempty(spec.known_parse_issue)
+                # The manifest says the current reader cannot parse this file; if that ever
+                # stops being true the manifest must lose its known_parse_issue.
+                @test_throws ParseError model_ir(name)
+            else
+                ir = model_ir(name)
+                @test length(ir.variables) == spec.n_nodes
+                @test sum(length(v.parents) for v in ir.variables) == spec.n_arcs
+                if name in deep && !is_influence_diagram(spec)
+                    m = load_model(name)
+                    @test validate(m) === nothing
+                    if model_summary(name).n_missing_tables == 0
+                        @test validate(m; semantics=true) === nothing
+                    else
+                        @test !isempty(missing_kernels(m))
+                    end
                 end
             end
-        end
-        # import_model of the fetched file round-trips.
-        mktempdir() do tmp
-            copy = joinpath(tmp, basename(path))
-            cp(path, copy)
-            clear_cache(; name=name)
-            @test !is_available(name)
-            @test import_model(name, copy) == path
-            @test is_available(name)
+            # import_model of the fetched file round-trips.
+            mktempdir() do tmp
+                copy = joinpath(tmp, basename(path))
+                cp(path, copy)
+                clear_cache(; name=name)
+                @test !is_available(name)
+                @test import_model(name, copy) == path
+                @test is_available(name)
+            end
         end
     end
     @test Set(verify_checksums(; include_cache=true)) ⊇
@@ -81,6 +83,28 @@
             else
                 @test_throws ValidationError model_ir(name; allow_missing_tables=false)
                 @test occursin("mechanisms unbound", sprint(show, MIME"text/plain"(), s))
+            end
+        end
+    end
+
+    @testset "polar-bear finding nodes remain unbound" begin
+        expected = Dict("polar_bear_stressor_i" => [:Q],
+                        "polar_bear_stressor_ii" =>
+                            [:IceArea, :IceChng, :IceShelf, :PryAcc, :HumFood, :TerrRef,
+                             :ParDis, :Ship, :Pred, :Per, :Scenario, :GCMset, :ScenNum])
+        for (name, missing_ids) in expected
+            @testset "$name" begin
+                @test model_info(name).parser_options[:allow_missing_tables]
+                ir = model_ir(name)
+                actual = [v.id
+                          for v in ir.variables
+                          if v.kind == ChanceNode && v.table === nothing]
+                @test Set(actual) == Set(missing_ids)
+                @test model_summary(name).n_missing_tables == length(missing_ids)
+                @test_throws ValidationError model_ir(name; allow_missing_tables=false)
+                m = load_model(name)
+                @test Set(missing_kernels(m)) == Set(missing_ids)
+                @test_throws MissingKernelError validate(m; semantics=true, atol=1e-6)
             end
         end
     end

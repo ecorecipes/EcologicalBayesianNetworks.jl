@@ -160,6 +160,8 @@ Rendered vignettes live in [`vignettes/`](vignettes/) and are published in the
 5. A real decision network from the zoo (Song Sparrow, Waterhole Fence, Koalas)
 6. Scenario analysis on the WATER benchmark
 7. Dynamic models and the roadmap (SPEC sections 43, 44 and 47)
+8. Held-out ecological prediction with Palmer penguins: training-only discretization,
+   a temporal holdout and a prior baseline on pinned CC0 field observations
 
 ## References
 

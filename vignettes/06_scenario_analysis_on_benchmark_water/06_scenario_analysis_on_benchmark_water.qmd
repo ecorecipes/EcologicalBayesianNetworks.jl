@@ -147,8 +147,9 @@ history(do_intervention(water, scenario => Symbol("40_MG_L")))
 WATER is large enough that the brute-force joint is out of reach and small enough that
 one junction-tree calibration produces every marginal in a fraction of a second, which
 is the case the exact backends of `BayesianNetworkInference.jl` are built for. Setting
-an upstream quantity by observation and by intervention gives different answers upstream
-and the same answers downstream, and the intervened model records what was rewritten in
+an upstream quantity by observation and by intervention can give different answers both
+upstream and downstream when upstream causes have paths that bypass the manipulated
+quantity. The intervened model records what was rewritten in
 its history, so a scenario is an ordinary model that can be saved or composed. The last
 vignette, *A roadmap for dynamic models*, turns to networks with feedback across time.
 

@@ -1,17 +1,23 @@
 [deps]
-EcologicalBayesianNetworks = "c6b9e98e-d978-423e-90bc-2541a79df2a3"
-InfluenceDiagrams = "cd3dbe2d-275d-4a8e-841a-d44f7f7abf07"
+BayesianNetworkFormats = "590d4596-919e-4d5f-b4a5-097a6400eab8"
 BayesianNetworkInference = "195c3fd5-7fa7-45ed-aaa0-a92a9a2fe9e5"
 BayesianNetworks = "47d2e50c-3d9a-425e-96fd-023c794d3c65"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 CategoricalBayesianNetworks = "83c8271f-e735-439d-be5f-7ff3e7e4c690"
-BayesianNetworkFormats = "590d4596-919e-4d5f-b4a5-097a6400eab8"
+EcologicalBayesianNetworks = "c6b9e98e-d978-423e-90bc-2541a79df2a3"
 FiniteKernels = "2ee73795-50db-4096-9573-22982ed4949b"
+InfluenceDiagrams = "cd3dbe2d-275d-4a8e-841a-d44f7f7abf07"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [sources]
-EcologicalBayesianNetworks = {path = ".."}
-FiniteKernels = {path = "../../FiniteKernels.jl"}
 BayesianNetworkFormats = {path = "../../BayesianNetworkFormats.jl"}
+BayesianNetworkInference = {path = "../../BayesianNetworkInference.jl"}
 BayesianNetworks = {path = "../../BayesianNetworks.jl"}
 CategoricalBayesianNetworks = {path = "../../CategoricalBayesianNetworks.jl"}
-BayesianNetworkInference = {path = "../../BayesianNetworkInference.jl"}
+EcologicalBayesianNetworks = {path = ".."}
+FiniteKernels = {path = "../../FiniteKernels.jl"}
 InfluenceDiagrams = {path = "../../InfluenceDiagrams.jl"}
+
+[compat]
+CSV = "0.10"
+Statistics = "1"
