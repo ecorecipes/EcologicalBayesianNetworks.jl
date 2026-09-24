@@ -1,7 +1,8 @@
 using Test
 using EcologicalBayesianNetworks
 using BayesianNetworkFormats: BayesianNetworkFormats, NetworkIR, ChanceNode, DecisionNode,
-                              UtilityNode, ParseError, ValidationError
+                              UtilityNode, ParseError, ValidationError, read_network
+using CodecZlib: GzipDecompressor, transcode
 using BayesianNetworks: BayesianNetworks, BayesModel, marginal, validate, syntax,
                         variable_names, probability, missing_kernels, MissingKernelError,
                         UnnormalizedKernelError
@@ -66,6 +67,8 @@ mktempdir() do cache_root
             include("cache.jl")
             include("loading.jl")
             include("reference.jl")
+            include("netica_axis_oracle.jl")
+            include("hugin_axis_oracle.jl")
             include("scripts.jl")
             FETCH && include("fetch.jl")
         end
