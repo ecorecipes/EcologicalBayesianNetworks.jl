@@ -120,7 +120,7 @@ end
         keys_ = [E._spec_sort_key(spec) for spec in MODEL_SPECS]
         @test issorted(keys_)
         @test model_categories() == [c for c in MODEL_CATEGORY_ORDER
-                                     if any(s -> s.category == c, MODEL_SPECS)]
+                                           if any(s -> s.category == c, MODEL_SPECS)]
         @test "benchmark" in model_categories()
         @test "reference" in model_categories()
     end

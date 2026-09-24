@@ -89,9 +89,10 @@
 
     @testset "polar-bear finding nodes remain unbound" begin
         expected = Dict("polar_bear_stressor_i" => [:Q],
-                        "polar_bear_stressor_ii" =>
-                            [:IceArea, :IceChng, :IceShelf, :PryAcc, :HumFood, :TerrRef,
-                             :ParDis, :Ship, :Pred, :Per, :Scenario, :GCMset, :ScenNum])
+                        "polar_bear_stressor_ii" => [:IceArea, :IceChng, :IceShelf, :PryAcc,
+                                                     :HumFood, :TerrRef,
+                                                     :ParDis, :Ship, :Pred, :Per, :Scenario,
+                                                     :GCMset, :ScenNum])
         for (name, missing_ids) in expected
             @testset "$name" begin
                 @test model_info(name).parser_options[:allow_missing_tables]
