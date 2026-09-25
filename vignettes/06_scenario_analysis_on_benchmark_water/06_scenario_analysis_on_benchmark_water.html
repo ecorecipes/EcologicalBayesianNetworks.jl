@@ -2314,7 +2314,7 @@ vertical-align: -.125em;
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>t_jt <span class="op">=</span> <span class="pp">@elapsed</span> ms <span class="op">=</span> <span class="fu">all_marginals</span>(water; backend <span class="op">=</span> <span class="fu">JunctionTree</span>())</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(ms), <span class="fu">round</span>(t_jt; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>(32, 0.119)</code></pre>
+<pre><code>(32, 0.126)</code></pre>
 </div>
 </div>
 <div id="10" class="cell" data-execution_count="1">
@@ -2337,7 +2337,7 @@ vertical-align: -.125em;
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(t_ve; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>1.412</code></pre>
+<pre><code>1.251</code></pre>
 </div>
 </div>
 </section>
@@ -2384,7 +2384,7 @@ vertical-align: -.125em;
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>n, <span class="fu">round</span>(t; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>(29, 3.164)</code></pre>
+<pre><code>(29, 3.152)</code></pre>
 </div>
 </div>
 <p>The intervened model is an ordinary model whose history records what was rewritten, so a scenario can be drawn, saved or composed like any other:</p>
@@ -2392,13 +2392,13 @@ vertical-align: -.125em;
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">history</span>(<span class="fu">do_intervention</span>(water, scenario <span class="op">=&gt;</span> <span class="fu">Symbol</span>(<span class="st">&quot;40_MG_L&quot;</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>1-element Vector{ModelEvent}:
- ModelEvent(:hard, :CKNI_12_15, MechanismRecord(:CKNI_12_15_mechanism, NamedRef(&quot;CKNI_12_15_mechanism&quot;), [:CKNI_12_00]), MechanismRecord(Symbol(&quot;do[CKNI_12_15=40_MG_L]&quot;), PointMassRef(Symbol(&quot;40_MG_L&quot;)), Symbol[]), &quot;&quot;, Dates.DateTime(&quot;2026-09-25T01:46:12.285&quot;))</code></pre>
+ ModelEvent(:hard, :CKNI_12_15, MechanismRecord(:CKNI_12_15_mechanism, NamedRef(&quot;CKNI_12_15_mechanism&quot;), [:CKNI_12_00]), MechanismRecord(Symbol(&quot;do[CKNI_12_15=40_MG_L]&quot;), PointMassRef(Symbol(&quot;40_MG_L&quot;)), Symbol[]), &quot;&quot;, Dates.DateTime(&quot;2026-09-25T01:51:10.391&quot;))</code></pre>
 </div>
 </div>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>WATER is large enough that the brute-force joint is out of reach and small enough that one junction-tree calibration produces every marginal in a fraction of a second, which is the case the exact backends of <code>BayesianNetworkInference.jl</code> are built for. Setting an upstream quantity by observation and by intervention can give different answers both upstream and downstream when upstream causes have paths that bypass the manipulated quantity. The intervened model records what was rewritten in its history, so a scenario is an ordinary model that can be saved or composed. The last vignette, <em>A roadmap for dynamic models</em>, turns to networks with feedback across time.</p>
+<p>WATER is large enough that the brute-force joint is out of reach and small enough that one junction-tree calibration produces every marginal in a fraction of a second, which is the case the exact backends of <code>BayesianNetworkInference.jl</code> are built for. Setting an upstream quantity by observation and by intervention can give different answers both upstream and downstream when upstream causes have paths that bypass the manipulated quantity. The intervened model records what was rewritten in its history, so a scenario is an ordinary model that can be saved or composed. The next vignette, <em>A roadmap for dynamic models</em>, turns to networks with feedback across time.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>

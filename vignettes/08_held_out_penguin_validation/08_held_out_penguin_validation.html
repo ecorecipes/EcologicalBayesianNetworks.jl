@@ -2227,11 +2227,14 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#a-prediction-exercise-with-real-observations" id="toc-a-prediction-exercise-with-real-observations" class="nav-link active" data-scroll-target="#a-prediction-exercise-with-real-observations">A prediction exercise with real observations</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a>
+  <ul class="collapse">
   <li><a href="#provenance-and-a-fixed-split" id="toc-provenance-and-a-fixed-split" class="nav-link" data-scroll-target="#provenance-and-a-fixed-split">Provenance and a fixed split</a></li>
+  </ul></li>
   <li><a href="#learn-the-representation-using-training-data-only" id="toc-learn-the-representation-using-training-data-only" class="nav-link" data-scroll-target="#learn-the-representation-using-training-data-only">Learn the representation using training data only</a></li>
   <li><a href="#score-untouched-observations-against-a-prior-baseline" id="toc-score-untouched-observations-against-a-prior-baseline" class="nav-link" data-scroll-target="#score-untouched-observations-against-a-prior-baseline">Score untouched observations against a prior baseline</a></li>
-  <li><a href="#what-this-result-does-and-does-not-establish" id="toc-what-this-result-does-and-does-not-establish" class="nav-link" data-scroll-target="#what-this-result-does-and-does-not-establish">What this result does and does not establish</a></li>
+  <li><a href="#summary-what-this-result-does-and-does-not-establish" id="toc-summary-what-this-result-does-and-does-not-establish" class="nav-link" data-scroll-target="#summary-what-this-result-does-and-does-not-establish">Summary: what this result does and does not establish</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="08_held_out_penguin_validation.md"><i class="bi bi-file-code"></i>Github (GFM)</a></li><li><a href="08_held_out_penguin_validation.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -2263,14 +2266,14 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="a-prediction-exercise-with-real-observations" class="level2">
-<h2 class="anchored" data-anchor-id="a-prediction-exercise-with-real-observations">A prediction exercise with real observations</h2>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>The earlier scoring examples used simulated cases to demonstrate machinery. Here the observations are real measurements of adult penguins collected around Palmer Station in 2007-2009 <span class="citation" data-cites="Gorman2014">(<a href="#ref-Gorman2014" role="doc-biblioref">Gorman et al. 2014</a>)</span>. We fit a small finite Bayesian network on 2007-2008 and predict species in the untouched 2009 observations.</p>
 <p>The model is a deliberately simple classifier built for this vignette, not a published model from the zoo. The question is predictive discrimination within this sampling setting, not a causal effect or a conservation recommendation.</p>
 </section>
-<section id="provenance-and-a-fixed-split" class="level2">
-<h2 class="anchored" data-anchor-id="provenance-and-a-fixed-split">Provenance and a fixed split</h2>
-<p>The CC0 <code>palmerpenguins</code> table <span class="citation" data-cites="Horst2020">(<a href="#ref-Horst2020" role="doc-biblioref">Horst et al. 2020</a>)</span> is included verbatim beside this source in <code>data/penguins.csv</code>, with its source commit, SHA-256 and attribution in <code>data/LICENSE.md</code>. No model download or user’s model cache is involved.</p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>The CC0 <code>palmerpenguins</code> table <span class="citation" data-cites="Horst2020">(<a href="#ref-Horst2020" role="doc-biblioref">Horst et al. 2020</a>)</span> is included verbatim beside this source in <code>data/penguins.csv</code>, with its source commit, SHA-256 and attribution in <code>data/LICENSE.md</code>. No model download or user’s model cache is involved, so this vignette runs offline.</p>
 <div id="2" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span></span>
@@ -2287,11 +2290,23 @@ vertical-align: -.125em;
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>(available <span class="op">=</span> <span class="fu">length</span>(rows), complete_cases <span class="op">=</span> <span class="fu">length</span>(complete),</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a> excluded <span class="op">=</span> <span class="fu">length</span>(rows) <span class="op">-</span> <span class="fu">length</span>(complete), training <span class="op">=</span> <span class="fu">length</span>(training),</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a> held_out <span class="op">=</span> <span class="fu">length</span>(held_out), training_years <span class="op">=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(r.year <span class="cf">for</span> r <span class="kw">in</span> training)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   8571.6 ms<span class="ansi-green-fg">  ✓ </span>CSV
+  1 dependency successfully precompiled in 9 seconds. 29 already precompiled.
+  <span class="ansi-yellow-fg">6</span> dependencies precompiled but <span class="ansi-yellow-fg">different versions are currently loaded</span> (Dates, Printf, TOML, UUIDs, Unicode and Zlib_jll). Restart julia to access the new versions. Otherwise, 12 dependents of these packages may trigger further precompilation to work with the unexpected versions.
+</pre>
+</div>
+</div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>(available = 344, complete_cases = 333, excluded = 11, training = 216, held_out = 117, training_years = [2007, 2008])</code></pre>
 </div>
 </div>
+<section id="provenance-and-a-fixed-split" class="level3">
+<h3 class="anchored" data-anchor-id="provenance-and-a-fixed-split">Provenance and a fixed split</h3>
 <p>Rows missing a required predictor are excluded, with the count reported above. That is a complete-case analysis, not an assumption that missingness is harmless. All 2009 rows are kept together. No discretization cut point or CPT is learned from them.</p>
+</section>
 </section>
 <section id="learn-the-representation-using-training-data-only" class="level2">
 <h2 class="anchored" data-anchor-id="learn-the-representation-using-training-data-only">Learn the representation using training data only</h2>
@@ -2378,8 +2393,8 @@ vertical-align: -.125em;
 </div>
 <p>Backend agreement establishes computational consistency on these cases, not predictive validity. The held-out labels provide the separate predictive evidence.</p>
 </section>
-<section id="what-this-result-does-and-does-not-establish" class="level2">
-<h2 class="anchored" data-anchor-id="what-this-result-does-and-does-not-establish">What this result does and does not establish</h2>
+<section id="summary-what-this-result-does-and-does-not-establish" class="level2">
+<h2 class="anchored" data-anchor-id="summary-what-this-result-does-and-does-not-establish">Summary: what this result does and does not establish</h2>
 <p>This is a temporal holdout with training-only preprocessing and an explicit baseline, rather than a fit scored on its own training observations. It remains one small dataset from one region. We have not established performance on new islands, different sampling protocols or future environmental conditions; the simplified table also does not let us audit repeated-individual dependence. The complete-case restriction, coarse bins and conditional-independence assumption are substantive limitations.</p>
 <p>No uncertainty interval or population-level superiority claim follows from a single holdout score. A scientific deployment would need a prespecified target population, appropriate grouping, missing-data treatment, calibration assessment and external validation. The practical lesson is to refit every learned preprocessing step inside the training split and keep the evaluation question separate from whether inference returns the right number for the fitted model.</p>
 </section>

@@ -1,18 +1,18 @@
 # Held-out ecological prediction: Palmer penguins
 Simon Frost
 
-- [A prediction exercise with real
-  observations](#a-prediction-exercise-with-real-observations)
-- [Provenance and a fixed split](#provenance-and-a-fixed-split)
+- [Overview](#overview)
+- [Setup](#setup)
+  - [Provenance and a fixed split](#provenance-and-a-fixed-split)
 - [Learn the representation using training data
   only](#learn-the-representation-using-training-data-only)
 - [Score untouched observations against a prior
   baseline](#score-untouched-observations-against-a-prior-baseline)
-- [What this result does and does not
-  establish](#what-this-result-does-and-does-not-establish)
+- [Summary: what this result does and does not
+  establish](#summary-what-this-result-does-and-does-not-establish)
 - [References](#references)
 
-## A prediction exercise with real observations
+## Overview
 
 The earlier scoring examples used simulated cases to demonstrate
 machinery. Here the observations are real measurements of adult penguins
@@ -25,12 +25,13 @@ not a published model from the zoo. The question is predictive
 discrimination within this sampling setting, not a causal effect or a
 conservation recommendation.
 
-## Provenance and a fixed split
+## Setup
 
 The CC0 `palmerpenguins` table ([Horst et al. 2020](#ref-Horst2020)) is
 included verbatim beside this source in `data/penguins.csv`, with its
 source commit, SHA-256 and attribution in `data/LICENSE.md`. No model
-download or user’s model cache is involved.
+download or user’s model cache is involved, so this vignette runs
+offline.
 
 ``` julia
 using CSV
@@ -51,6 +52,8 @@ held_out = filter(r -> r.year == 2009, complete)
 ```
 
     (available = 344, complete_cases = 333, excluded = 11, training = 216, held_out = 117, training_years = [2007, 2008])
+
+### Provenance and a fixed split
 
 Rows missing a required predictor are excluded, with the count reported
 above. That is a complete-case analysis, not an assumption that
@@ -158,7 +161,7 @@ Backend agreement establishes computational consistency on these cases,
 not predictive validity. The held-out labels provide the separate
 predictive evidence.
 
-## What this result does and does not establish
+## Summary: what this result does and does not establish
 
 This is a temporal holdout with training-only preprocessing and an
 explicit baseline, rather than a fit scored on its own training

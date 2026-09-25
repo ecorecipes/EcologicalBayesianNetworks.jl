@@ -170,8 +170,8 @@ posterior(do_intervention(um40, :Herbivores_20 => :low), :Vegetation_21)
 `vegetation_herbivore_model(management = true)` adds an exogenous
 `Management` variable (`none`, `cull`) to every slice, feeding the
 herbivore mechanism. This is the dynamic analogue of the implementation
-chain of the previous vignette: the action lives in the model as a
-variable that a policy could set.
+chain of the *Direct intervention vs imperfect implementation* vignette:
+the action lives in the model as a variable that a policy could set.
 
 ``` julia
 umm = unroll(vegetation_herbivore_model(management = true), 4)
@@ -190,9 +190,9 @@ umm = unroll(vegetation_herbivore_model(management = true), 4)
   observed slices, and utilities attach to `Vegetation_t`.
   Finite-horizon unrolling reuses `InfluenceDiagrams.optimize` as it
   stands; the decision variable elimination already handles several
-  ordered decisions (the Koalas network of the previous vignette has
-  two). Stationary or infinite-horizon policies are out of scope for
-  version 0.1.
+  ordered decisions (the Koalas network of the *Song Sparrow decision
+  network* vignette has two). Stationary or infinite-horizon policies
+  are out of scope for version 0.1.
 - **Spatial models** (SPEC section 47). Sites are slices of a different
   kind: a template network per site, glued along shared variables (a
   regional climate, dispersal between neighbours) with the open-network
@@ -212,8 +212,9 @@ compiles it into an ordinary closed network, so inference, intervention
 and composition all apply unchanged, and an intervention in one slice is
 an intervention on that slice’s variable only. That is the whole of the
 dynamic story for version 0.1; dynamic influence diagrams and spatial
-models are sketched above and are the next things to build. This is the
-last vignette of `EcologicalBayesianNetworks.jl`.
+models are sketched above and are the next things to build. The last
+vignette, *Held-out validation on a penguin network*, scores a published
+network against data it was not fitted on.
 
 ## References
 
