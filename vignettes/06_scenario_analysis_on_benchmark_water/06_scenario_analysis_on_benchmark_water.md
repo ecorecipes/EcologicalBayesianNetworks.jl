@@ -88,7 +88,7 @@ t_jt = @elapsed ms = all_marginals(water; backend = JunctionTree())
 length(ms), round(t_jt; digits = 3)
 ```
 
-    (32, 0.116)
+    (32, 0.144)
 
 ``` julia
 ms[:CKNI_12_45]
@@ -114,7 +114,7 @@ end
 round(t_ve; digits = 3)
 ```
 
-    1.471
+    1.197
 
 ## Scenarios: observing versus intervening upstream
 
@@ -163,9 +163,9 @@ updates the 12:00 nitrogen, intervention leaves it alone.
 Each scenario is one junction-tree calibration, which on this network is
 a fraction of a second, so a sweep over every state of every 12:15
 quantity - 29 interventional models in all - runs in seconds rather than
-minutes. The point is the order of magnitude: a 32-variable network with
-treewidth in the single digits is small enough that scenario analysis
-needs no special machinery.
+minutes. The point is the order of magnitude: a 32-variable network of
+treewidth 10, as the diagnostics above report, is small enough that
+scenario analysis needs no special machinery.
 
 ``` julia
 slice = [x for x in variable_names(bn) if endswith(string(x), "_12_15")]
@@ -176,7 +176,7 @@ end
 n, round(t; digits = 3)
 ```
 
-    (29, 3.169)
+    (29, 3.171)
 
 The intervened model is an ordinary model whose history records what was
 rewritten, so a scenario can be drawn, saved or composed like any other:
@@ -186,7 +186,7 @@ history(do_intervention(water, scenario => Symbol("40_MG_L")))
 ```
 
     1-element Vector{ModelEvent}:
-     ModelEvent(:hard, :CKNI_12_15, MechanismRecord(:CKNI_12_15_mechanism, NamedRef("CKNI_12_15_mechanism"), [:CKNI_12_00]), MechanismRecord(Symbol("do[CKNI_12_15=40_MG_L]"), PointMassRef(Symbol("40_MG_L")), Symbol[]), "", Dates.DateTime("2026-09-08T07:37:21.927"))
+     ModelEvent(:hard, :CKNI_12_15, MechanismRecord(:CKNI_12_15_mechanism, NamedRef("CKNI_12_15_mechanism"), [:CKNI_12_00]), MechanismRecord(Symbol("do[CKNI_12_15=40_MG_L]"), PointMassRef(Symbol("40_MG_L")), Symbol[]), "", Dates.DateTime("2026-09-25T01:46:59.337"))
 
 ## Summary
 

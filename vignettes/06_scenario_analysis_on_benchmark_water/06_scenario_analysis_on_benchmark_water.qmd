@@ -123,8 +123,8 @@ Upstream of the scenario variable the difference is stark: observation updates t
 Each scenario is one junction-tree calibration, which on this network is a fraction of a
 second, so a sweep over every state of every 12:15 quantity - 29 interventional models in
 all - runs in seconds rather than minutes. The point is the order of magnitude: a
-32-variable network with treewidth in the single digits is small enough that scenario
-analysis needs no special machinery.
+32-variable network of treewidth 10, as the diagnostics above report, is small enough
+that scenario analysis needs no special machinery.
 
 ```{julia}
 slice = [x for x in variable_names(bn) if endswith(string(x), "_12_15")]

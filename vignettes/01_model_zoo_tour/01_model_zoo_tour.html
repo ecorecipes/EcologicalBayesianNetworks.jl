@@ -2269,7 +2269,7 @@ vertical-align: -.125em;
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p><code>EcologicalBayesianNetworks.jl</code> is a curated zoo of publicly downloadable ecological Bayesian belief networks and influence diagrams. Every model has a manifest (<code>models/&lt;name&gt;/metadata.toml</code>) recording where it came from, how to cite it, its licence and a checksum; models with permissive licences (CC BY, CC BY-SA, CC0, MIT) ship with the package verbatim, and the rest are fetched into a local cache on demand. This vignette walks through the catalogue, loads a benchmark network, solves a decision model, and computes a marginal on a small chance-only network.</p>
+<p><code>EcologicalBayesianNetworks.jl</code> is a curated zoo of publicly downloadable ecological Bayesian belief networks and influence diagrams. Every model has a manifest (<code>models/&lt;name&gt;/metadata.toml</code>) recording where it came from, how to cite it, its licence and a checksum. A permissive licence (CC BY, CC BY-SA, CC0, MIT) is what <em>permits</em> shipping the original file with the package, but it does not by itself decide: each manifest’s <code>redistribution</code> field does, and several permissively licensed records are still <code>fetch-only</code> or <code>reconstruction</code> because of how the source publishes them. Records that are not shipped verbatim are fetched into a local cache on demand. This vignette walks through the catalogue, loads a benchmark network, solves a decision model, and computes a marginal on a small chance-only network.</p>
 <p>The models are real ones: belief networks published for habitat, conservation and natural-resource problems <span class="citation" data-cites="McCannMarcotEllis2006 Newton2007">(<a href="#ref-McCannMarcotEllis2006" role="doc-biblioref">McCann et al. 2006</a>; <a href="#ref-Newton2007" role="doc-biblioref">Newton et al. 2007</a>)</span>, environmental risk assessments <span class="citation" data-cites="Moe2021 Kaikkonen2021">(<a href="#ref-Moe2021" role="doc-biblioref">Moe et al. 2021</a>; <a href="#ref-Kaikkonen2021" role="doc-biblioref">Kaikkonen et al. 2021</a>)</span> and ecosystem-service models <span class="citation" data-cites="Landuyt2013">(<a href="#ref-Landuyt2013" role="doc-biblioref">Landuyt et al. 2013</a>)</span>. They come from four kinds of source – the Bayesian Network Model Archive <span class="citation" data-cites="BNMA">(<a href="#ref-BNMA" role="doc-biblioref">BNMA 2026</a>)</span>, the bnlearn network repository <span class="citation" data-cites="Scutari2010">(<a href="#ref-Scutari2010" role="doc-biblioref">Scutari 2010</a>)</span>, the bnRep collection <span class="citation" data-cites="Leonelli2025">(<a href="#ref-Leonelli2025" role="doc-biblioref">Leonelli 2025</a>)</span>, and the supplementary material of individual papers – and each brings its own licence, which is why the zoo enforces a redistribution policy rather than mirroring everything.</p>
 </section>
 <section id="setup" class="level2">
@@ -2277,6 +2277,21 @@ vertical-align: -.125em;
 <div id="2" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">EcologicalBayesianNetworks</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">n_models</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   5223.4 ms<span class="ansi-green-fg">  ✓ </span>BayesianNetworks
+   4934.2 ms<span class="ansi-green-fg">  ✓ </span>BayesianNetworkInference
+   5240.9 ms<span class="ansi-green-fg">  ✓ </span>InfluenceDiagrams
+   5439.2 ms<span class="ansi-green-fg">  ✓ </span>EcologicalBayesianNetworks
+  4 dependencies successfully precompiled in 26 seconds. 125 already precompiled.
+  <span class="ansi-yellow-fg">28</span> dependencies precompiled but <span class="ansi-yellow-fg">different versions are currently loaded</span> (ArgTools, Base64, Dates, Downloads, InteractiveUtils, JuliaSyntaxHighlighting, LibCURL, LibCURL_jll, LibGit2, LibGit2_jll, LibSSH2_jll, Logging, Markdown, MozillaCACerts_jll, NetworkOptions, OpenSSL_jll, Pkg, Pkg → REPLExt, Printf, REPL, StyledStrings, TOML, Tar, UUIDs, Unicode, Zlib_jll, nghttp2_jll and p7zip_jll). Restart julia to access the new versions. Otherwise, 61 dependents of these packages may trigger further precompilation to work with the unexpected versions.
+<span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   2152.7 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerTablesExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 2 seconds
+</pre>
+</div>
+</div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>41</code></pre>
 </div>
@@ -2628,7 +2643,7 @@ licence.</code></pre>
 <div id="48" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is_available</span>(<span class="st">&quot;tidal_saline_wetlands&quot;</span>), <span class="fu">length</span>(<span class="fu">fetchable_models</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>(false, 19)</code></pre>
+<pre><code>(true, 19)</code></pre>
 </div>
 </div>
 </section>

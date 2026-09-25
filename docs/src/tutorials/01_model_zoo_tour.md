@@ -17,12 +17,15 @@ Simon Frost
 `EcologicalBayesianNetworks.jl` is a curated zoo of publicly
 downloadable ecological Bayesian belief networks and influence diagrams.
 Every model has a manifest (`models/<name>/metadata.toml`) recording
-where it came from, how to cite it, its licence and a checksum; models
-with permissive licences (CC BY, CC BY-SA, CC0, MIT) ship with the
-package verbatim, and the rest are fetched into a local cache on demand.
-This vignette walks through the catalogue, loads a benchmark network,
-solves a decision model, and computes a marginal on a small chance-only
-network.
+where it came from, how to cite it, its licence and a checksum. A
+permissive licence (CC BY, CC BY-SA, CC0, MIT) is what *permits*
+shipping the original file with the package, but it does not by itself
+decide: each manifest’s `redistribution` field does, and several
+permissively licensed records are still `fetch-only` or `reconstruction`
+because of how the source publishes them. Records that are not shipped
+verbatim are fetched into a local cache on demand. This vignette walks
+through the catalogue, loads a benchmark network, solves a decision
+model, and computes a marginal on a small chance-only network.
 
 The models are real ones: belief networks published for habitat,
 conservation and natural-resource problems ([McCann et al.
@@ -450,7 +453,7 @@ rather than stopping at the first.
 is_available("tidal_saline_wetlands"), length(fetchable_models())
 ```
 
-    (false, 19)
+    (true, 19)
 
 ## Reference models
 

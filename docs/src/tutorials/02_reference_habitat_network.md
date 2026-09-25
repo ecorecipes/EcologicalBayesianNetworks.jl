@@ -139,8 +139,8 @@ round.(empirical_marginal(s, :Occupancy).table; digits = 3)
 ```
 
     2-element Vector{Float64}:
-     0.531
-     0.469
+     0.518
+     0.482
 
 ## Evidence
 
@@ -186,7 +186,7 @@ history(low_do)
 ```
 
     1-element Vector{ModelEvent}:
-     ModelEvent(:hard, :GrazingPressure, MechanismRecord(:GrazingPressure_mechanism, NamedRef("GrazingPressure_mechanism"), Symbol[]), MechanismRecord(Symbol("do[GrazingPressure=low]"), PointMassRef(:low), Symbol[]), "", Dates.DateTime("2026-09-08T07:31:58.472"))
+     ModelEvent(:hard, :GrazingPressure, MechanismRecord(:GrazingPressure_mechanism, NamedRef("GrazingPressure_mechanism"), Symbol[]), MechanismRecord(Symbol("do[GrazingPressure=low]"), PointMassRef(:low), Symbol[]), "", Dates.DateTime("2026-09-25T01:44:30.006"))
 
 ``` julia
 to_graphviz(low_do)
@@ -262,15 +262,15 @@ ir = model_ir("reference_habitat_bn")
 The SPEC section 45 reference network is small enough that exact
 inference can be checked against the brute-force joint distribution
 entry by entry, which is what makes it the integration test of the whole
-ecosystem. Observing vegetation can update the upstream climate, whereas
-intervening on vegetation leaves climate at its prior. GrazingPressure
-is a root in this example, so observing it does not update climate.
-Downstream agreement requires the relevant screening-off conditions; it
-is not a general consequence of being downstream. The API keeps
-observation and intervention distinct. The same model read from the
-Netica and GeNIe files gives the same numbers. The next vignette, *The
-management influence diagram*, adds a decision and two utilities to this
-network.
+ecosystem. Observing vegetation can update the upstream soil moisture,
+whereas intervening on vegetation leaves soil moisture at its prior.
+GrazingPressure is a root in this example, so observing it updates
+nothing upstream. Downstream agreement requires the relevant
+screening-off conditions; it is not a general consequence of being
+downstream. The API keeps observation and intervention distinct. The
+same model read from the Netica and GeNIe files gives the same numbers.
+The next vignette, *The management influence diagram*, adds a decision
+and two utilities to this network.
 
 ## References
 
