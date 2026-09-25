@@ -2314,7 +2314,7 @@ vertical-align: -.125em;
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>t_jt <span class="op">=</span> <span class="pp">@elapsed</span> ms <span class="op">=</span> <span class="fu">all_marginals</span>(water; backend <span class="op">=</span> <span class="fu">JunctionTree</span>())</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(ms), <span class="fu">round</span>(t_jt; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>(32, 0.126)</code></pre>
+<pre><code>(32, 0.131)</code></pre>
 </div>
 </div>
 <div id="10" class="cell" data-execution_count="1">
@@ -2337,7 +2337,7 @@ vertical-align: -.125em;
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(t_ve; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>1.251</code></pre>
+<pre><code>1.45</code></pre>
 </div>
 </div>
 </section>
@@ -2384,15 +2384,18 @@ vertical-align: -.125em;
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>n, <span class="fu">round</span>(t; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>(29, 3.152)</code></pre>
+<pre><code>(29, 3.169)</code></pre>
 </div>
 </div>
 <p>The intervened model is an ordinary model whose history records what was rewritten, so a scenario can be drawn, saved or composed like any other:</p>
 <div id="22" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">history</span>(<span class="fu">do_intervention</span>(water, scenario <span class="op">=&gt;</span> <span class="fu">Symbol</span>(<span class="st">&quot;40_MG_L&quot;</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The raw events carry a wall-clock timestamp, which would make this committed</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># output differ on every render; show what the intervention did instead.</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>[(<span class="cn">e</span>.kind, <span class="cn">e</span>.target, <span class="cn">e</span>.added.kernel_ref)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a> for <span class="cn">e</span> <span class="kw">in</span> <span class="fu">history</span>(<span class="fu">do_intervention</span>(water, scenario <span class="op">=&gt;</span> <span class="fu">Symbol</span>(<span class="st">&quot;40_MG_L&quot;</span>)))]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>1-element Vector{ModelEvent}:
- ModelEvent(:hard, :CKNI_12_15, MechanismRecord(:CKNI_12_15_mechanism, NamedRef(&quot;CKNI_12_15_mechanism&quot;), [:CKNI_12_00]), MechanismRecord(Symbol(&quot;do[CKNI_12_15=40_MG_L]&quot;), PointMassRef(Symbol(&quot;40_MG_L&quot;)), Symbol[]), &quot;&quot;, Dates.DateTime(&quot;2026-09-25T01:51:10.391&quot;))</code></pre>
+<pre><code>1-element Vector{Tuple{Symbol, Symbol, PointMassRef}}:
+ (:hard, :CKNI_12_15, PointMassRef(Symbol(&quot;40_MG_L&quot;)))</code></pre>
 </div>
 </div>
 </section>

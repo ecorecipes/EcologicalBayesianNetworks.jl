@@ -139,7 +139,10 @@ The intervened model is an ordinary model whose history records what was rewritt
 so a scenario can be drawn, saved or composed like any other:
 
 ```{julia}
-history(do_intervention(water, scenario => Symbol("40_MG_L")))
+# The raw events carry a wall-clock timestamp, which would make this committed
+# output differ on every render; show what the intervention did instead.
+[(e.kind, e.target, e.added.kernel_ref)
+ for e in history(do_intervention(water, scenario => Symbol("40_MG_L")))]
 ```
 
 ## Summary

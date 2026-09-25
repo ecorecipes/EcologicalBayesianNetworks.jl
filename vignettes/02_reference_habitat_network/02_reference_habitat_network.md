@@ -139,8 +139,8 @@ round.(empirical_marginal(s, :Occupancy).table; digits = 3)
 ```
 
     2-element Vector{Float64}:
-     0.518
-     0.482
+     0.526
+     0.474
 
 ## Evidence
 
@@ -182,11 +182,13 @@ low_obs = observe(m, :GrazingPressure => :low)
     (intervene = 0.51166025, observe = 0.51166025)
 
 ``` julia
-history(low_do)
+# The raw events carry a wall-clock timestamp, which would make this committed
+# output differ on every render; show what the intervention did instead.
+[(e.kind, e.target, e.added.kernel_ref) for e in history(low_do)]
 ```
 
-    1-element Vector{ModelEvent}:
-     ModelEvent(:hard, :GrazingPressure, MechanismRecord(:GrazingPressure_mechanism, NamedRef("GrazingPressure_mechanism"), Symbol[]), MechanismRecord(Symbol("do[GrazingPressure=low]"), PointMassRef(:low), Symbol[]), "", Dates.DateTime("2026-09-25T01:44:30.006"))
+    1-element Vector{Tuple{Symbol, Symbol, PointMassRef}}:
+     (:hard, :GrazingPressure, PointMassRef(:low))
 
 ``` julia
 to_graphviz(low_do)

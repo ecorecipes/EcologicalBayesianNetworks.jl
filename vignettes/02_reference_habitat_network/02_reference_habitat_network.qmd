@@ -134,7 +134,9 @@ low_obs = observe(m, :GrazingPressure => :low)
 ```
 
 ```{julia}
-history(low_do)
+# The raw events carry a wall-clock timestamp, which would make this committed
+# output differ on every render; show what the intervention did instead.
+[(e.kind, e.target, e.added.kernel_ref) for e in history(low_do)]
 ```
 
 ```{julia}

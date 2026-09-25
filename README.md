@@ -140,7 +140,11 @@ g = reference_grazing_id()                # SPEC section 46 reference influence 
 expected_utility(g, :GrazingManagement => :exclude)
 optimize(do_intervention(g, :GrazingPressure => :low)).expected_utility
 
-fetch_model("tidal_saline_wetlands")      # CC BY-ND: into the cache, never committed
+# Fetch-only records need the network and write into a cache outside the repository.
+# `with_cache_dir` keeps that out of your real cache, which is what the tests do.
+with_cache_dir(mktempdir()) do
+    fetch_model("tidal_saline_wetlands")  # CC BY-ND: into the cache, never committed
+end
 ```
 
 Scripts: `scripts/fetch_all.jl` (fill the cache), `scripts/verify_checksums.jl`,

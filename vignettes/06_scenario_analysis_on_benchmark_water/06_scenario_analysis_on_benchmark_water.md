@@ -88,7 +88,7 @@ t_jt = @elapsed ms = all_marginals(water; backend = JunctionTree())
 length(ms), round(t_jt; digits = 3)
 ```
 
-    (32, 0.117)
+    (32, 0.127)
 
 ``` julia
 ms[:CKNI_12_45]
@@ -114,7 +114,7 @@ end
 round(t_ve; digits = 3)
 ```
 
-    1.506
+    1.398
 
 ## Scenarios: observing versus intervening upstream
 
@@ -176,17 +176,20 @@ end
 n, round(t; digits = 3)
 ```
 
-    (29, 3.029)
+    (29, 2.979)
 
 The intervened model is an ordinary model whose history records what was
 rewritten, so a scenario can be drawn, saved or composed like any other:
 
 ``` julia
-history(do_intervention(water, scenario => Symbol("40_MG_L")))
+# The raw events carry a wall-clock timestamp, which would make this committed
+# output differ on every render; show what the intervention did instead.
+[(e.kind, e.target, e.added.kernel_ref)
+ for e in history(do_intervention(water, scenario => Symbol("40_MG_L")))]
 ```
 
-    1-element Vector{ModelEvent}:
-     ModelEvent(:hard, :CKNI_12_15, MechanismRecord(:CKNI_12_15_mechanism, NamedRef("CKNI_12_15_mechanism"), [:CKNI_12_00]), MechanismRecord(Symbol("do[CKNI_12_15=40_MG_L]"), PointMassRef(Symbol("40_MG_L")), Symbol[]), "", Dates.DateTime("2026-09-25T01:51:55.938"))
+    1-element Vector{Tuple{Symbol, Symbol, PointMassRef}}:
+     (:hard, :CKNI_12_15, PointMassRef(Symbol("40_MG_L")))
 
 ## Summary
 

@@ -2361,8 +2361,8 @@ GrazingPressure -&gt; Vegetation</code></pre>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>.(<span class="fu">empirical_marginal</span>(s, <span class="op">:</span>Occupancy).table; digits <span class="op">=</span> <span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>2-element Vector{Float64}:
- 0.525
- 0.475</code></pre>
+ 0.521
+ 0.479</code></pre>
 </div>
 </div>
 </section>
@@ -2397,10 +2397,12 @@ GrazingPressure -&gt; Vegetation</code></pre>
 </div>
 </div>
 <div id="26" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">history</span>(low_do)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The raw events carry a wall-clock timestamp, which would make this committed</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># output differ on every render; show what the intervention did instead.</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>[(<span class="cn">e</span>.kind, <span class="cn">e</span>.target, <span class="cn">e</span>.added.kernel_ref) for <span class="cn">e</span> <span class="kw">in</span> <span class="fu">history</span>(low_do)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>1-element Vector{ModelEvent}:
- ModelEvent(:hard, :GrazingPressure, MechanismRecord(:GrazingPressure_mechanism, NamedRef(&quot;GrazingPressure_mechanism&quot;), Symbol[]), MechanismRecord(Symbol(&quot;do[GrazingPressure=low]&quot;), PointMassRef(:low), Symbol[]), &quot;&quot;, Dates.DateTime(&quot;2026-09-25T01:43:47.755&quot;))</code></pre>
+<pre><code>1-element Vector{Tuple{Symbol, Symbol, PointMassRef}}:
+ (:hard, :GrazingPressure, PointMassRef(:low))</code></pre>
 </div>
 </div>
 <div id="28" class="cell" data-execution_count="1">
