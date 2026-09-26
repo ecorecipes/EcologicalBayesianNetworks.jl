@@ -70,6 +70,7 @@ mktempdir() do cache_root
             include("netica_axis_oracle.jl")
             include("hugin_axis_oracle.jl")
             include("scripts.jl")
+            include("docstrings.jl")
             FETCH && include("fetch.jl")
         end
     end
