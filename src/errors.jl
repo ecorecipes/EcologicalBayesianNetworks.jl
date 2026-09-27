@@ -117,8 +117,9 @@ end
 """
     NotAModelFileError(name, message)
 
-Raised when a download or import is not a model file at all (an HTML error page, an
-empty file) or when the file is binary Netica `.neta`, which cannot be parsed.
+Raised when a download or import is not a model file at all (no file at the path, an
+empty file, an HTML error page) or when the file is binary Netica `.neta`, which cannot
+be parsed.
 """
 struct NotAModelFileError <: ZooError
     name::String

@@ -247,13 +247,16 @@ Copy a manually downloaded file into the cache for a fetch-only model, after che
 that it is a model file and that its SHA-256 matches the manifest (a warning when the
 manifest has no checksum). Returns the cached path. For a verbatim model the file is
 only checked against the committed one and the committed path is returned.
+
+A path with no file, an empty file or an HTML page raises [`NotAModelFileError`](@ref)
+(see [`check_model_file`](@ref)), and a file whose SHA-256 differs from the manifest
+raises [`ChecksumMismatchError`](@ref).
 """
 function import_model(name, path::AbstractString)
     spec = model_info(name)
     is_reconstruction(spec) &&
         throw(ReconstructionOnlyError(spec.name, spec.source_url, spec.licence))
     is_builtin(spec) && throw(NoModelFileError(spec.name))
-    isfile(path) || throw(ArgumentError("import_model: no file at $(path)"))
     check_model_file(spec, path)
     _verify_checksum(spec, path)
     is_verbatim(spec) && return model_path(spec)

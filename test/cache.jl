@@ -89,7 +89,13 @@
             touch(empty)
             @test_throws NotAModelFileError E.check_model_file(spec, empty)
             @test_throws NotAModelFileError E.check_model_file(spec, joinpath(tmp, "none"))
-            @test_throws ArgumentError import_model("animals", joinpath(tmp, "none"))
+            @test_throws NotAModelFileError import_model("animals", joinpath(tmp, "none"))
+            e = try
+                import_model("animals", joinpath(tmp, "none"))
+            catch err
+                err
+            end
+            @test occursin("no file at", sprint(showerror, e))
             @test_throws NotAModelFileError import_model("animals", html)
             @test_throws ChecksumMismatchError import_model("animals", copy)
 
