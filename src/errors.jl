@@ -1,9 +1,19 @@
 """
-    ZooError <: Exception
+    ZooError <: BayesNetError
 
-Abstract supertype of every exception raised by EcologicalBayesianNetworks.jl.
+Abstract supertype of every exception EcologicalBayesianNetworks.jl introduces. It subtypes
+BayesianNetworks' `BayesNetError` (ADR 0013): the zoo is built on BayesianNetworks, so its
+errors belong to that tier, and `AnyBayesNetError` catches them with every other typed error
+of the ecosystem.
+
+Not every exception the zoo raises is a `ZooError`. Errors of the lower packages pass
+through unchanged where the zoo adds nothing: BayesianNetworkFormats' reader errors
+(`ParseError`, `ValidationError`, `NotNormalizedError`, ...) from [`load_model`](@ref) and
+[`model_ir`](@ref), which keep the offending file row, and BayesianNetworks' and
+InfluenceDiagrams' model errors. The roots `BayesNetError`, `BayesianNetworkFormatsError`
+and `AnyBayesNetError`, and Formats' concrete error types, are re-exported.
 """
-abstract type ZooError <: Exception end
+abstract type ZooError <: BayesianNetworks.BayesNetError end
 
 """
     UnknownModelError(name)

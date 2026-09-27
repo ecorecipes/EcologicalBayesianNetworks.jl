@@ -72,6 +72,14 @@ siblings for use in the vignettes.
 
 ## Errors
 
+Every exception the zoo introduces subtypes `ZooError`, which subtypes BayesianNetworks.jl's
+`BayesNetError` (ADR 0013). Errors of the lower packages pass through unchanged, notably
+BayesianNetworkFormats.jl's reader errors from `load_model` and `model_ir`. The roots
+`BayesNetError`, `BayesianNetworkFormatsError` and the union `AnyBayesNetError`, and every
+exception type BayesianNetworkFormats.jl exports (`ParseError`, `ValidationError`,
+`NotNormalizedError`, ...), are re-exported; they are documented in their own packages'
+API references.
+
 ```@docs
 ZooError
 UnknownModelError

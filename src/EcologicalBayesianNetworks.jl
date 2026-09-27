@@ -60,6 +60,20 @@ export model_ir, load_model, model_summary, ModelSummary, read_model_file
 export reference_habitat_bn, reference_habitat_model, reference_grazing_id
 # Re-exported from the siblings for convenience in vignettes.
 export NetworkIR, BayesModel, InfluenceDiagramModel, read_network, has_decisions
+# Re-exported exception roots and types (ADR 0013): the roots of the layers the zoo's API
+# raises, and, because the zoo re-exports Formats' reader, every exception type Formats
+# exports. Each binding is its owner's. No conformance adapter loads this package, so
+# Formats' concrete types may be re-exported here (unlike BayesianNetworks, Inference and
+# InfluenceDiagrams).
+using BayesianNetworks: BayesNetError, AnyBayesNetError, BayesianNetworkFormatsError
+export BayesNetError, AnyBayesNetError, BayesianNetworkFormatsError
+for name in names(BayesianNetworkFormats)
+    T = getglobal(BayesianNetworkFormats, name)
+    T isa Type && T <: Exception || continue
+    name === :BayesianNetworkFormatsError && continue
+    @eval using BayesianNetworkFormats: $name
+    @eval export $name
+end
 
 include("errors.jl")
 include("registry.jl")
