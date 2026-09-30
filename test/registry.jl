@@ -235,6 +235,20 @@ end
                           "file = \"Koalas.dne\"" => ""))
             @test read_manifest(path).name == "bad"
             @test length(load_model_specs(tmp)) == 1
+            # `[parser_options]` are checked when the manifest is read (ADR 0015).
+            fetch_only = read(path, String)
+            for (option, reason) in ("strictt = true" => "unknown parser option",
+                                     "strict = \"yes\"" => "must be true or false",
+                                     "atol = -1.0" => "finite nonnegative")
+                write(path, replace(fetch_only, "strict = true" => option))
+                e = try
+                    read_manifest(path)
+                catch err
+                    err
+                end
+                @test e isa InvalidManifestError
+                @test occursin(reason, sprint(showerror, e))
+            end
         end
     end
 end

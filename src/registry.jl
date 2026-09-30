@@ -202,20 +202,47 @@ function _manifest_strings(d, key, path)
     return String.(v)
 end
 
+# Every parser option a manifest or a keyword may set; loading.jl says where each goes.
+const _OPTION_KEYS = (:strict, :atol, :renormalize, :allow_missing_tables)
+
+# One `[parser_options]` entry: a key `model_ir` accepts (`_OPTION_KEYS`, loading.jl) with
+# a value of the right type, checked when the manifest is read rather than when the model
+# is first loaded (ADR 0015).
+function _manifest_option(k::Symbol, v, path)
+    k in _OPTION_KEYS ||
+        throw(InvalidManifestError(path,
+                                   "unknown parser option \"$k\"; allowed: $(join(_OPTION_KEYS, ", "))"))
+    if k === :atol
+        v isa Real && !(v isa Bool) && isfinite(v) && v >= 0 ||
+            throw(InvalidManifestError(path,
+                                       "parser option atol must be a finite nonnegative number, got $(repr(v))"))
+    else
+        v isa Bool ||
+            throw(InvalidManifestError(path,
+                                       "parser option $k must be true or false, got $(repr(v))"))
+    end
+    return v
+end
+
 """
     read_manifest(path) -> ModelSpec
 
 Parse and validate one `metadata.toml`. Every key in `REQUIRED_MANIFEST_KEYS` must be
 present; `category`, `format` and `redistribution` must take allowed values; verbatim
 models need an existing `file`; Julia-built models need a `constructor` and
-`format = "julia"`; fetch-only models must not have a `file`. The `name` must equal the
-directory name. Throws [`InvalidManifestError`](@ref).
+`format = "julia"`; fetch-only models must not have a `file`; `[parser_options]` may
+hold only `strict`, `atol`, `renormalize` and `allow_missing_tables`, with boolean values
+and a finite nonnegative `atol`. The `name` must equal the directory name. Throws
+[`InvalidManifestError`](@ref).
 """
 function read_manifest(path::AbstractString)
     isfile(path) || throw(InvalidManifestError(path, "manifest file not found"))
     d = try
         TOML.parsefile(path)
     catch e
+        # Only the parser's own error is about the manifest's content (ADR 0015); the file
+        # was checked above, and anything else propagates.
+        e isa TOML.ParserError || rethrow()
         throw(InvalidManifestError(path, "TOML parse error: " * sprint(showerror, e)))
     end
     dir = basename(dirname(path))
@@ -281,7 +308,7 @@ function read_manifest(path::AbstractString)
         po isa AbstractDict ||
             throw(InvalidManifestError(path, "parser_options must be a table"))
         for (k, v) in po
-            popts[Symbol(k)] = v
+            popts[Symbol(k)] = _manifest_option(Symbol(k), v, path)
         end
     end
     return ModelSpec(; name, title=_manifest_string(d, "title", path), category,

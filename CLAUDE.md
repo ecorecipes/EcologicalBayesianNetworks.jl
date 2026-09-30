@@ -18,6 +18,8 @@ Sibling packages are expected at `../<Name>.jl` (see `[sources]` in Project.toml
 
 - `models/<name>/metadata.toml` is the source of truth; `src/registry.jl` reads every manifest at
   precompile time into `MODEL_SPECS` (with `include_dependency`, so editing a manifest recompiles).
+  `read_manifest` checks `[parser_options]` keys and value types there (ADR 0015), which is why
+  `_OPTION_KEYS` lives in registry.jl rather than loading.jl.
   `models/README.md` documents the keys and the licence policy.
 - `src/cache.jl`: the model cache, `fetch_model` / `import_model` / `verify_checksums`.
   `cache_dir()` is overridable: an enclosing `with_cache_dir(f, dir)` first, then
@@ -90,5 +92,5 @@ JuliaFormatter `yas`; docstrings on every exported name, which `test/docstrings.
 is strict (no `warnonly`), so a docstring left out of the manual or a broken `@ref` fails it; typed exceptions
 with variable names in the message, following ADR 0013: they live in `src/errors.jl` and subtype the nearest
 root (`FiniteKernelsError`, `BayesianNetworkFormatsError` or `BayesNetError`), invalid arguments and keywords
-raise `ArgumentError`, typed errors from a lower package pass through unchanged and documented, and another
+raise `ArgumentError`, typed errors from a lower package pass through unchanged and documented, content read from a file, document or manifest is checked before it is converted and raises the package's typed error (ADR 0015: never catch the `MethodError` or `InexactError` of an unchecked conversion), and another
 package's type is named as a code span, never with `@ref`; no emojis in code or docs.

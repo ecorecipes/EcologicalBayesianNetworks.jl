@@ -36,4 +36,9 @@
                     constructor="no_such_function", redistribution="builtin",
                     directory="bad")
     @test_throws InvalidManifestError E._constructor(bad)
+    # One naming something that cannot build a model without arguments too (ADR 0015).
+    notcallable = ModelSpec(; name="bad", title="t", category="reference", format="julia",
+                            constructor="read_manifest", redistribution="builtin",
+                            directory="bad")
+    @test_throws InvalidManifestError E._constructor(notcallable)
 end

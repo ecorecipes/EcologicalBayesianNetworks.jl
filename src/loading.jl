@@ -6,7 +6,8 @@
 const _READ_KEYS = (:strict, :atol, :renormalize)
 const _VALIDATE_KEYS = (:atol, :renormalize, :allow_missing_tables)
 const _BUILD_KEYS = (:atol, :renormalize)
-const _OPTION_KEYS = (:strict, :atol, :renormalize, :allow_missing_tables)
+# `_OPTION_KEYS`, every option, is in registry.jl: `read_manifest` checks manifests with it
+# at precompile time, before this file is included.
 
 function _split_options(spec::ModelSpec, kw)
     opts = merge(spec.parser_options, Dict{Symbol,Any}(pairs(kw)))
@@ -44,7 +45,13 @@ function _constructor(spec::ModelSpec)
     isdefined(@__MODULE__, Symbol(spec.constructor)) ||
         throw(InvalidManifestError(joinpath(model_dir(spec), "metadata.toml"),
                                    "constructor $(spec.constructor) is not defined in EcologicalBayesianNetworks"))
-    return getfield(@__MODULE__, Symbol(spec.constructor))
+    f = getfield(@__MODULE__, Symbol(spec.constructor))
+    # A manifest naming something that cannot build a model is the manifest's error, not
+    # a `MethodError` at load time (ADR 0015).
+    applicable(f) ||
+        throw(InvalidManifestError(joinpath(model_dir(spec), "metadata.toml"),
+                                   "constructor $(spec.constructor) cannot be called without arguments"))
+    return f
 end
 
 function _builtin_object(spec::ModelSpec)
