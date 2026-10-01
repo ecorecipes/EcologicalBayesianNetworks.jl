@@ -201,4 +201,54 @@ const SLOW_BENCHMARKS = ["barley", "mildew"]
                        atol=1e-9)
         @test_throws IncompleteStrategyError expected_utility(k, :Cull => :No)
     end
+
+    @testset "a zoo decision model's certificate records Julia's solution" begin
+        I = InfluenceDiagrams
+        k = load_model("koalas")
+        id = I.syntax(k)
+        simple(x) = (q = rationalize(BigInt, x); I._dve_rounds_to(q, x) ? q : big(x) // 1)
+        companions = Dict{Tuple{Symbol,Int,Tuple},Rational{BigInt}}()
+        for mid in I.mechanisms(id)
+            t = I.cpt(I.kernel(k, I.variable_name(id, I.target(id, mid))))
+            for c in CartesianIndices(t)
+                companions[(:cpt, mid, Tuple(c) .- 1)] = simple(t[c])
+            end
+        end
+        for uid in I.utilities(id)
+            t = I.utility_table(I.utility(k, I.utility_name(id, uid)),
+                                I._utility_axes(k, uid))
+            for c in CartesianIndices(t)
+                companions[(:utility, uid, Tuple(c) .- 1)] = simple(t[c])
+            end
+        end
+        f64(v) = reinterpret(Float64, parse(UInt64, v.f64; base=16))
+        stable = DecisionVariableElimination(; stable=true)
+        for (kwargs, backend, exact) in
+            (((;), DecisionVariableElimination(), false), ((;), stable, true),
+             ((numeric_mode=:rational_exact, exact_tables=companions), stable, true))
+            c = I.export_dve_certificate(k; kwargs..., solution=backend)
+            s = c["solution"]
+            @test c["version"] == 2 && length(s.policies) == 2
+            @test s.arithmetic == (exact ? "exact_rational" : "binary64")
+            @test s.data == (haskey(kwargs, :numeric_mode) ? "q" : "f64")
+            reference = optimize(k, backend)
+            for p in s.policies
+                d = parse(Int, p.decision)
+                a = I.decision_variable(id, d)
+                @test p.axes == string.(I.decision_information(id, d))
+                table = policy_table(reference.strategy[I.decision_name(id, d)])
+                ids = BayesianNetworks.state_ids(id, a)
+                labels = I.states(id, a)
+                @test [e.action for e in p.entries] ==
+                      [string(ids[findfirst(==(table[(e.at .+ 1)...]), labels)])
+                       for e in p.entries]
+            end
+            value = f64(s.value)
+            @test abs(value - reference.expected_utility) <= 4 * eps(abs(value))
+            haskey(kwargs, :numeric_mode) || @test value === reference.expected_utility
+            eu = expected_utility(k, reference.strategy)
+            @test abs(value - eu) <= 4 * eps(max(abs(value), abs(eu)))
+            @test isapprox(value, 20.2; atol=1e-9)
+        end
+    end
 end
