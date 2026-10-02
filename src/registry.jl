@@ -57,8 +57,9 @@ Metadata of one zoo model, mirroring its `metadata.toml` (see `models/README.md`
 meaning of every field). `directory` is the manifest directory relative to
 [`MODELS_DIR`](@ref); `file` is empty for fetch-only and Julia-built models; `constructor`
 names the function of this module that builds a `format = "julia"` model;
-`parser_options` are the `strict`, `atol`, `renormalize` and `allow_missing_tables` keywords
-applied by [`model_ir`](@ref); `known_parse_issue` is non-empty when the current readers
+`parser_options` are the `strict`, `atol`, `renormalize`, `allow_missing_tables`,
+`max_states` and `max_table_cells` keywords applied by [`model_ir`](@ref);
+`known_parse_issue` is non-empty when the current readers
 cannot parse the file (empty for every current model); `aliases` are extra lookup keys for
 [`model_info`](@ref), used for the repository record numbers of models from the
 Bayesian Network Model Archive [BNMA](@cite) (`"BNMA 126"` finds
@@ -203,7 +204,8 @@ function _manifest_strings(d, key, path)
 end
 
 # Every parser option a manifest or a keyword may set; loading.jl says where each goes.
-const _OPTION_KEYS = (:strict, :atol, :renormalize, :allow_missing_tables)
+const _OPTION_KEYS = (:strict, :atol, :renormalize, :allow_missing_tables, :max_states,
+                      :max_table_cells)
 
 # One `[parser_options]` entry: a key `model_ir` accepts (`_OPTION_KEYS`, loading.jl) with
 # a value of the right type, checked when the manifest is read rather than when the model
@@ -216,6 +218,11 @@ function _manifest_option(k::Symbol, v, path)
         v isa Real && !(v isa Bool) && isfinite(v) && v >= 0 ||
             throw(InvalidManifestError(path,
                                        "parser option atol must be a finite nonnegative number, got $(repr(v))"))
+    elseif k in (:max_states, :max_table_cells)
+        # the size limits of BayesianNetworkFormats' readers, which take positive integers
+        v isa Integer && !(v isa Bool) && v >= 1 ||
+            throw(InvalidManifestError(path,
+                                       "parser option $k must be a positive integer, got $(repr(v))"))
     else
         v isa Bool ||
             throw(InvalidManifestError(path,
@@ -231,9 +238,10 @@ Parse and validate one `metadata.toml`. Every key in `REQUIRED_MANIFEST_KEYS` mu
 present; `category`, `format` and `redistribution` must take allowed values; verbatim
 models need an existing `file`; Julia-built models need a `constructor` and
 `format = "julia"`; fetch-only models must not have a `file`; `[parser_options]` may
-hold only `strict`, `atol`, `renormalize` and `allow_missing_tables`, with boolean values
-and a finite nonnegative `atol`. The `name` must equal the directory name. Throws
-[`InvalidManifestError`](@ref).
+hold only `strict`, `atol`, `renormalize`, `allow_missing_tables`, `max_states` and
+`max_table_cells`, with boolean values, a finite nonnegative `atol`, and positive integers
+for the two size limits of BayesianNetworkFormats' readers. The `name` must equal the
+directory name. Throws [`InvalidManifestError`](@ref).
 """
 function read_manifest(path::AbstractString)
     isfile(path) || throw(InvalidManifestError(path, "manifest file not found"))

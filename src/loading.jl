@@ -1,11 +1,14 @@
 # Reading zoo models into the BayesianNetworkFormats `NetworkIR` and into `BayesModel`s.
 
-# Which manifest / keyword options go where: the readers take `strict`, `atol` and
-# `renormalize`; the validation step of `model_ir` takes `atol`, `renormalize` and
-# `allow_missing_tables`; `BayesModel(ir)` takes `atol` and `renormalize`.
-const _READ_KEYS = (:strict, :atol, :renormalize)
+# Which manifest / keyword options go where: the readers take `strict`, `atol`,
+# `renormalize` and the size limits `max_states` and `max_table_cells`; the validation step
+# of `model_ir` takes `atol`, `renormalize` and `allow_missing_tables`; `BayesModel(ir)`
+# takes `atol` and `renormalize`. The `_FILE_KEYS` act only on a file, so a Julia-built
+# model rejects them.
+const _READ_KEYS = (:strict, :atol, :renormalize, :max_states, :max_table_cells)
 const _VALIDATE_KEYS = (:atol, :renormalize, :allow_missing_tables)
 const _BUILD_KEYS = (:atol, :renormalize)
+const _FILE_KEYS = (:strict, :max_states, :max_table_cells)
 # `_OPTION_KEYS`, every option, is in registry.jl: `read_manifest` checks manifests with it
 # at precompile time, before this file is included.
 
@@ -24,9 +27,10 @@ end
 Read a model file with `BayesianNetworkFormats.read_network`, decompressing `.gz`
 files in memory (the readers do not handle gzip) and detecting the format from the
 uncompressed name. The manifest `[parser_options]` are applied first and overridden by
-`kw` (`strict`, `atol`, `renormalize`; `allow_missing_tables` is accepted and ignored,
-since the readers always tolerate missing tables). No validation beyond the reader's
-own: use [`model_ir`](@ref) for the validated IR.
+`kw` (`strict`, `atol`, `renormalize`, `max_states`, `max_table_cells`;
+`allow_missing_tables` is accepted and ignored, since the readers always tolerate missing
+tables). No validation beyond the reader's own: use [`model_ir`](@ref) for the validated
+IR.
 """
 function read_model_file(spec::ModelSpec, path::AbstractString; kw...)
     read_opts, _, _ = _split_options(spec, kw)
@@ -83,10 +87,18 @@ many chance nodes lack a table), and `model_ir(name; allow_missing_tables=true)`
 the same for any model. Throws [`ModelNotFetchedError`](@ref) when a fetch-only model
 is not cached.
 
-For a Julia-built model (`format = "julia"`) there is no file, so `strict` has nothing
-to parse: passing it raises an `ArgumentError` naming the model rather than being
-ignored. `atol`, `renormalize` and `allow_missing_tables` still reach the validation
-step and are honoured.
+`max_states` and `max_table_cells` are the size limits of BayesianNetworkFormats'
+readers, 65 536 states per variable and 2^27 cells per table by default: a model file over
+either raises `BayesianNetworkFormats.ParseError` before anything is allocated for it. A
+manifest's `[parser_options]` or a keyword can raise them. As for `read_network`, they must
+be positive integers: a manifest with any other value is an [`InvalidManifestError`](@ref),
+and a keyword raises `ArgumentError`, or `TypeError` for a value that is not an integer.
+The largest committed model, `mildew`, has 100 states and 280 000 cells.
+
+For a Julia-built model (`format = "julia"`) there is no file, so `strict`, `max_states`
+and `max_table_cells` have nothing to parse: passing one raises an `ArgumentError` naming
+the model rather than being ignored. `atol`, `renormalize` and `allow_missing_tables`
+still reach the validation step and are honoured.
 
 ```julia
 ir = model_ir("water")
@@ -99,8 +111,7 @@ function model_ir(name; kw...)
         throw(ReconstructionOnlyError(spec.name, spec.source_url, spec.licence))
     _, validate_opts, _ = _split_options(spec, kw)
     if is_builtin(spec)
-        _reject_builtin_options(spec, kw, (:strict,),
-                                "there is no file to parse strictly")
+        _reject_builtin_options(spec, kw, _FILE_KEYS, "there is no file to parse")
         ir = NetworkIR(_builtin_object(spec); name=spec.name)
     else
         ir = read_model_file(spec, model_path(spec); kw...)
@@ -116,15 +127,16 @@ Load a model with its tables bound: a chance-only model as a
 utility nodes as an `InfluenceDiagrams.InfluenceDiagramModel`
 (`InfluenceDiagramModel(model_ir(name))`, chance kernels and tabular utilities bound,
 information sets from the decision nodes' parents), and the Julia-built object for
-reference models. `kw` are `strict`, `atol`, `renormalize` and `allow_missing_tables`
-as for [`model_ir`](@ref); a chance node without a table leaves its mechanism unbound
-(`BayesianNetworks.missing_kernels`), which `optimize` and `validate(m; semantics =
-true)` report.
+reference models. `kw` are `strict`, `atol`, `renormalize`, `allow_missing_tables`,
+`max_states` and `max_table_cells` as for [`model_ir`](@ref); a chance node without a
+table leaves its mechanism unbound (`BayesianNetworks.missing_kernels`), which `optimize`
+and `validate(m; semantics = true)` report.
 
 A Julia-built model is returned by its constructor with its kernels already bound, so
-none of the parser or build keywords apply; passing `atol` or `renormalize` for one
-raises an `ArgumentError` naming the model instead of being silently dropped. Use
-`model_ir(name)` and build the model by hand if those tolerances matter.
+none of the parser or build keywords apply. Passing `strict`, `max_states` or
+`max_table_cells` (there is no file to parse), or `atol` or `renormalize` (the kernels are
+bound), for one raises an `ArgumentError` naming the model instead of being silently
+dropped. Use `model_ir(name)` and build the model by hand if those tolerances matter.
 
 ```julia
 m = load_model("native_fish_v1")
@@ -139,6 +151,7 @@ function load_model(name; kw...)
         throw(ReconstructionOnlyError(spec.name, spec.source_url, spec.licence))
     _, _, build_opts = _split_options(spec, kw)
     if is_builtin(spec)
+        _reject_builtin_options(spec, kw, _FILE_KEYS, "there is no file to parse")
         _reject_builtin_options(spec, kw, _BUILD_KEYS,
                                 "its constructor returns a model with its kernels already bound")
         return _builtin_object(spec)

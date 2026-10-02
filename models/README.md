@@ -62,7 +62,7 @@ summary below is the working version:
 | `known_parse_issue` | optional: why the current reader cannot parse the file (empty for every current model; a value makes the test suite expect a `ParseError`) |
 | `aliases` | extra lookup keys for `model_info`; BNMA models carry their record number (`model_info("BNMA 126")` finds `koalas`) |
 | `notes` | free text |
-| `[parser_options]` | keyword arguments applied by `model_ir`: `strict`, `atol` and `renormalize` go to `read_network`; `allow_missing_tables = true` lets `BayesianNetworkFormats.validate` accept chance nodes without a table (Netica finding and equation nodes with `evidence` but no `probs`; `model_summary` reports their number) |
+| `[parser_options]` | keyword arguments applied by `model_ir`: `strict`, `atol` and `renormalize` go to `read_network`; `allow_missing_tables = true` lets `BayesianNetworkFormats.validate` accept chance nodes without a table (Netica finding and equation nodes with `evidence` but no `probs`; `model_summary` reports their number); `max_states` and `max_table_cells`, positive integers, raise the size limits of the readers (by default 65 536 states per variable and 2^27 cells per table; no current model needs them, the largest being `mildew` with 100 states and 280 000 cells) |
 
 The seven `renormalize = true` entries (`water`, `barley`, `mildew`,
 `plexus_teb_bat_site`, `plexus_teb_bat_subwatershed`, `tidal_saline_wetlands` and

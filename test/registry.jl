@@ -239,7 +239,10 @@ end
             fetch_only = read(path, String)
             for (option, reason) in ("strictt = true" => "unknown parser option",
                                      "strict = \"yes\"" => "must be true or false",
-                                     "atol = -1.0" => "finite nonnegative")
+                                     "atol = -1.0" => "finite nonnegative",
+                                     "max_states = 0" => "must be a positive integer",
+                                     "max_table_cells = 1.5" => "must be a positive integer",
+                                     "max_states = true" => "must be a positive integer")
                 write(path, replace(fetch_only, "strict = true" => option))
                 e = try
                     read_manifest(path)
@@ -249,6 +252,12 @@ end
                 @test e isa InvalidManifestError
                 @test occursin(reason, sprint(showerror, e))
             end
+            # the readers' size limits are parser options too
+            write(path,
+                  replace(fetch_only,
+                          "strict = true" => "strict = true\nmax_states = 300\nmax_table_cells = 1000"))
+            limits = read_manifest(path).parser_options
+            @test limits[:max_states] == 300 && limits[:max_table_cells] == 1000
         end
     end
 end

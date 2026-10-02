@@ -90,6 +90,41 @@ const SLOW_BENCHMARKS = ["barley", "mildew"]
                                                           "x.neta")
     end
 
+    @testset "the size limits of the readers" begin
+        # `max_states` and `max_table_cells` reach BayesianNetworkFormats' readers from a
+        # keyword or from the manifest; both were rejected as unknown parser options.
+        ir = model_ir("koalas")
+        cells = maximum(length(v.table) for v in ir.variables if v.table !== nothing)
+        states = maximum(length(v.states) for v in ir.variables)
+        @test model_ir("koalas"; max_states=states, max_table_cells=cells) == ir
+        e = try
+            model_ir("koalas"; max_table_cells=cells - 1)
+        catch err
+            err
+        end
+        @test e isa ParseError && occursin("max_table_cells = $(cells - 1)", e.message)
+        @test_throws ParseError load_model("koalas"; max_states=states - 1)
+        # a gzipped model is read by the same reader
+        @test_throws ParseError model_ir("water"; max_table_cells=10)
+        # the keywords are validated as `read_network` validates them
+        @test_throws ArgumentError model_ir("koalas"; max_states=0)
+        @test_throws TypeError model_ir("koalas"; max_table_cells=1.5)
+        # a manifest that lowers a limit, on a copy of koalas; a keyword overrides it
+        mktempdir() do tmp
+            dir = joinpath(tmp, "koalas")
+            cp(model_dir(model_info("koalas")), dir)
+            path = joinpath(dir, "metadata.toml")
+            write(path,
+                  replace(read(path, String),
+                          "[parser_options]" => "[parser_options]\nmax_table_cells = $(cells - 1)"))
+            spec = read_manifest(path)
+            @test spec.parser_options[:max_table_cells] == cells - 1
+            file = joinpath(dir, spec.file)
+            @test_throws ParseError E.read_model_file(spec, file)
+            @test E.read_model_file(spec, file; max_table_cells=cells) isa NetworkIR
+        end
+    end
+
     @testset "parser options on Julia-built models" begin
         # A builtin has no file, so `strict` cannot apply and the build keywords cannot
         # either: both are rejected by name rather than silently ignored.
@@ -112,6 +147,24 @@ const SLOW_BENCHMARKS = ["barley", "mildew"]
                 @test e2 isa ArgumentError
                 @test occursin(string(opt.first), e2.msg) && occursin(name, e2.msg)
             end
+            # The size limits act only on a file, so both functions reject them, and
+            # `load_model` now rejects `strict` for the same reason instead of dropping it.
+            for opt in (:max_states => 10, :max_table_cells => 10),
+                f in (model_ir, load_model)
+                e3 = try
+                    f(name; (opt.first => opt.second,)...)
+                catch err
+                    err
+                end
+                @test e3 isa ArgumentError
+                @test occursin(string(opt.first), e3.msg) && occursin(name, e3.msg)
+            end
+            e4 = try
+                load_model(name; strict=true)
+            catch err
+                err
+            end
+            @test e4 isa ArgumentError && occursin("strict", e4.msg)
             # The validation keywords of `model_ir` still apply to a built model.
             @test model_ir(name; atol=1e-6) isa NetworkIR
             @test model_ir(name; allow_missing_tables=true) isa NetworkIR

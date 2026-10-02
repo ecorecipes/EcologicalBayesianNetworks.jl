@@ -28,7 +28,10 @@ Sibling packages are expected at `../<Name>.jl` (see `[sources]` in Project.toml
   space is untouched; a vignette must never call `clear_cache`, `fetch_model` or
   `import_model` outside such a block.
 - `src/loading.jl`: `model_ir` (gunzips `.gz` in memory, applies `[parser_options]`), `load_model`,
-  `model_summary`. `src/reference/`: Julia-built reference models (`reference_habitat_model` from
+  `model_summary`. The parser options are `strict`, `atol`, `renormalize`, `allow_missing_tables` and the
+  readers' size limits `max_states` and `max_table_cells` (positive integers, checked by `_manifest_option` in a
+  manifest and by `read_network` as keywords); `_READ_KEYS`, `_VALIDATE_KEYS` and `_BUILD_KEYS` say where each
+  goes, and a Julia-built model rejects the `_FILE_KEYS` (`strict` and the two limits) by name. `src/reference/`: Julia-built reference models (`reference_habitat_model` from
   BayesianNetworks, `reference_grazing_id` = `InfluenceDiagrams.reference_grazing_model`).
 - Netica finding/equation nodes (Song Sparrow, Brown Trout and the two Polar Bear Stressor records)
   can have no CPT: the manifest sets
