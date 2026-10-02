@@ -54,7 +54,7 @@ The table is generated from the manifests by `scripts/update_readme_table.jl`.
 | seagrass_dbn_package            | habitat     | package | Dryad record terms (consult the record; Dryad lists its content as reusable) | reconstruction | 0     | 0    | package |
 | thailand_vertebrate_bbn_package | habitat     | package | figshare collection terms (consult the individual items)                     | reconstruction | 0     | 0    | package |
 | bull_trout_food_web             | population  | dne     | CC-BY-NC-ND (version unstated)                                               | fetch-only     | 10    | 15   | BN      |
-| marten_age                      | population  | dne     | CC-BY (version unstated)                                                     | verbatim       | 7     | 6    | BN      |
+| marten_age                      | population  | dne     | CC-BY (version unstated)                                                     | fetch-only     | 7     | 6    | BN      |
 | marten_telomere                 | population  | dne     | CC-BY-NC-ND (version unstated)                                               | fetch-only     | 0     | 0    | BN      |
 | native_fish_v1                  | population  | dne     | CC-BY (version unstated)                                                     | verbatim       | 7     | 8    | BN      |
 | pacific_walrus                  | population  | dne     | CC-BY-NC-ND (version unstated)                                               | fetch-only     | 77    | 96   | BN      |

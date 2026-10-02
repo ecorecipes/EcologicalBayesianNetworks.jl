@@ -76,7 +76,7 @@ model_catalog()
     seagrass_dbn_package             habitat      package  Dryad record terms (consult the record; Dryad lists its content as reusable)  reconstruction  0      0     package
     thailand_vertebrate_bbn_package  habitat      package  figshare collection terms (consult the individual items)                      reconstruction  0      0     package
     bull_trout_food_web              population   dne      CC-BY-NC-ND (version unstated)                                                fetch-only      10     15    BN     
-    marten_age                       population   dne      CC-BY (version unstated)                                                      verbatim        7      6     BN     
+    marten_age                       population   dne      CC-BY (version unstated)                                                      fetch-only      7      6     BN     
     marten_telomere                  population   dne      CC-BY-NC-ND (version unstated)                                                fetch-only      0      0     BN     
     native_fish_v1                   population   dne      CC-BY (version unstated)                                                      verbatim        7      8     BN     
     pacific_walrus                   population   dne      CC-BY-NC-ND (version unstated)                                                fetch-only      77     96    BN     
@@ -221,7 +221,7 @@ end
 model_catalog(redistributable = false)
 ```
 
-    ModelCatalog with 25 models
+    ModelCatalog with 26 models
     name                             category     format   licence                                                                       redistribution  nodes  arcs  kind   
     -------------------------------  -----------  -------  ----------------------------------------------------------------------------  --------------  -----  ----  -------
     beach_mice_bn                    habitat      neta     CC0 1.0 (ScienceBase record); US Government work in the public domain         fetch-only      0      0     BN     
@@ -232,6 +232,7 @@ model_catalog(redistributable = false)
     seagrass_dbn_package             habitat      package  Dryad record terms (consult the record; Dryad lists its content as reusable)  reconstruction  0      0     package
     thailand_vertebrate_bbn_package  habitat      package  figshare collection terms (consult the individual items)                      reconstruction  0      0     package
     bull_trout_food_web              population   dne      CC-BY-NC-ND (version unstated)                                                fetch-only      10     15    BN     
+    marten_age                       population   dne      CC-BY (version unstated)                                                      fetch-only      7      6     BN     
     marten_telomere                  population   dne      CC-BY-NC-ND (version unstated)                                                fetch-only      0      0     BN     
     pacific_walrus                   population   dne      CC-BY-NC-ND (version unstated)                                                fetch-only      77     96    BN     
     plexus_population_viability      population   dne      unstated                                                                      fetch-only      11     13    ID     
@@ -413,8 +414,9 @@ Asking for the file before it is fetched raises a `ModelNotFetchedError`
 whose message repeats the instructions. Rendering this vignette must not
 disturb whatever you have already downloaded, so the demonstration runs
 inside `with_cache_dir`, which points `cache_dir()` at a temporary
-directory for the duration of the block (which is the directory the
-error message names below):
+directory for the duration of the block. The error message names that
+directory by its absolute path, which differs from machine to machine,
+so the vignette prints it as `<temporary cache>`:
 
 ``` julia
 mktempdir() do tmp
@@ -422,7 +424,7 @@ mktempdir() do tmp
         try
             model_path("tidal_saline_wetlands")
         catch e
-            println(sprint(showerror, e))
+            println(replace(sprint(showerror, e), cache_dir() => "<temporary cache>"))
         end
     end
 end
@@ -438,7 +440,7 @@ model available are shown, not run.
 
 ``` julia
 fetch_model("tidal_saline_wetlands")            # direct download, checksum verified
-import_model("tidal_saline_wetlands", "Tidal Saline Wetlands.dne")
+import_model("tidal_saline_wetlands", "Tidal Saline Wetlands.dne") # a file saved by hand
 clear_cache(name = "tidal_saline_wetlands")     # remove it again
 ```
 
@@ -453,7 +455,7 @@ rather than stopping at the first.
 is_available("tidal_saline_wetlands"), length(fetchable_models())
 ```
 
-    (true, 19)
+    (true, 20)
 
 ## Reference models
 

@@ -110,7 +110,7 @@
         end
     end
 
-    # Verbatim downloads still match what is committed.
+    # Direct downloads still match the recorded sha256 (verbatim and fetch-only models).
     for name in ("water", "hailfinder", "koalas", "habitat_suitability_tiger",
                  "marten_age", "bnma_water")
         spec = model_info(name)

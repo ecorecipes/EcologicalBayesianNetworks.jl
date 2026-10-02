@@ -201,8 +201,9 @@ println(spec.fetch_instructions)
 Asking for the file before it is fetched raises a `ModelNotFetchedError` whose message
 repeats the instructions. Rendering this vignette must not disturb whatever you have
 already downloaded, so the demonstration runs inside `with_cache_dir`, which points
-`cache_dir()` at a temporary directory for the duration of the block (which is the
-directory the error message names below):
+`cache_dir()` at a temporary directory for the duration of the block. The error message
+names that directory by its absolute path, which differs from machine to machine, so the
+vignette prints it as `<temporary cache>`:
 
 ```{julia}
 mktempdir() do tmp
@@ -210,7 +211,7 @@ mktempdir() do tmp
         try
             model_path("tidal_saline_wetlands")
         catch e
-            println(sprint(showerror, e))
+            println(replace(sprint(showerror, e), cache_dir() => "<temporary cache>"))
         end
     end
 end
@@ -223,7 +224,7 @@ the two ways to make the model available are shown, not run.
 
 ```julia
 fetch_model("tidal_saline_wetlands")            # direct download, checksum verified
-import_model("tidal_saline_wetlands", "Tidal Saline Wetlands.dne")
+import_model("tidal_saline_wetlands", "Tidal Saline Wetlands.dne") # a file saved by hand
 clear_cache(name = "tidal_saline_wetlands")     # remove it again
 ```
 

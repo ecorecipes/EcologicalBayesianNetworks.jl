@@ -4,8 +4,11 @@
 # naming that row's parent configuration. The comment is written by Netica, not by us, so
 # checking each annotated row against the table our reader builds tests the parent-axis
 # order against an outside authority rather than against our own assumption. The zoo's
-# seven Netica-written files have 2-5 parents of differing cardinalities, which is what
-# makes the check able to fail: with binary parents alone a transposition is invisible.
+# six committed Netica-written files have 2-5 parents of differing cardinalities, which is
+# what makes the check able to fail: with binary parents alone a transposition is invisible.
+# The largest witness, `marten_age` (tens of thousands of annotated cells), is fetch-only
+# because the original embeds its author's contact details; with `ECOLOGICAL_BN_FETCH` set
+# it is downloaded and checked too, and the floor rises to `MIN_ASSERTIONS_FETCHED`.
 #
 # Rows whose labels cannot be resolved are counted and reported, never silently dropped.
 # They are the continuous interval nodes, where Netica renders a bin as `0 to <1` or `>=1`
@@ -13,7 +16,8 @@
 # cannot be matched by string. `MIN_ASSERTIONS` keeps the test from going vacuous if a
 # future change to either side stops the labels resolving.
 
-const MIN_ASSERTIONS = 50_000
+const MIN_ASSERTIONS = 300
+const MIN_ASSERTIONS_FETCHED = 50_000
 
 _collapse_ws(x::AbstractString) = strip(replace(x, r"\s+" => " "))
 
@@ -77,7 +81,8 @@ end
                          for (root, _, files) in
                              walkdir(joinpath(@__DIR__, "..", "models"))
                          for f in files]))
-    @test length(paths) == 7
+    @test length(paths) == 6
+    FETCH && push!(paths, fetch_model("marten_age"))
 
     assertions = 0
     rows = 0
@@ -112,5 +117,5 @@ end
         isempty(mismatches) || @info "axis mismatches" path first(mismatches, 5)
     end
     @info "Netica axis oracle" rows assertions unresolved
-    @test assertions >= MIN_ASSERTIONS
+    @test assertions >= (FETCH ? MIN_ASSERTIONS_FETCHED : MIN_ASSERTIONS)
 end
