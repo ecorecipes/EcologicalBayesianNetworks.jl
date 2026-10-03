@@ -154,18 +154,19 @@ Scripts: `scripts/fetch_all.jl` (fill the cache), `scripts/verify_checksums.jl`,
 
 ## Vignettes
 
-Rendered vignettes live in [`vignettes/`](vignettes/) and are published in the
-[documentation](https://ecorecipes.github.io/EcologicalBayesianNetworks.jl/):
+| # | Vignette | Description |
+|---|---|---|
+| 1 | [A tour of the model zoo](https://github.com/ecorecipes/EcologicalBayesianNetworks.jl/blob/main/vignettes/01_model_zoo_tour/01_model_zoo_tour.md) | The catalogue, licences and redistribution, loading benchmarks and the fetch-only workflow |
+| 2 | [The reference habitat network](https://github.com/ecorecipes/EcologicalBayesianNetworks.jl/blob/main/vignettes/02_reference_habitat_network/02_reference_habitat_network.md) | The SPEC section 45 network: validation, exact inference, evidence, intervention, and the same model from Netica and GeNIe files |
+| 3 | [The grazing-management influence diagram](https://github.com/ecorecipes/EcologicalBayesianNetworks.jl/blob/main/vignettes/03_management_influence_diagram/03_management_influence_diagram.md) | The five analyses of SPEC section 46: fixed actions, the optimal policy, dropping the survey and the value of observation |
+| 4 | [Direct intervention versus imperfect implementation](https://github.com/ecorecipes/EcologicalBayesianNetworks.jl/blob/main/vignettes/04_direct_intervention_vs_imperfect_implementation/04_direct_intervention_vs_imperfect_implementation.md) | The implementation chain as an open network, compliance as the lever, and the cost-benefit trade-off (SPEC section 42) |
+| 5 | [A real decision network from the zoo](https://github.com/ecorecipes/EcologicalBayesianNetworks.jl/blob/main/vignettes/05_song_sparrow_decision_network/05_song_sparrow_decision_network.md) | Repairing and solving the Song Sparrow network, Waterhole Fence and the two-decision Koalas network |
+| 6 | [Scenario analysis on the WATER benchmark](https://github.com/ecorecipes/EcologicalBayesianNetworks.jl/blob/main/vignettes/06_scenario_analysis_on_benchmark_water/06_scenario_analysis_on_benchmark_water.md) | Every marginal from one calibration, and scenarios observing versus intervening upstream |
+| 7 | [Dynamic models and the roadmap](https://github.com/ecorecipes/EcologicalBayesianNetworks.jl/blob/main/vignettes/07_dynamic_model_roadmap/07_dynamic_model_roadmap.md) | Unrolled dynamic models, interventions in one slice, management as an exogenous input, and the roadmap (SPEC sections 43, 44 and 47) |
+| 8 | [Held-out ecological prediction: Palmer penguins](https://github.com/ecorecipes/EcologicalBayesianNetworks.jl/blob/main/vignettes/08_held_out_penguin_validation/08_held_out_penguin_validation.md) | Training-only discretization, a temporal holdout and a prior baseline on pinned CC0 field observations |
 
-1. A tour of the model zoo
-2. The reference habitat network (SPEC section 45)
-3. The grazing-management influence diagram (the five analyses of SPEC section 46)
-4. Direct intervention versus imperfect implementation (SPEC section 42)
-5. A real decision network from the zoo (Song Sparrow, Waterhole Fence, Koalas)
-6. Scenario analysis on the WATER benchmark
-7. Dynamic models and the roadmap (SPEC sections 43, 44 and 47)
-8. Held-out ecological prediction with Palmer penguins: training-only discretization,
-   a temporal holdout and a prior baseline on pinned CC0 field observations
+Each vignette is also published as a tutorial in the [documentation](https://ecorecipes.github.io/EcologicalBayesianNetworks.jl/);
+the sources are the `.qmd` files in [`vignettes/`](vignettes/).
 
 ## References
 
