@@ -495,60 +495,88 @@ habitat network*, works one model end to end.
 
 ## References
 
+```@raw html
 <div id="refs" class="references csl-bib-body hanging-indent">
+```
 
+```@raw html
 <div id="ref-BNMA" class="csl-entry">
+```
 
 BNMA. 2026. *The Bayesian Network Model Archive*.
 <https://bnma.co/bnrepo/>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Kaikkonen2021" class="csl-entry">
+```
 
 Kaikkonen, Laura, Tuuli Parviainen, Mika Rahikainen, Laura Uusitalo, and
 Annukka Lehikoinen. 2021. “Bayesian Networks in Environmental Risk
 Assessment: A Review.” *Integrated Environmental Assessment and
 Management* 17 (1): 62–78. <https://doi.org/10.1002/ieam.4332>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Landuyt2013" class="csl-entry">
+```
 
 Landuyt, Dries, Steven Broekx, Rob D’hondt, Guy Engelen, Joris Aertsens,
 and Peter L. M. Goethals. 2013. “A Review of Bayesian Belief Networks in
 Ecosystem Service Modelling.” *Environmental Modelling & Software* 46:
 1–11. <https://doi.org/10.1016/j.envsoft.2013.03.017>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Leonelli2025" class="csl-entry">
+```
 
-Leonelli, Manuele. 2025. *<span class="nocase">bnRep</span>: A
+Leonelli, Manuele. 2025. *bnRep: A
 Repository of Bayesian Networks from the Academic Literature*.
 <https://github.com/manueleleonelli/bnRep>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-McCannMarcotEllis2006" class="csl-entry">
+```
 
 McCann, Robert K., Bruce G. Marcot, and Rick Ellis. 2006. “Bayesian
 Belief Networks: Applications in Ecology and Natural Resource
 Management.” *Canadian Journal of Forest Research* 36 (12): 3053–62.
 <https://doi.org/10.1139/x06-238>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Moe2021" class="csl-entry">
+```
 
 Moe, S. Jannicke, John F. Carriger, and Miriam Glendell. 2021.
 “Increased Use of Bayesian Network Models Has Improved Environmental
 Risk Assessments.” *Integrated Environmental Assessment and Management*
 17 (1): 53–61. <https://doi.org/10.1002/ieam.4369>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Newton2007" class="csl-entry">
+```
 
 Newton, Adrian C., Gavin B. Stewart, Anita Diaz, Duncan Golicher, and
 Andrew S. Pullin. 2007. “Bayesian Belief Networks as a Tool for
@@ -556,14 +584,22 @@ Evidence-Based Conservation Management.” *Journal for Nature
 Conservation* 15 (2): 144–60.
 <https://doi.org/10.1016/j.jnc.2007.03.001>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Scutari2010" class="csl-entry">
+```
 
 Scutari, Marco. 2010. “Learning Bayesian Networks with the
-<span class="nocase">bnlearn</span> R Package.” *Journal of Statistical
+bnlearn R Package.” *Journal of Statistical
 Software* 35 (3): 1–22. <https://doi.org/10.18637/jss.v035.i03>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 </div>
+```

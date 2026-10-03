@@ -431,23 +431,35 @@ open network glued onto the habitat network.
 
 ## References
 
+```@raw html
 <div id="refs" class="references csl-bib-body hanging-indent">
+```
 
+```@raw html
 <div id="ref-Howard1966" class="csl-entry">
+```
 
 Howard, Ronald A. 1966. “Information Value Theory.” *IEEE Transactions
 on Systems Science and Cybernetics* 2 (1): 22–26.
 <https://doi.org/10.1109/TSSC.1966.300074>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Runge2011" class="csl-entry">
+```
 
 Runge, Michael C., Sarah J. Converse, and James E. Lyons. 2011. “Which
 Uncertainty? Using Expert Elicitation and Expected Value of Information
 to Design an Adaptive Program.” *Biological Conservation* 144 (4):
 1214–23. <https://doi.org/10.1016/j.biocon.2010.12.020>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 </div>
+```

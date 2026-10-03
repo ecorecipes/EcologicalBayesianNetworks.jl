@@ -18,7 +18,7 @@ Simon Frost
 The BNMA repository ([BNMA 2026](#ref-BNMA)) publishes Bayesian decision
 networks built for real restoration programmes. This vignette takes the
 Song Sparrow riparian-restoration network of
-<span class="nocase">Kotalik et al.</span> ([2026](#ref-Kotalik2026))
+Kotalik et al. ([2026](#ref-Kotalik2026))
 apart with the zoo’s loaders, explains why it loads but cannot be solved
 as shipped (two Netica finding nodes carry no tables), repairs it with
 two explicitly stated assumptions and solves it - which turns out to say
@@ -179,7 +179,7 @@ file was saved with.* That is a reader’s assumption, not the authors’:
 the file states a finding, not a prior, and a different analyst could
 just as defensibly put a uniform over the four inflation bands or solve
 the whole thing again at year 20. Nothing below is a claim about what
-<span class="nocase">Kotalik et al.</span> ([2026](#ref-Kotalik2026))
+Kotalik et al. ([2026](#ref-Kotalik2026))
 believe.
 
 ``` julia
@@ -381,8 +381,8 @@ marginal(instantiate(k, ksol.strategy), :KoalaPopulation)
 ## Summary
 
 A network published as a decision model is not necessarily a solvable
-one: the Song Sparrow diagram of <span class="nocase">Kotalik et
-al.</span> ([2026](#ref-Kotalik2026)) loads cleanly but two Netica
+one: the Song Sparrow diagram of Kotalik et
+al. ([2026](#ref-Kotalik2026)) loads cleanly but two Netica
 finding nodes carry no tables, so it can only be solved after two
 assumptions have been written down explicitly – and once it is, what the
 numbers say is as much about how the objective was specified as about
@@ -397,44 +397,64 @@ network*, moves to a network too large for the brute-force joint.
 
 The three models used here are published under CC BY 4.0 in the BNMA
 repository ([BNMA 2026](#ref-BNMA)): Song Sparrow BDN (record 2893,
-<span class="nocase">Kotalik et al.</span> ([2026](#ref-Kotalik2026)),
+Kotalik et al. ([2026](#ref-Kotalik2026)),
 DOI 10.59381/ofwegrfqyo), Waterhole Fence (record 114, Bayesian
 Intelligence Pty Ltd, 2015) and Koalas (record 126, D. Thiruvady, 2015).
 Their manifests in `models/` carry the full citation, DOI and licence
 for each.
 
+```@raw html
 <div id="refs" class="references csl-bib-body hanging-indent">
+```
 
+```@raw html
 <div id="ref-BNMA" class="csl-entry">
+```
 
 BNMA. 2026. *The Bayesian Network Model Archive*.
 <https://bnma.co/bnrepo/>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-ChenPollino2012" class="csl-entry">
+```
 
 Chen, Serena H., and Carmel A. Pollino. 2012. “Good Practice in Bayesian
 Network Modelling.” *Environmental Modelling & Software* 37: 134–45.
 <https://doi.org/10.1016/j.envsoft.2012.03.016>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Kotalik2026" class="csl-entry">
+```
 
-<span class="nocase">Kotalik, Christopher J., Freya E. Rowland, Bruce G.
-Marcot, et al.</span> 2026. “Causal Networks to Inform Decisions for
+Kotalik, Christopher J., Freya E. Rowland, Bruce G.
+Marcot, et al. 2026. “Causal Networks to Inform Decisions for
 Ecological Restoration.” *Environmental Management* 76 (7).
 <https://doi.org/10.59381/ofwegrfqyo>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Marcot2012" class="csl-entry">
+```
 
 Marcot, Bruce G. 2012. “Metrics for Evaluating Performance and
 Uncertainty of Bayesian Network Models.” *Ecological Modelling* 230:
 50–62. <https://doi.org/10.1016/j.ecolmodel.2012.01.013>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 </div>
+```

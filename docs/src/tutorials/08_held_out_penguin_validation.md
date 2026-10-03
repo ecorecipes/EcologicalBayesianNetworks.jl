@@ -182,23 +182,35 @@ returns the right number for the fitted model.
 
 ## References
 
+```@raw html
 <div id="refs" class="references csl-bib-body hanging-indent">
+```
 
+```@raw html
 <div id="ref-Gorman2014" class="csl-entry">
+```
 
 Gorman, Kristen B., Tony D. Williams, and William R. Fraser. 2014.
 “Ecological Sexual Dimorphism and Environmental Variability Within a
 Community of Antarctic Penguins (Genus Pygoscelis).” *PLOS ONE* 9 (3):
 e90081. <https://doi.org/10.1371/journal.pone.0090081>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Horst2020" class="csl-entry">
+```
 
 Horst, Allison Marie, Alison Presmanes Hill, and Kristen B. Gorman.
 2020. *Palmerpenguins: Palmer Archipelago (Antarctica) Penguin Data*.
 <https://doi.org/10.5281/zenodo.3960218>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 </div>
+```

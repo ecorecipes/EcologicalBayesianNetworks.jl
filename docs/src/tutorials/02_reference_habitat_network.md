@@ -276,26 +276,38 @@ and two utilities to this network.
 
 ## References
 
+```@raw html
 <div id="refs" class="references csl-bib-body hanging-indent">
+```
 
+```@raw html
 <div id="ref-ChenPollino2012" class="csl-entry">
+```
 
 Chen, Serena H., and Carmel A. Pollino. 2012. “Good Practice in Bayesian
 Network Modelling.” *Environmental Modelling & Software* 37: 134–45.
 <https://doi.org/10.1016/j.envsoft.2012.03.016>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Kuhnert2010" class="csl-entry">
+```
 
 Kuhnert, Petra M., Tara G. Martin, and Shane P. Griffiths. 2010. “A
 Guide to Eliciting and Using Expert Knowledge in Bayesian Ecological
 Models.” *Ecology Letters* 13 (7): 900–914.
 <https://doi.org/10.1111/j.1461-0248.2010.01477.x>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Marcot2006" class="csl-entry">
+```
 
 Marcot, Bruce G., J. Douglas Steventon, Glenn D. Sutherland, and Robert
 K. McCann. 2006. “Guidelines for Developing and Updating Bayesian Belief
@@ -303,14 +315,22 @@ Networks Applied to Ecological Modeling and Conservation.” *Canadian
 Journal of Forest Research* 36 (12): 3063–74.
 <https://doi.org/10.1139/x06-135>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Uusitalo2007" class="csl-entry">
+```
 
 Uusitalo, Laura. 2007. “Advantages and Challenges of Bayesian Networks
 in Environmental Modelling.” *Ecological Modelling* 203 (3–4): 312–18.
 <https://doi.org/10.1016/j.ecolmodel.2006.11.018>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 </div>
+```

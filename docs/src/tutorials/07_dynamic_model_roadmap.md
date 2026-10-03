@@ -218,16 +218,24 @@ network against data it was not fitted on.
 
 ## References
 
+```@raw html
 <div id="refs" class="references csl-bib-body hanging-indent">
+```
 
+```@raw html
 <div id="ref-BNMA" class="csl-entry">
+```
 
 BNMA. 2026. *The Bayesian Network Model Archive*.
 <https://bnma.co/bnrepo/>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Death2015" class="csl-entry">
+```
 
 Death, Russell G., Fiona Death, Rachel Stubbington, Michael K. Joy, and
 Marjan van den Belt. 2015. “How Good Are Bayesian Belief Networks for
@@ -235,23 +243,35 @@ Environmental Management? A Test with Data from an Agricultural River
 Catchment.” *Freshwater Biology* 60 (11): 2297–309.
 <https://doi.org/10.1111/fwb.12655>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Landuyt2013" class="csl-entry">
+```
 
 Landuyt, Dries, Steven Broekx, Rob D’hondt, Guy Engelen, Joris Aertsens,
 and Peter L. M. Goethals. 2013. “A Review of Bayesian Belief Networks in
 Ecosystem Service Modelling.” *Environmental Modelling & Software* 46:
 1–11. <https://doi.org/10.1016/j.envsoft.2013.03.017>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 <div id="ref-Uusitalo2007" class="csl-entry">
+```
 
 Uusitalo, Laura. 2007. “Advantages and Challenges of Bayesian Networks
 in Environmental Modelling.” *Ecological Modelling* 203 (3–4): 312–18.
 <https://doi.org/10.1016/j.ecolmodel.2006.11.018>.
 
+```@raw html
 </div>
+```
 
+```@raw html
 </div>
+```
