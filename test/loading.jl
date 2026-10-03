@@ -151,6 +151,7 @@ const SLOW_BENCHMARKS = ["barley", "mildew"]
             # `load_model` now rejects `strict` for the same reason instead of dropping it.
             for opt in (:max_states => 10, :max_table_cells => 10),
                 f in (model_ir, load_model)
+
                 e3 = try
                     f(name; (opt.first => opt.second,)...)
                 catch err
