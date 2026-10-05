@@ -155,7 +155,7 @@ t = @elapsed p = posterior(um40, :Vegetation_40)
 p, round(t; digits = 3)
 ```
 
-    (Dict(:sparse => 0.43055555555555547, :dense => 0.5694444444444444), 0.001)
+    (Dict(:sparse => 0.43055555555555547, :dense => 0.5694444444444444), 0.002)
 
 ``` julia
 posterior(do_intervention(um40, :Herbivores_20 => :low), :Vegetation_21)

@@ -44,6 +44,7 @@ Kuhnert et al. ([2010](#ref-Kuhnert2010)) would fall in a real study.
 using EcologicalBayesianNetworks
 using BayesianNetworks
 using BayesianNetworkInference
+using Random
 m = load_model("reference_habitat_bn")
 ```
 
@@ -116,7 +117,7 @@ post, diag = infer(m, :Occupancy)
 post.table ≈ p_occ.table, diag
 ```
 
-    (true, InferenceDiagnostics([:Climate, :Irrigation, :SoilMoisture, :GrazingPressure, :Vegetation, :HabitatQuality], 18, 6, 2))
+    (true, InferenceDiagnostics([:Climate, :Irrigation, :SoilMoisture, :GrazingPressure, :Vegetation, :HabitatQuality], 18, 6, 2, false))
 
 The junction-tree backend gives every marginal from one calibration:
 
@@ -134,13 +135,13 @@ Ancestral sampling (SPEC section 18) draws from the same distribution;
 the empirical frequency of occupancy converges to the exact value.
 
 ``` julia
-s = ancestral_sample(m, 20_000)
+s = ancestral_sample(m, 20_000; rng = Xoshiro(2026))
 round.(empirical_marginal(s, :Occupancy).table; digits = 3)
 ```
 
     2-element Vector{Float64}:
-     0.526
-     0.474
+     0.519
+     0.481
 
 ## Evidence
 

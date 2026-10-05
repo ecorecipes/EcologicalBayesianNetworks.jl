@@ -88,7 +88,7 @@ t_jt = @elapsed ms = all_marginals(water; backend = JunctionTree())
 length(ms), round(t_jt; digits = 3)
 ```
 
-    (32, 0.127)
+    (32, 0.273)
 
 ``` julia
 ms[:CKNI_12_45]
@@ -114,7 +114,7 @@ end
 round(t_ve; digits = 3)
 ```
 
-    1.398
+    0.761
 
 ## Scenarios: observing versus intervening upstream
 
@@ -176,7 +176,7 @@ end
 n, round(t; digits = 3)
 ```
 
-    (29, 2.979)
+    (29, 2.146)
 
 The intervened model is an ordinary model whose history records what was
 rewritten, so a scenario can be drawn, saved or composed like any other:

@@ -40,6 +40,7 @@ which is also where the discretisation and elicitation costs discussed by
 using EcologicalBayesianNetworks
 using BayesianNetworks
 using BayesianNetworkInference
+using Random
 m = load_model("reference_habitat_bn")
 ```
 
@@ -101,7 +102,7 @@ Ancestral sampling (SPEC section 18) draws from the same distribution; the empir
 frequency of occupancy converges to the exact value.
 
 ```{julia}
-s = ancestral_sample(m, 20_000)
+s = ancestral_sample(m, 20_000; rng = Xoshiro(2026))
 round.(empirical_marginal(s, :Occupancy).table; digits = 3)
 ```
 
