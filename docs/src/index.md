@@ -45,6 +45,16 @@ complete 2009 cases are scored against a training-prior baseline. The supplied
 CC0 table has a pinned source revision, checksum and attribution. This is a small
 predictive exercise, not a causal or population-level management guarantee.
 
+## Composing a monitoring decision
+
+The monitoring tutorial builds a two-decision problem from pieces with
+`CategoricalInfluenceDiagrams.jl`: a survey component, with its own decision and cost, is
+composed with the grazing diagram of the management tutorial. The boundary carries the true
+vegetation hidden and the survey result observed, so the grazing decision acts only on the
+report. Survey designs are priced by changing the survey component alone, and every
+composite is checked against the same problem written as one influence diagram.
+`CategoricalInfluenceDiagrams.jl` is a dependency of the vignettes only, not of this package.
+
 ## References
 
 Bayesian belief networks have been a standard tool of habitat, conservation and

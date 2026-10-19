@@ -44,6 +44,14 @@ Sibling packages are expected at `../<Name>.jl` (see `[sources]` in Project.toml
 - Vignette 08 fits a small classifier on 2007-2008 Palmer penguin observations and evaluates
   untouched 2009 cases. Its verbatim CC0 CSV has a pinned commit/hash and licence notice beside
   the source. CSV and Statistics are vignette-only dependencies, not runtime package dependencies.
+- Vignette 09 composes a survey decision with the grazing diagram as open influence diagrams
+  (site, monitoring and grazing components; vegetation hidden, survey observed) and checks every
+  composite against a monolithic `influence_diagram`. `CategoricalInfluenceDiagrams` is a
+  vignette-only dependency (vignettes/Project.toml; the Vignettes workflow checks it out). Its
+  `contextual_optimize` searches policies exhaustively, so only the two-strategy monitoring
+  component is optimised in context, never the grazing component (3^24 policies).
+- A single-file `quarto render` inside the project leaves `NN_files/figure-commonmark/` empty;
+  copy the svg from `_freeze/NN/NN/figure-commonmark/` (or render the whole project).
 - `scripts/`: `fetch_all.jl`, `verify_checksums.jl`, `add_model.jl`, `update_readme_table.jl`,
   `sync_vignettes.jl`, `run_network_tests.jl` (the suite with `ECOLOGICAL_BN_FETCH` and
   `ECOLOGICAL_BN_SLOW` both set; the offline run covers neither branch).

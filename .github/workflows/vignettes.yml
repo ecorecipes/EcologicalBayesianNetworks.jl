@@ -40,6 +40,10 @@ jobs:
         with:
           repository: ecorecipes/InfluenceDiagrams.jl
           path: InfluenceDiagrams.jl
+      - uses: actions/checkout@v4
+        with:
+          repository: ecorecipes/CategoricalInfluenceDiagrams.jl
+          path: CategoricalInfluenceDiagrams.jl
       - uses: julia-actions/setup-julia@v2
         with:
           version: '1.12'

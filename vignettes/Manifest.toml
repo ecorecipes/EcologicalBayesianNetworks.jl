@@ -2,7 +2,7 @@
 
 julia_version = "1.12.7"
 manifest_format = "2.0"
-project_hash = "a058da7d6b6919917214a4ca6984e044946bdd30"
+project_hash = "df1d42edd8535ebaacb9de8a309bcaab324cc064"
 
 [[deps.ACSets]]
 deps = ["AlgebraicInterfaces", "Base64", "CompTime", "DataStructures", "JSON3", "MLStyle", "PEG", "Permutations", "Pkg", "PrettyTables", "Random", "Reexport", "SHA", "StaticArrays", "StructEquality", "StructTypes", "Tables"]
@@ -61,7 +61,7 @@ uuid = "590d4596-919e-4d5f-b4a5-097a6400eab8"
 version = "0.1.0"
 
 [[deps.BayesianNetworkInference]]
-deps = ["AMD", "BayesianNetworks", "CliqueTrees", "FiniteKernels", "Graphs", "LinearAlgebra", "Random", "SparseArrays", "Statistics", "TreeWidthSolver"]
+deps = ["AMD", "BayesianNetworks", "CliqueTrees", "FiniteKernels", "Graphs", "LinearAlgebra", "Random", "SparseArrays", "TreeWidthSolver"]
 path = "../../BayesianNetworkInference.jl"
 uuid = "195c3fd5-7fa7-45ed-aaa0-a92a9a2fe9e5"
 version = "0.1.0"
@@ -100,6 +100,12 @@ version = "1.18.7+0"
 deps = ["ACSets", "BayesianNetworkFormats", "BayesianNetworks", "Catlab", "FiniteKernels", "MarkovCategories"]
 path = "../../CategoricalBayesianNetworks.jl"
 uuid = "83c8271f-e735-439d-be5f-7ff3e7e4c690"
+version = "0.1.0"
+
+[[deps.CategoricalInfluenceDiagrams]]
+deps = ["ACSets", "BayesianNetworkFormats", "BayesianNetworkInference", "BayesianNetworks", "CategoricalBayesianNetworks", "Catlab", "FiniteKernels", "InfluenceDiagrams", "MarkovCategories"]
+path = "../../CategoricalInfluenceDiagrams.jl"
+uuid = "50ddae4b-1815-42e3-91f0-2e911b0f75ff"
 version = "0.1.0"
 
 [[deps.Catlab]]
